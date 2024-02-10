@@ -1,4 +1,7 @@
-
+# Algo
+```{python}
+! pip install pylab
+```
 ```{python}
 from pythtb import *
 from pylab import *
@@ -25,8 +28,8 @@ for μ in M:
 KitaevChain[1].visualize(0,1)
 ```
 
+# Texto
 ```{python}
-%%capture
 Xm = [-0.5]
 Xp = [ 0.5]
 puntosK = [Xm,[0],Xp]
@@ -58,7 +61,6 @@ def Zak_Ph(model):
 ```
 
 ```{python}
-%%capture
 PhZak=list(map(Zak_Ph,KitaevChain))
 PhZak=np.array(PhZak)
 ```
