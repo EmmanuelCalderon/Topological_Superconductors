@@ -1,6 +1,6 @@
-# Algo
+# Cadena de Kitaev
 
-Este texto no tiene un gato.
+Este codigo estudia la cadena de Kitaev. Buscamos caracterizar sus fases topologicas.
 
 ```{python}
 from pythtb import *
@@ -28,8 +28,10 @@ for μ in M:
 KitaevChain[1].visualize(0,1)
 ```
 
-# Texto
+## Estructura de bandas
+
 ```{python}
+%%capture
 Xm = [-0.5]
 Xp = [ 0.5]
 puntosK = [Xm,[0],Xp]
@@ -37,6 +39,8 @@ Ek=[]
 for i in range(Nμ):
   kpts, kdist, knode = KitaevChain[i].k_path(puntosK,101,report=True)
   Ek.append(KitaevChain[i].solve_all(kpts,eig_vectors=False))
+```
+```{python}
 for i in range(0,Nμ,20):
   fig,ax=plt.subplots(figsize=(5, 4))
   ax.plot(kdist,Ek[i].T)
@@ -45,6 +49,8 @@ for i in range(0,Nμ,20):
   ax.grid(True)
   ax.set_xticklabels(["-π",0,"π"])
 ```
+
+## Fase de Zak
 
 ```{python}
 def Zak_Ph(model):
@@ -80,4 +86,124 @@ ax2.set_ylabel('Fase de Zak \n (banda conducción)')
 ax2.grid(True)
 ax2.grid(True)
 
+```
+
+## Estados de borde
+
+```{python}
+NL=50
+KC_Cortado=[KitaevChain[i].cut_piece(NL,0,glue_edgs=False) for i in range(Nμ)]
+KC_Cortado[1].visualize(0,1)
+```
+
+```{python}
+# Obtenemos todos los estados
+evals,evecs,ed=[],[],[]
+for i in range(Nμ):
+  Ek,evec=KC_Cortado[i].solve_all(eig_vectors=True)
+  evals.append(Ek)
+  evecs.append(evec)
+  ed.append(KC_Cortado[i].get_num_orbitals()//2) # Energia al centro del espectro, debe corresponder con el edo de borde
+evals=np.array(evals)
+```
+
+```{python}
+def ipr(edo):
+  abs=np.absolute(edo)**2
+  C2=sum(abs**2)
+  C4=sum(abs**4)
+  return C4/C2
+```
+```{python}
+IPR=[list(map(ipr,evecs[i])) for i in range(Nμ)]
+
+# Mostramos estados de borde
+for i in range(0,Nμ,20):
+  (fig,ax)=KC_Cortado[i].visualize(0,1,eig_dr=evecs[i][ed[i],:],draw_hoppings=True)
+  ax.set_title("μ="+str(M[i])+"  E="+str(evals[i][ed[i]]))
+  ax.set_ylim(-5,5)
+```
+
+## Espectro v.s. $\mu/t$
+
+```{python}
+def colorFader(c1,c2,mix=0): # Interpolación lineal del color c1 (en mix=0) al color c2 (mix=1)
+    c1=np.array(mpl.colors.to_rgb(c1))
+    c2=np.array(mpl.colors.to_rgb(c2))
+    return mpl.colors.to_hex((1-mix)*c1 + mix*c2)
+
+def Fader(Lc,mix): # Interpolación lineal de colores en lista Lc
+    i=int(np.floor(mix*(len(Lc)-1)))
+    if i==len(Lc)-1:
+      c1,c2=Lc[-2],Lc[-1]
+      return c2
+    else:
+      c1,c2=Lc[i],Lc[i+1]
+      return colorFader(c1,c2,mix*(len(Lc)-1)-i)
+
+Lc=['red','Blue']
+fig, ax = plt.subplots(figsize=(10, 8))
+Max=np.max(np.max(IPR))
+Min=np.min(np.min(IPR))
+for i in range(2*NL): # Número de eigenestados
+  colors = []
+  for j in range(Nμ):
+    colors.append(Fader(Lc,(IPR[j][i]-Min)/(Max-Min)))
+  ax.scatter(M,evals.T[i],c=colors,s=0.5)
+  #ax.set_facecolor("black")
+  ax.set_xlabel('$\mu/t$')
+  ax.set_ylabel('E')
+fig, ax = plt.subplots(figsize=(10, 1))
+n=500
+for x in linspace(0,1,n):
+    ax.axvline((Max-Min)*x+Min, color=Fader(Lc,x), linewidth=4)
+    ax.set_xlabel('IPR')
+    ax.set_xlim(Min,Max)
+    ax.tick_params(axis='y', which='both', left=False, labelleft=False)
+plt.show()
+```
+
+```{python}
+def EEntropy(model):
+  Ek,evec=model.solve_all(eig_vectors=True)
+  nF=sum([1 for ϵ in Ek if ϵ<0]) # Numero de estados en mar de Fermi
+  P=np.sum([evec[l][:,None]*np.conjugate(evec[l]) for l in range(nF)],0)
+  C=P[0:nF,0:nF]
+  ζ=sort(np.linalg.eigvals(C)) # Hay que mejorar esta parte
+  ζ=np.array([z for z in ζ if(z!=0 and z!=1)]) # Quitamos los que no contribuyen
+  SEE=-sum((1-ζ)*np.log(1-ζ)+ζ*np.log(ζ))
+  return SEE
+
+def C_Spectre(model):
+  Ek,evec=model.solve_all(eig_vectors=True)
+  nF=sum([1 for ϵ in Ek if ϵ<0]) # Numero de estados en mar de Fermi
+  P=np.sum([evec[l][:,None]*np.conjugate(evec[l]) for l in range(nF)],0)
+  C=P[0:nF,0:nF]
+  ζ=sort(np.linalg.eigvals(C))
+  return ζ
+```
+
+```{python}
+See=list(map(EEntropy,KC_Cortado))
+```
+
+```{python}
+fig, ax = plt.subplots(figsize=(9, 7))
+ax.plot(M,See,c='black')
+ax.set_xlabel('$\mu/t$')
+ax.axhline(2*np.log(2),c='red')
+ax.set_ylabel('Entropia de entrelazamiento $S_A$')
+ax.grid(True)
+```
+```{python}
+ζ=np.array(list(map(C_Spectre,KC_Cortado)))
+```
+```{python}
+fig, ax = plt.subplots(figsize=(10, 8))
+for L in ζ.T:
+  ax.plot(M,L)
+  ax.set_ylim(-0.1,1.1)
+  ax.set_xlabel('$\mu/t$')
+  ax.set_ylabel('Espectro de $C$')
+  ax.grid(True)
 ```
