@@ -1,7 +1,7 @@
 # Algo
-```{python}
-! pip install pylab
-```
+
+Este texto no tiene un gato.
+
 ```{python}
 from pythtb import *
 from pylab import *
