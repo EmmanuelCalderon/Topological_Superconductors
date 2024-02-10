@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
-<title>kitaev_chain</title>
+<title>Topological_Superconductors - 2&nbsp; Algo</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -57,106 +57,1436 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </style>
 
 
-<script src="Kitaev_Chain_files/libs/clipboard/clipboard.min.js"></script>
-<script src="Kitaev_Chain_files/libs/quarto-html/quarto.js"></script>
-<script src="Kitaev_Chain_files/libs/quarto-html/popper.min.js"></script>
-<script src="Kitaev_Chain_files/libs/quarto-html/tippy.umd.min.js"></script>
-<script src="Kitaev_Chain_files/libs/quarto-html/anchor.min.js"></script>
-<link href="Kitaev_Chain_files/libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="Kitaev_Chain_files/libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
-<script src="Kitaev_Chain_files/libs/bootstrap/bootstrap.min.js"></script>
-<link href="Kitaev_Chain_files/libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="Kitaev_Chain_files/libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+<script src="site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="site_libs/quarto-nav/headroom.min.js"></script>
+<script src="site_libs/clipboard/clipboard.min.js"></script>
+<script src="site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="site_libs/quarto-search/fuse.min.js"></script>
+<script src="site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="./">
+<link href="./summary.html" rel="next">
+<link href="./intro.html" rel="prev">
+<script src="site_libs/quarto-html/quarto.js"></script>
+<script src="site_libs/quarto-html/popper.min.js"></script>
+<script src="site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="site_libs/quarto-html/anchor.min.js"></script>
+<link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "sidebar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "start",
+  "type": "textbox",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
 
 
 </head>
 
-<body class="fullcontent">
+<body class="nav-sidebar floating">
 
-<div id="quarto-content" class="page-columns page-rows-contents page-layout-article">
-
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+  <nav class="quarto-secondary-nav">
+    <div class="container-fluid d-flex">
+      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+        <i class="bi bi-layout-text-sidebar-reverse"></i>
+      </button>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./Kitaev_Chain.html"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Algo</span></a></li></ol></nav>
+        <a class="flex-grow-1" role="button" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+        </a>
+      <button type="button" class="btn quarto-search-button" aria-label="" onclick="window.quartoOpenSearch();">
+        <i class="bi bi-search"></i>
+      </button>
+    </div>
+  </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation floating overflow-auto">
+    <div class="pt-lg-2 mt-2 text-left sidebar-header">
+    <div class="sidebar-title mb-0 py-0">
+      <a href="./">Topological_Superconductors</a> 
+    </div>
+      </div>
+        <div class="mt-2 flex-shrink-0 align-items-center">
+        <div class="sidebar-search">
+        <div id="quarto-search" class="" title="Search"></div>
+        </div>
+        </div>
+    <div class="sidebar-menu-container"> 
+    <ul class="list-unstyled mt-1">
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Preface</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./intro.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Introduction</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./Kitaev_Chain.html" class="sidebar-item-text sidebar-link active">
+ <span class="menu-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Algo</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./summary.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Summary</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./references.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">References</span></a>
+  </div>
+</li>
+    </ul>
+    </div>
+</nav>
+<div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">Table of contents</h2>
+   
+  <ul>
+  <li><a href="#texto" id="toc-texto" class="nav-link active" data-scroll-target="#texto"><span class="header-section-number">3</span> Texto</a></li>
+  </ul>
+</nav>
+    </div>
+<!-- main -->
 <main class="content" id="quarto-document-content">
 
-
-
-
-<div id="325b8baa" class="cell">
-<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> pythtb <span class="im">import</span> <span class="op">*</span></span>
-<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> pylab <span class="im">import</span> <span class="op">*</span></span>
-<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Cadena de Kitaev</span></span>
-<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>lat<span class="op">=</span>[[<span class="fl">1.0</span>,<span class="fl">0.0</span>],[<span class="fl">0.0</span>,<span class="fl">1.0</span>]]</span>
-<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a>orb<span class="op">=</span>[[<span class="fl">0.0</span>,<span class="op">-</span><span class="fl">1.0</span>],[<span class="fl">0.</span>,<span class="fl">1.0</span>]]</span>
-<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a>t <span class="op">=</span> <span class="dv">1</span></span>
-<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a>Δ <span class="op">=</span> <span class="fl">0.5</span></span>
-<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a>Nμ<span class="op">=</span><span class="dv">500</span></span>
-<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a>KitaevChain<span class="op">=</span>[]</span>
-<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a>M<span class="op">=</span>np.linspace(<span class="op">-</span><span class="dv">3</span><span class="op">*</span>t, <span class="dv">3</span><span class="op">*</span>t, num<span class="op">=</span>Nμ)</span>
-<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> μ <span class="kw">in</span> M:</span>
-<span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a>  KC<span class="op">=</span>tb_model(<span class="dv">1</span>,<span class="dv">2</span>,lat,orb,per<span class="op">=</span>[<span class="dv">0</span>])</span>
-<span id="cb1-16"><a href="#cb1-16" aria-hidden="true" tabindex="-1"></a>  KC.set_hop(<span class="op">-</span>t,<span class="dv">0</span>,<span class="dv">0</span>,[<span class="dv">1</span>,<span class="dv">0</span>]) <span class="co"># [1] : significa e^{i([1].a1)(k)}</span></span>
-<span id="cb1-17"><a href="#cb1-17" aria-hidden="true" tabindex="-1"></a>  KC.set_hop(t,<span class="dv">1</span>,<span class="dv">1</span>,[<span class="dv">1</span>,<span class="dv">0</span>])</span>
-<span id="cb1-18"><a href="#cb1-18" aria-hidden="true" tabindex="-1"></a>  KC.set_hop(<span class="op">-</span>Δ,<span class="dv">0</span>,<span class="dv">1</span>,[<span class="dv">1</span>,<span class="dv">0</span>])</span>
-<span id="cb1-19"><a href="#cb1-19" aria-hidden="true" tabindex="-1"></a>  KC.set_hop( Δ,<span class="dv">0</span>,<span class="dv">1</span>,[<span class="op">-</span><span class="dv">1</span>,<span class="dv">0</span>])</span>
-<span id="cb1-20"><a href="#cb1-20" aria-hidden="true" tabindex="-1"></a>  KC.set_onsite([<span class="op">-</span>μ,μ])</span>
-<span id="cb1-21"><a href="#cb1-21" aria-hidden="true" tabindex="-1"></a>  KitaevChain.append(KC)</span>
-<span id="cb1-22"><a href="#cb1-22" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-23"><a href="#cb1-23" aria-hidden="true" tabindex="-1"></a>KitaevChain[<span class="dv">1</span>].visualize(<span class="dv">0</span>,<span class="dv">1</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</div>
-<div id="6c119fe4" class="cell">
-<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="op">%%</span>capture</span>
-<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>Xm <span class="op">=</span> [<span class="op">-</span><span class="fl">0.5</span>]</span>
-<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>Xp <span class="op">=</span> [ <span class="fl">0.5</span>]</span>
-<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>puntosK <span class="op">=</span> [Xm,[<span class="dv">0</span>],Xp]</span>
-<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>Ek<span class="op">=</span>[]</span>
-<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span>(Nμ):</span>
-<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a>  kpts, kdist, knode <span class="op">=</span> KitaevChain[i].k_path(puntosK,<span class="dv">101</span>,report<span class="op">=</span><span class="va">True</span>)</span>
-<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a>  Ek.append(KitaevChain[i].solve_all(kpts,eig_vectors<span class="op">=</span><span class="va">False</span>))</span>
-<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">0</span>,Nμ,<span class="dv">20</span>):</span>
-<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a>  fig,ax<span class="op">=</span>plt.subplots(figsize<span class="op">=</span>(<span class="dv">5</span>, <span class="dv">4</span>))</span>
-<span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a>  ax.plot(kdist,Ek[i].T)</span>
-<span id="cb2-12"><a href="#cb2-12" aria-hidden="true" tabindex="-1"></a>  ax.set_xticks(knode)</span>
-<span id="cb2-13"><a href="#cb2-13" aria-hidden="true" tabindex="-1"></a>  ax.set_title(<span class="st">"μ="</span><span class="op">+</span><span class="bu">str</span>(M[i]),fontsize<span class="op">=</span><span class="dv">10</span>)</span>
-<span id="cb2-14"><a href="#cb2-14" aria-hidden="true" tabindex="-1"></a>  ax.grid(<span class="va">True</span>)</span>
-<span id="cb2-15"><a href="#cb2-15" aria-hidden="true" tabindex="-1"></a>  ax.set_xticklabels([<span class="st">"-π"</span>,<span class="dv">0</span>,<span class="st">"π"</span>])</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</div>
-<div id="3b0b77e1" class="cell">
-<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> Zak_Ph(model):</span>
-<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>  Nk<span class="op">=</span><span class="dv">500</span></span>
-<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>  ptsK<span class="op">=</span>[[<span class="fl">0.</span>],[<span class="fl">1.</span>]] <span class="co"># Debe ser la 1ZB</span></span>
-<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>  kpts, kdist, knode <span class="op">=</span> model.k_path(ptsK,Nk,report<span class="op">=</span><span class="va">False</span>)</span>
-<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>  ϵk,evec<span class="op">=</span>model.solve_all(kpts,eig_vectors<span class="op">=</span><span class="va">True</span>)</span>
-<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a>  Zak<span class="op">=</span>[]</span>
-<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a>  <span class="cf">for</span> band <span class="kw">in</span> <span class="bu">range</span>(<span class="bu">len</span>(evec)):</span>
-<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a>    eveb<span class="op">=</span>evec[band]</span>
-<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a>    Prod<span class="op">=</span>prod([ np.vdot(eveb[i<span class="op">-</span><span class="dv">1</span>],eveb[i]) <span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">1</span>,Nk)])</span>
-<span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a>    Zak.append(<span class="op">-</span>imag( np.log(Prod) ))</span>
-<span id="cb3-11"><a href="#cb3-11" aria-hidden="true" tabindex="-1"></a>  <span class="cf">return</span> Zak</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</div>
-<div id="90d742de" class="cell">
-<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="op">%%</span>capture</span>
-<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>PhZak<span class="op">=</span><span class="bu">list</span>(<span class="bu">map</span>(Zak_Ph,KitaevChain))</span>
-<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>PhZak<span class="op">=</span>np.array(PhZak)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</div>
-<div id="53e77481" class="cell">
-<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>fig, (ax1,ax2) <span class="op">=</span> plt.subplots(<span class="dv">2</span>,figsize<span class="op">=</span>(<span class="dv">8</span>, <span class="dv">8</span>))</span>
-<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>ax1.plot(M,PhZak.T[<span class="dv">0</span>])</span>
-<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>ax1.set_xlabel(<span class="st">'$\mu/t$'</span>)</span>
-<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>ax1.set_ylabel(<span class="st">'Fase de Zak </span><span class="ch">\n</span><span class="st"> (banda valencia)'</span>)</span>
-<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a>ax1.grid(<span class="va">True</span>)</span>
-<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a>ax2.plot(M,PhZak.T[<span class="dv">1</span>])</span>
-<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a>ax2.set_xlabel(<span class="st">'$\mu/t$'</span>)</span>
-<span id="cb5-10"><a href="#cb5-10" aria-hidden="true" tabindex="-1"></a>ax2.set_ylabel(<span class="st">'Fase de Zak </span><span class="ch">\n</span><span class="st"> (banda conducción)'</span>)</span>
-<span id="cb5-11"><a href="#cb5-11" aria-hidden="true" tabindex="-1"></a>ax2.grid(<span class="va">True</span>)</span>
-<span id="cb5-12"><a href="#cb5-12" aria-hidden="true" tabindex="-1"></a>ax2.grid(<span class="va">True</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Algo</span></h1>
 </div>
 
-</main>
-<!-- /main column -->
+
+
+<div class="quarto-title-meta">
+
+    
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<div id="b6886352" class="cell" data-execution_count="1">
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="op">!</span> pip install pylab</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>"pip" no se reconoce como un comando interno o externo,
+programa o archivo por lotes ejecutable.</code></pre>
+</div>
+</div>
+<div id="59682bc7" class="cell" data-execution_count="2">
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> pythtb <span class="im">import</span> <span class="op">*</span></span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> pylab <span class="im">import</span> <span class="op">*</span></span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Cadena de Kitaev</span></span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a>lat<span class="op">=</span>[[<span class="fl">1.0</span>,<span class="fl">0.0</span>],[<span class="fl">0.0</span>,<span class="fl">1.0</span>]]</span>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a>orb<span class="op">=</span>[[<span class="fl">0.0</span>,<span class="op">-</span><span class="fl">1.0</span>],[<span class="fl">0.</span>,<span class="fl">1.0</span>]]</span>
+<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a>t <span class="op">=</span> <span class="dv">1</span></span>
+<span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a>Δ <span class="op">=</span> <span class="fl">0.5</span></span>
+<span id="cb3-11"><a href="#cb3-11" aria-hidden="true" tabindex="-1"></a>Nμ<span class="op">=</span><span class="dv">500</span></span>
+<span id="cb3-12"><a href="#cb3-12" aria-hidden="true" tabindex="-1"></a>KitaevChain<span class="op">=</span>[]</span>
+<span id="cb3-13"><a href="#cb3-13" aria-hidden="true" tabindex="-1"></a>M<span class="op">=</span>np.linspace(<span class="op">-</span><span class="dv">3</span><span class="op">*</span>t, <span class="dv">3</span><span class="op">*</span>t, num<span class="op">=</span>Nμ)</span>
+<span id="cb3-14"><a href="#cb3-14" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> μ <span class="kw">in</span> M:</span>
+<span id="cb3-15"><a href="#cb3-15" aria-hidden="true" tabindex="-1"></a>  KC<span class="op">=</span>tb_model(<span class="dv">1</span>,<span class="dv">2</span>,lat,orb,per<span class="op">=</span>[<span class="dv">0</span>])</span>
+<span id="cb3-16"><a href="#cb3-16" aria-hidden="true" tabindex="-1"></a>  KC.set_hop(<span class="op">-</span>t,<span class="dv">0</span>,<span class="dv">0</span>,[<span class="dv">1</span>,<span class="dv">0</span>]) <span class="co"># [1] : significa e^{i([1].a1)(k)}</span></span>
+<span id="cb3-17"><a href="#cb3-17" aria-hidden="true" tabindex="-1"></a>  KC.set_hop(t,<span class="dv">1</span>,<span class="dv">1</span>,[<span class="dv">1</span>,<span class="dv">0</span>])</span>
+<span id="cb3-18"><a href="#cb3-18" aria-hidden="true" tabindex="-1"></a>  KC.set_hop(<span class="op">-</span>Δ,<span class="dv">0</span>,<span class="dv">1</span>,[<span class="dv">1</span>,<span class="dv">0</span>])</span>
+<span id="cb3-19"><a href="#cb3-19" aria-hidden="true" tabindex="-1"></a>  KC.set_hop( Δ,<span class="dv">0</span>,<span class="dv">1</span>,[<span class="op">-</span><span class="dv">1</span>,<span class="dv">0</span>])</span>
+<span id="cb3-20"><a href="#cb3-20" aria-hidden="true" tabindex="-1"></a>  KC.set_onsite([<span class="op">-</span>μ,μ])</span>
+<span id="cb3-21"><a href="#cb3-21" aria-hidden="true" tabindex="-1"></a>  KitaevChain.append(KC)</span>
+<span id="cb3-22"><a href="#cb3-22" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-23"><a href="#cb3-23" aria-hidden="true" tabindex="-1"></a>KitaevChain[<span class="dv">1</span>].visualize(<span class="dv">0</span>,<span class="dv">1</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="Kitaev_Chain_files/figure-html/cell-3-output-1.png" width="578" height="559" class="figure-img"></p>
+</figure>
+</div>
+</div>
+</div>
+<section id="texto" class="level1" data-number="3">
+<h1 data-number="3"><span class="header-section-number">3</span> Texto</h1>
+<div id="0c185b0f" class="cell" data-execution_count="3">
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>Xm <span class="op">=</span> [<span class="op">-</span><span class="fl">0.5</span>]</span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>Xp <span class="op">=</span> [ <span class="fl">0.5</span>]</span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>puntosK <span class="op">=</span> [Xm,[<span class="dv">0</span>],Xp]</span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>Ek<span class="op">=</span>[]</span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span>(Nμ):</span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a>  kpts, kdist, knode <span class="op">=</span> KitaevChain[i].k_path(puntosK,<span class="dv">101</span>,report<span class="op">=</span><span class="va">True</span>)</span>
+<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a>  Ek.append(KitaevChain[i].solve_all(kpts,eig_vectors<span class="op">=</span><span class="va">False</span>))</span>
+<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">0</span>,Nμ,<span class="dv">20</span>):</span>
+<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a>  fig,ax<span class="op">=</span>plt.subplots(figsize<span class="op">=</span>(<span class="dv">5</span>, <span class="dv">4</span>))</span>
+<span id="cb4-10"><a href="#cb4-10" aria-hidden="true" tabindex="-1"></a>  ax.plot(kdist,Ek[i].T)</span>
+<span id="cb4-11"><a href="#cb4-11" aria-hidden="true" tabindex="-1"></a>  ax.set_xticks(knode)</span>
+<span id="cb4-12"><a href="#cb4-12" aria-hidden="true" tabindex="-1"></a>  ax.set_title(<span class="st">"μ="</span><span class="op">+</span><span class="bu">str</span>(M[i]),fontsize<span class="op">=</span><span class="dv">10</span>)</span>
+<span id="cb4-13"><a href="#cb4-13" aria-hidden="true" tabindex="-1"></a>  ax.grid(<span class="va">True</span>)</span>
+<span id="cb4-14"><a href="#cb4-14" aria-hidden="true" tabindex="-1"></a>  ax.set_xticklabels([<span class="st">"-π"</span>,<span class="dv">0</span>,<span class="st">"π"</span>])</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code> Path in 1D BZ defined by nodes at [-0.5  0.   0.5]
+
+ Path in 1D BZ defined by nodes at [-0.5  0.   0.5]
+
+ Path in 1D BZ defined by nodes at [-0.5  0.   0.5]
+
+ Path in 1D BZ defined by nodes at [-0.5  0.   0.5]
+
+ Path in 1D BZ defined by nodes at [-0.5  0.   0.5]
+
+ Path in 1D BZ defined by nodes at [-0.5  0.   0.5]
+
+ Path in 1D BZ defined by nodes at [-0.5  0.   0.5]
+
+ Path in 1D BZ defined by nodes at [-0.5  0.   0.5]
+
+ Path in 1D BZ defined by nodes at [-0.5  0.   0.5]
+
+ Path in 1D BZ defined by nodes at [-0.5  0.   0.5]
+
+ Path in 1D BZ defined by nodes at [-0.5  0.   0.5]
+
+ Path in 1D BZ defined by nodes at [-0.5  0.   0.5]
+
+ Path in 1D BZ defined by nodes at [-0.5  0.   0.5]
+
+ Path in 1D BZ defined by nodes at [-0.5  0.   0.5]
+
+ Path in 1D BZ defined by nodes at [-0.5  0.   0.5]
+
+ Path in 1D BZ defined by nodes at [-0.5  0.   0.5]
+
+ Path in 1D BZ defined by nodes at [-0.5  0.   0.5]
+
+ Path in 1D BZ defined by nodes at [-0.5  0.   0.5]
+
+ Path in 1D BZ defined by nodes at [-0.5  0.   0.5]
+
+ Path in 1D BZ defined by nodes at [-0.5  0.   0.5]
+
+ Path in 1D BZ defined by nodes at [-0.5  0.   0.5]
+
+ Path in 1D BZ defined by nodes at [-0.5  0.   0.5]
+
+ Path in 1D BZ defined by nodes at [-0.5  0.   0.5]
+
+ Path in 1D BZ defined by nodes at [-0.5  0.   0.5]
+
+ Path in 1D BZ defined by nodes at [-0.5  0.   0.5]
+
+ Path in 1D BZ defined by nodes at [-0.5  0.   0.5]
+
+ Path in 1D BZ defined by nodes at [-0.5  0.   0.5]
+
+ Path in 1D BZ defined by nodes at [-0.5  0.   0.5]
+
+ Path in 1D BZ defined by nodes at [-0.5  0.   0.5]
+
+ Path in 1D BZ defined by nodes at [-0.5  0.   0.5]
+
+ Path in 1D BZ defined by nodes at [-0.5  0.   0.5]
+
+ Path in 1D BZ defined by nodes at [-0.5  0.   0.5]
+
+ Path in 1D BZ defined by nodes at [-0.5  0.   0.5]
+
+ Path in 1D BZ defined by nodes at [-0.5  0.   0.5]
+
+ Path in 1D BZ defined by nodes at [-0.5  0.   0.5]
+
+ Path in 1D BZ defined by nodes at [-0.5  0.   0.5]
+
+ Path in 1D BZ defined by nodes at [-0.5  0.   0.5]
+
+ Path in 1D BZ defined by nodes at [-0.5  0.   0.5]
+
+ Path in 1D BZ defined by nodes at [-0.5  0.   0.5]
+
+ Path in 1D BZ defined by nodes at [-0.5  0.   0.5]
+
+ Path in 1D BZ defined by nodes at [-0.5  0.   0.5]
+
+ Path in 1D BZ defined by nodes at [-0.5  0.   0.5]
+
+ Path in 1D BZ defined by nodes at [-0.5  0.   0.5]
+
+ Path in 1D BZ defined by nodes at [-0.5  0.   0.5]
+
+ Path in 1D BZ defined by nodes at [-0.5  0.   0.5]
+
+ Path in 1D BZ defined by nodes at [-0.5  0.   0.5]
+
+ Path in 1D BZ defined by nodes at [-0.5  0.   0.5]
+
+ Path in 1D BZ defined by nodes at [-0.5  0.   0.5]
+
+ Path in 1D BZ defined by nodes at [-0.5  0.   0.5]
+
+ Path in 1D BZ defined by nodes at [-0.5  0.   0.5]
+
+ Path in 1D BZ defined by nodes at [-0.5  0.   0.5]
+
+ Path in 1D BZ defined by nodes at [-0.5  0.   0.5]
+
+ Path in 1D BZ defined by nodes at [-0.5  0.   0.5]
+
+ Path in 1D BZ defined by nodes at [-0.5  0.   0.5]
+
+ Path in 1D BZ defined by nodes at [-0.5  0.   0.5]
+
+ Path in 1D BZ defined by nodes at [-0.5  0.   0.5]
+
+ Path in 1D BZ defined by nodes at [-0.5  0.   0.5]
+
+ Path in 1D BZ defined by nodes at [-0.5  0.   0.5]
+
+ Path in 1D BZ defined by nodes at [-0.5  0.   0.5]
+
+ Path in 1D BZ defined by nodes at [-0.5  0.   0.5]
+
+ Path in 1D BZ defined by nodes at [-0.5  0.   0.5]
+
+ Path in 1D BZ defined by nodes at [-0.5  0.   0.5]
+
+ Path in 1D BZ defined by nodes at [-0.5  0.   0.5]
+
+ Path in 1D BZ defined by nodes at [-0.5  0.   0.5]
+
+ Path in 1D BZ defined by nodes at [-0.5  0.   0.5]
+
+ Path in 1D BZ defined by nodes at [-0.5  0.   0.5]
+
+ Path in 1D BZ defined by nodes at [-0.5  0.   0.5]
+
+ Path in 1D BZ defined by nodes at [-0.5  0.   0.5]
+
+ Path in 1D BZ defined by nodes at [-0.5  0.   0.5]
+
+ Path in 1D BZ defined by nodes at [-0.5  0.   0.5]
+
+ Path in 1D BZ defined by nodes at [-0.5  0.   0.5]
+
+ Path in 1D BZ defined by nodes at [-0.5  0.   0.5]
+
+ Path in 1D BZ defined by nodes at [-0.5  0.   0.5]
+
+ Path in 1D BZ defined by nodes at [-0.5  0.   0.5]
+
+ Path in 1D BZ defined by nodes at [-0.5  0.   0.5]
+
+ Path in 1D BZ defined by nodes at [-0.5  0.   0.5]
+
+ Path in 1D BZ defined by nodes at [-0.5  0.   0.5]
+
+ Path in 1D BZ defined by nodes at [-0.5  0.   0.5]
+
+ Path in 1D BZ defined by nodes at [-0.5  0.   0.5]
+
+ Path in 1D BZ defined by nodes at [-0.5  0.   0.5]
+
+ Path in 1D BZ defined by nodes at [-0.5  0.   0.5]
+
+ Path in 1D BZ defined by nodes at [-0.5  0.   0.5]
+
+ Path in 1D BZ defined by nodes at [-0.5  0.   0.5]
+
+ Path in 1D BZ defined by nodes at [-0.5  0.   0.5]
+
+ Path in 1D BZ defined by nodes at [-0.5  0.   0.5]
+
+ Path in 1D BZ defined by nodes at [-0.5  0.   0.5]
+
+ Path in 1D BZ defined by nodes at [-0.5  0.   0.5]
+
+ Path in 1D BZ defined by nodes at [-0.5  0.   0.5]
+
+ Path in 1D BZ defined by nodes at [-0.5  0.   0.5]
+
+ Path in 1D BZ defined by nodes at [-0.5  0.   0.5]
+
+ Path in 1D BZ defined by nodes at [-0.5  0.   0.5]
+
+ Path in 1D BZ defined by nodes at [-0.5  0.   0.5]
+
+ Path in 1D BZ defined by nodes at [-0.5  0.   0.5]
+
+ Path in 1D BZ defined by nodes at [-0.5  0.   0.5]
+
+ Path in 1D BZ defined by nodes at [-0.5  0.   0.5]
+
+ Path in 1D BZ defined by nodes at [-0.5  0.   0.5]
+
+ Path in 1D BZ defined by nodes at [-0.5  0.   0.5]
+
+ Path in 1D BZ defined by nodes at [-0.5  0.   0.5]
+
+ Path in 1D BZ defined by nodes at [-0.5  0.   0.5]
+
+ Path in 1D BZ defined by nodes at [-0.5  0.   0.5]
+
+ Path in 1D BZ defined by nodes at [-0.5  0.   0.5]
+
+ Path in 1D BZ defined by nodes at [-0.5  0.   0.5]
+
+ Path in 1D BZ defined by nodes at [-0.5  0.   0.5]
+
+ Path in 1D BZ defined by nodes at [-0.5  0.   0.5]
+
+ Path in 1D BZ defined by nodes at [-0.5  0.   0.5]
+
+ Path in 1D BZ defined by nodes at [-0.5  0.   0.5]
+
+ Path in 1D BZ defined by nodes at [-0.5  0.   0.5]
+
+ Path in 1D BZ defined by nodes at [-0.5  0.   0.5]
+
+ Path in 1D BZ defined by nodes at [-0.5  0.   0.5]
+
+ Path in 1D BZ defined by nodes at [-0.5  0.   0.5]
+
+ Path in 1D BZ defined by nodes at [-0.5  0.   0.5]
+
+ Path in 1D BZ defined by nodes at [-0.5  0.   0.5]
+
+ Path in 1D BZ defined by nodes at [-0.5  0.   0.5]
+
+ Path in 1D BZ defined by nodes at [-0.5  0.   0.5]
+
+ Path in 1D BZ defined by nodes at [-0.5  0.   0.5]
+
+ Path in 1D BZ defined by nodes at [-0.5  0.   0.5]
+
+ Path in 1D BZ defined by nodes at [-0.5  0.   0.5]
+
+ Path in 1D BZ defined by nodes at [-0.5  0.   0.5]
+
+ Path in 1D BZ defined by nodes at [-0.5  0.   0.5]
+
+ Path in 1D BZ defined by nodes at [-0.5  0.   0.5]
+
+ Path in 1D BZ defined by nodes at [-0.5  0.   0.5]
+
+ Path in 1D BZ defined by nodes at [-0.5  0.   0.5]
+
+ Path in 1D BZ defined by nodes at [-0.5  0.   0.5]
+
+ Path in 1D BZ defined by nodes at [-0.5  0.   0.5]
+
+ Path in 1D BZ defined by nodes at [-0.5  0.   0.5]
+
+ Path in 1D BZ defined by nodes at [-0.5  0.   0.5]
+
+ Path in 1D BZ defined by nodes at [-0.5  0.   0.5]
+
+ Path in 1D BZ defined by nodes at [-0.5  0.   0.5]
+
+ Path in 1D BZ defined by nodes at [-0.5  0.   0.5]
+
+ Path in 1D BZ defined by nodes at [-0.5  0.   0.5]
+
+ Path in 1D BZ defined by nodes at [-0.5  0.   0.5]
+
+ Path in 1D BZ defined by nodes at [-0.5  0.   0.5]
+
+ Path in 1D BZ defined by nodes at [-0.5  0.   0.5]
+
+ Path in 1D BZ defined by nodes at [-0.5  0.   0.5]
+
+ Path in 1D BZ defined by nodes at [-0.5  0.   0.5]
+
+ Path in 1D BZ defined by nodes at [-0.5  0.   0.5]
+
+ Path in 1D BZ defined by nodes at [-0.5  0.   0.5]
+
+ Path in 1D BZ defined by nodes at [-0.5  0.   0.5]
+
+ Path in 1D BZ defined by nodes at [-0.5  0.   0.5]
+
+ Path in 1D BZ defined by nodes at [-0.5  0.   0.5]
+
+ Path in 1D BZ defined by nodes at [-0.5  0.   0.5]
+
+ Path in 1D BZ defined by nodes at [-0.5  0.   0.5]
+
+ Path in 1D BZ defined by nodes at [-0.5  0.   0.5]
+
+ Path in 1D BZ defined by nodes at [-0.5  0.   0.5]
+
+ Path in 1D BZ defined by nodes at [-0.5  0.   0.5]
+
+ Path in 1D BZ defined by nodes at [-0.5  0.   0.5]
+
+ Path in 1D BZ defined by nodes at [-0.5  0.   0.5]
+
+ Path in 1D BZ defined by nodes at [-0.5  0.   0.5]
+
+ Path in 1D BZ defined by nodes at [-0.5  0.   0.5]
+
+ Path in 1D BZ defined by nodes at [-0.5  0.   0.5]
+
+ Path in 1D BZ defined by nodes at [-0.5  0.   0.5]
+
+ Path in 1D BZ defined by nodes at [-0.5  0.   0.5]
+
+ Path in 1D BZ defined by nodes at [-0.5  0.   0.5]
+
+ Path in 1D BZ defined by nodes at [-0.5  0.   0.5]
+
+ Path in 1D BZ defined by nodes at [-0.5  0.   0.5]
+
+ Path in 1D BZ defined by nodes at [-0.5  0.   0.5]
+
+ Path in 1D BZ defined by nodes at [-0.5  0.   0.5]
+
+ Path in 1D BZ defined by nodes at [-0.5  0.   0.5]
+
+ Path in 1D BZ defined by nodes at [-0.5  0.   0.5]
+
+ Path in 1D BZ defined by nodes at [-0.5  0.   0.5]
+
+ Path in 1D BZ defined by nodes at [-0.5  0.   0.5]
+
+ Path in 1D BZ defined by nodes at [-0.5  0.   0.5]
+
+ Path in 1D BZ defined by nodes at [-0.5  0.   0.5]
+
+ Path in 1D BZ defined by nodes at [-0.5  0.   0.5]
+
+ Path in 1D BZ defined by nodes at [-0.5  0.   0.5]
+
+ Path in 1D BZ defined by nodes at [-0.5  0.   0.5]
+
+ Path in 1D BZ defined by nodes at [-0.5  0.   0.5]
+
+ Path in 1D BZ defined by nodes at [-0.5  0.   0.5]
+
+ Path in 1D BZ defined by nodes at [-0.5  0.   0.5]
+
+ Path in 1D BZ defined by nodes at [-0.5  0.   0.5]
+
+ Path in 1D BZ defined by nodes at [-0.5  0.   0.5]
+
+ Path in 1D BZ defined by nodes at [-0.5  0.   0.5]
+
+ Path in 1D BZ defined by nodes at [-0.5  0.   0.5]
+
+ Path in 1D BZ defined by nodes at [-0.5  0.   0.5]
+
+ Path in 1D BZ defined by nodes at [-0.5  0.   0.5]
+
+ Path in 1D BZ defined by nodes at [-0.5  0.   0.5]
+
+ Path in 1D BZ defined by nodes at [-0.5  0.   0.5]
+
+ Path in 1D BZ defined by nodes at [-0.5  0.   0.5]
+
+ Path in 1D BZ defined by nodes at [-0.5  0.   0.5]
+
+ Path in 1D BZ defined by nodes at [-0.5  0.   0.5]
+
+ Path in 1D BZ defined by nodes at [-0.5  0.   0.5]
+
+ Path in 1D BZ defined by nodes at [-0.5  0.   0.5]
+
+ Path in 1D BZ defined by nodes at [-0.5  0.   0.5]
+
+ Path in 1D BZ defined by nodes at [-0.5  0.   0.5]
+
+ Path in 1D BZ defined by nodes at [-0.5  0.   0.5]
+
+ Path in 1D BZ defined by nodes at [-0.5  0.   0.5]
+
+ Path in 1D BZ defined by nodes at [-0.5  0.   0.5]
+
+ Path in 1D BZ defined by nodes at [-0.5  0.   0.5]
+
+ Path in 1D BZ defined by nodes at [-0.5  0.   0.5]
+
+ Path in 1D BZ defined by nodes at [-0.5  0.   0.5]
+
+ Path in 1D BZ defined by nodes at [-0.5  0.   0.5]
+
+ Path in 1D BZ defined by nodes at [-0.5  0.   0.5]
+
+ Path in 1D BZ defined by nodes at [-0.5  0.   0.5]
+
+ Path in 1D BZ defined by nodes at [-0.5  0.   0.5]
+
+ Path in 1D BZ defined by nodes at [-0.5  0.   0.5]
+
+ Path in 1D BZ defined by nodes at [-0.5  0.   0.5]
+
+ Path in 1D BZ defined by nodes at [-0.5  0.   0.5]
+
+ Path in 1D BZ defined by nodes at [-0.5  0.   0.5]
+
+ Path in 1D BZ defined by nodes at [-0.5  0.   0.5]
+
+ Path in 1D BZ defined by nodes at [-0.5  0.   0.5]
+
+ Path in 1D BZ defined by nodes at [-0.5  0.   0.5]
+
+ Path in 1D BZ defined by nodes at [-0.5  0.   0.5]
+
+ Path in 1D BZ defined by nodes at [-0.5  0.   0.5]
+
+ Path in 1D BZ defined by nodes at [-0.5  0.   0.5]
+
+ Path in 1D BZ defined by nodes at [-0.5  0.   0.5]
+
+ Path in 1D BZ defined by nodes at [-0.5  0.   0.5]
+
+ Path in 1D BZ defined by nodes at [-0.5  0.   0.5]
+
+ Path in 1D BZ defined by nodes at [-0.5  0.   0.5]
+
+ Path in 1D BZ defined by nodes at [-0.5  0.   0.5]
+
+ Path in 1D BZ defined by nodes at [-0.5  0.   0.5]
+
+ Path in 1D BZ defined by nodes at [-0.5  0.   0.5]
+
+ Path in 1D BZ defined by nodes at [-0.5  0.   0.5]
+
+ Path in 1D BZ defined by nodes at [-0.5  0.   0.5]
+
+ Path in 1D BZ defined by nodes at [-0.5  0.   0.5]
+
+ Path in 1D BZ defined by nodes at [-0.5  0.   0.5]
+
+ Path in 1D BZ defined by nodes at [-0.5  0.   0.5]
+
+ Path in 1D BZ defined by nodes at [-0.5  0.   0.5]
+
+ Path in 1D BZ defined by nodes at [-0.5  0.   0.5]
+
+ Path in 1D BZ defined by nodes at [-0.5  0.   0.5]
+
+ Path in 1D BZ defined by nodes at [-0.5  0.   0.5]
+
+ Path in 1D BZ defined by nodes at [-0.5  0.   0.5]
+
+ Path in 1D BZ defined by nodes at [-0.5  0.   0.5]
+
+ Path in 1D BZ defined by nodes at [-0.5  0.   0.5]
+
+ Path in 1D BZ defined by nodes at [-0.5  0.   0.5]
+
+ Path in 1D BZ defined by nodes at [-0.5  0.   0.5]
+
+ Path in 1D BZ defined by nodes at [-0.5  0.   0.5]
+
+ Path in 1D BZ defined by nodes at [-0.5  0.   0.5]
+
+ Path in 1D BZ defined by nodes at [-0.5  0.   0.5]
+
+ Path in 1D BZ defined by nodes at [-0.5  0.   0.5]
+
+ Path in 1D BZ defined by nodes at [-0.5  0.   0.5]
+
+ Path in 1D BZ defined by nodes at [-0.5  0.   0.5]
+
+ Path in 1D BZ defined by nodes at [-0.5  0.   0.5]
+
+ Path in 1D BZ defined by nodes at [-0.5  0.   0.5]
+
+ Path in 1D BZ defined by nodes at [-0.5  0.   0.5]
+
+ Path in 1D BZ defined by nodes at [-0.5  0.   0.5]
+
+ Path in 1D BZ defined by nodes at [-0.5  0.   0.5]
+
+ Path in 1D BZ defined by nodes at [-0.5  0.   0.5]
+
+ Path in 1D BZ defined by nodes at [-0.5  0.   0.5]
+
+ Path in 1D BZ defined by nodes at [-0.5  0.   0.5]
+
+ Path in 1D BZ defined by nodes at [-0.5  0.   0.5]
+
+ Path in 1D BZ defined by nodes at [-0.5  0.   0.5]
+
+ Path in 1D BZ defined by nodes at [-0.5  0.   0.5]
+
+ Path in 1D BZ defined by nodes at [-0.5  0.   0.5]
+
+ Path in 1D BZ defined by nodes at [-0.5  0.   0.5]
+
+ Path in 1D BZ defined by nodes at [-0.5  0.   0.5]
+
+ Path in 1D BZ defined by nodes at [-0.5  0.   0.5]
+
+ Path in 1D BZ defined by nodes at [-0.5  0.   0.5]
+
+ Path in 1D BZ defined by nodes at [-0.5  0.   0.5]
+
+ Path in 1D BZ defined by nodes at [-0.5  0.   0.5]
+
+ Path in 1D BZ defined by nodes at [-0.5  0.   0.5]
+
+ Path in 1D BZ defined by nodes at [-0.5  0.   0.5]
+
+ Path in 1D BZ defined by nodes at [-0.5  0.   0.5]
+
+ Path in 1D BZ defined by nodes at [-0.5  0.   0.5]
+
+ Path in 1D BZ defined by nodes at [-0.5  0.   0.5]
+
+ Path in 1D BZ defined by nodes at [-0.5  0.   0.5]
+
+ Path in 1D BZ defined by nodes at [-0.5  0.   0.5]
+
+ Path in 1D BZ defined by nodes at [-0.5  0.   0.5]
+
+ Path in 1D BZ defined by nodes at [-0.5  0.   0.5]
+
+ Path in 1D BZ defined by nodes at [-0.5  0.   0.5]
+
+ Path in 1D BZ defined by nodes at [-0.5  0.   0.5]
+
+ Path in 1D BZ defined by nodes at [-0.5  0.   0.5]
+
+ Path in 1D BZ defined by nodes at [-0.5  0.   0.5]
+
+ Path in 1D BZ defined by nodes at [-0.5  0.   0.5]
+
+ Path in 1D BZ defined by nodes at [-0.5  0.   0.5]
+
+ Path in 1D BZ defined by nodes at [-0.5  0.   0.5]
+
+ Path in 1D BZ defined by nodes at [-0.5  0.   0.5]
+
+ Path in 1D BZ defined by nodes at [-0.5  0.   0.5]
+
+ Path in 1D BZ defined by nodes at [-0.5  0.   0.5]
+
+ Path in 1D BZ defined by nodes at [-0.5  0.   0.5]
+
+ Path in 1D BZ defined by nodes at [-0.5  0.   0.5]
+
+ Path in 1D BZ defined by nodes at [-0.5  0.   0.5]
+
+ Path in 1D BZ defined by nodes at [-0.5  0.   0.5]
+
+ Path in 1D BZ defined by nodes at [-0.5  0.   0.5]
+
+ Path in 1D BZ defined by nodes at [-0.5  0.   0.5]
+
+ Path in 1D BZ defined by nodes at [-0.5  0.   0.5]
+
+ Path in 1D BZ defined by nodes at [-0.5  0.   0.5]
+
+ Path in 1D BZ defined by nodes at [-0.5  0.   0.5]
+
+ Path in 1D BZ defined by nodes at [-0.5  0.   0.5]
+
+ Path in 1D BZ defined by nodes at [-0.5  0.   0.5]
+
+ Path in 1D BZ defined by nodes at [-0.5  0.   0.5]
+
+ Path in 1D BZ defined by nodes at [-0.5  0.   0.5]
+
+ Path in 1D BZ defined by nodes at [-0.5  0.   0.5]
+
+ Path in 1D BZ defined by nodes at [-0.5  0.   0.5]
+
+ Path in 1D BZ defined by nodes at [-0.5  0.   0.5]
+
+ Path in 1D BZ defined by nodes at [-0.5  0.   0.5]
+
+ Path in 1D BZ defined by nodes at [-0.5  0.   0.5]
+
+ Path in 1D BZ defined by nodes at [-0.5  0.   0.5]
+
+ Path in 1D BZ defined by nodes at [-0.5  0.   0.5]
+
+ Path in 1D BZ defined by nodes at [-0.5  0.   0.5]
+
+ Path in 1D BZ defined by nodes at [-0.5  0.   0.5]
+
+ Path in 1D BZ defined by nodes at [-0.5  0.   0.5]
+
+ Path in 1D BZ defined by nodes at [-0.5  0.   0.5]
+
+ Path in 1D BZ defined by nodes at [-0.5  0.   0.5]
+
+ Path in 1D BZ defined by nodes at [-0.5  0.   0.5]
+
+ Path in 1D BZ defined by nodes at [-0.5  0.   0.5]
+
+ Path in 1D BZ defined by nodes at [-0.5  0.   0.5]
+
+ Path in 1D BZ defined by nodes at [-0.5  0.   0.5]
+
+ Path in 1D BZ defined by nodes at [-0.5  0.   0.5]
+
+ Path in 1D BZ defined by nodes at [-0.5  0.   0.5]
+
+ Path in 1D BZ defined by nodes at [-0.5  0.   0.5]
+
+ Path in 1D BZ defined by nodes at [-0.5  0.   0.5]
+
+ Path in 1D BZ defined by nodes at [-0.5  0.   0.5]
+
+ Path in 1D BZ defined by nodes at [-0.5  0.   0.5]
+
+ Path in 1D BZ defined by nodes at [-0.5  0.   0.5]
+
+ Path in 1D BZ defined by nodes at [-0.5  0.   0.5]
+
+ Path in 1D BZ defined by nodes at [-0.5  0.   0.5]
+
+ Path in 1D BZ defined by nodes at [-0.5  0.   0.5]
+
+ Path in 1D BZ defined by nodes at [-0.5  0.   0.5]
+
+ Path in 1D BZ defined by nodes at [-0.5  0.   0.5]
+
+ Path in 1D BZ defined by nodes at [-0.5  0.   0.5]
+
+ Path in 1D BZ defined by nodes at [-0.5  0.   0.5]
+
+ Path in 1D BZ defined by nodes at [-0.5  0.   0.5]
+
+ Path in 1D BZ defined by nodes at [-0.5  0.   0.5]
+
+ Path in 1D BZ defined by nodes at [-0.5  0.   0.5]
+
+ Path in 1D BZ defined by nodes at [-0.5  0.   0.5]
+
+ Path in 1D BZ defined by nodes at [-0.5  0.   0.5]
+
+ Path in 1D BZ defined by nodes at [-0.5  0.   0.5]
+
+ Path in 1D BZ defined by nodes at [-0.5  0.   0.5]
+
+ Path in 1D BZ defined by nodes at [-0.5  0.   0.5]
+
+ Path in 1D BZ defined by nodes at [-0.5  0.   0.5]
+
+ Path in 1D BZ defined by nodes at [-0.5  0.   0.5]
+
+ Path in 1D BZ defined by nodes at [-0.5  0.   0.5]
+
+ Path in 1D BZ defined by nodes at [-0.5  0.   0.5]
+
+ Path in 1D BZ defined by nodes at [-0.5  0.   0.5]
+
+ Path in 1D BZ defined by nodes at [-0.5  0.   0.5]
+
+ Path in 1D BZ defined by nodes at [-0.5  0.   0.5]
+
+ Path in 1D BZ defined by nodes at [-0.5  0.   0.5]
+
+ Path in 1D BZ defined by nodes at [-0.5  0.   0.5]
+
+ Path in 1D BZ defined by nodes at [-0.5  0.   0.5]
+
+ Path in 1D BZ defined by nodes at [-0.5  0.   0.5]
+
+ Path in 1D BZ defined by nodes at [-0.5  0.   0.5]
+
+ Path in 1D BZ defined by nodes at [-0.5  0.   0.5]
+
+ Path in 1D BZ defined by nodes at [-0.5  0.   0.5]
+
+ Path in 1D BZ defined by nodes at [-0.5  0.   0.5]
+
+ Path in 1D BZ defined by nodes at [-0.5  0.   0.5]
+
+ Path in 1D BZ defined by nodes at [-0.5  0.   0.5]
+
+ Path in 1D BZ defined by nodes at [-0.5  0.   0.5]
+
+ Path in 1D BZ defined by nodes at [-0.5  0.   0.5]
+
+ Path in 1D BZ defined by nodes at [-0.5  0.   0.5]
+
+ Path in 1D BZ defined by nodes at [-0.5  0.   0.5]
+
+ Path in 1D BZ defined by nodes at [-0.5  0.   0.5]
+
+ Path in 1D BZ defined by nodes at [-0.5  0.   0.5]
+
+ Path in 1D BZ defined by nodes at [-0.5  0.   0.5]
+
+ Path in 1D BZ defined by nodes at [-0.5  0.   0.5]
+
+ Path in 1D BZ defined by nodes at [-0.5  0.   0.5]
+
+ Path in 1D BZ defined by nodes at [-0.5  0.   0.5]
+
+ Path in 1D BZ defined by nodes at [-0.5  0.   0.5]
+
+ Path in 1D BZ defined by nodes at [-0.5  0.   0.5]
+
+ Path in 1D BZ defined by nodes at [-0.5  0.   0.5]
+
+ Path in 1D BZ defined by nodes at [-0.5  0.   0.5]
+
+ Path in 1D BZ defined by nodes at [-0.5  0.   0.5]
+
+ Path in 1D BZ defined by nodes at [-0.5  0.   0.5]
+
+ Path in 1D BZ defined by nodes at [-0.5  0.   0.5]
+
+ Path in 1D BZ defined by nodes at [-0.5  0.   0.5]
+
+ Path in 1D BZ defined by nodes at [-0.5  0.   0.5]
+
+ Path in 1D BZ defined by nodes at [-0.5  0.   0.5]
+
+ Path in 1D BZ defined by nodes at [-0.5  0.   0.5]
+
+ Path in 1D BZ defined by nodes at [-0.5  0.   0.5]
+
+ Path in 1D BZ defined by nodes at [-0.5  0.   0.5]
+
+ Path in 1D BZ defined by nodes at [-0.5  0.   0.5]
+
+ Path in 1D BZ defined by nodes at [-0.5  0.   0.5]
+
+ Path in 1D BZ defined by nodes at [-0.5  0.   0.5]
+
+ Path in 1D BZ defined by nodes at [-0.5  0.   0.5]
+
+ Path in 1D BZ defined by nodes at [-0.5  0.   0.5]
+
+ Path in 1D BZ defined by nodes at [-0.5  0.   0.5]
+
+ Path in 1D BZ defined by nodes at [-0.5  0.   0.5]
+
+ Path in 1D BZ defined by nodes at [-0.5  0.   0.5]
+
+ Path in 1D BZ defined by nodes at [-0.5  0.   0.5]
+
+ Path in 1D BZ defined by nodes at [-0.5  0.   0.5]
+
+ Path in 1D BZ defined by nodes at [-0.5  0.   0.5]
+
+ Path in 1D BZ defined by nodes at [-0.5  0.   0.5]
+
+ Path in 1D BZ defined by nodes at [-0.5  0.   0.5]
+
+ Path in 1D BZ defined by nodes at [-0.5  0.   0.5]
+
+ Path in 1D BZ defined by nodes at [-0.5  0.   0.5]
+
+ Path in 1D BZ defined by nodes at [-0.5  0.   0.5]
+
+ Path in 1D BZ defined by nodes at [-0.5  0.   0.5]
+
+ Path in 1D BZ defined by nodes at [-0.5  0.   0.5]
+
+ Path in 1D BZ defined by nodes at [-0.5  0.   0.5]
+
+ Path in 1D BZ defined by nodes at [-0.5  0.   0.5]
+
+ Path in 1D BZ defined by nodes at [-0.5  0.   0.5]
+
+ Path in 1D BZ defined by nodes at [-0.5  0.   0.5]
+
+ Path in 1D BZ defined by nodes at [-0.5  0.   0.5]
+
+ Path in 1D BZ defined by nodes at [-0.5  0.   0.5]
+
+ Path in 1D BZ defined by nodes at [-0.5  0.   0.5]
+
+ Path in 1D BZ defined by nodes at [-0.5  0.   0.5]
+
+ Path in 1D BZ defined by nodes at [-0.5  0.   0.5]
+
+ Path in 1D BZ defined by nodes at [-0.5  0.   0.5]
+
+ Path in 1D BZ defined by nodes at [-0.5  0.   0.5]
+
+ Path in 1D BZ defined by nodes at [-0.5  0.   0.5]
+
+ Path in 1D BZ defined by nodes at [-0.5  0.   0.5]
+
+ Path in 1D BZ defined by nodes at [-0.5  0.   0.5]
+
+ Path in 1D BZ defined by nodes at [-0.5  0.   0.5]
+
+ Path in 1D BZ defined by nodes at [-0.5  0.   0.5]
+
+ Path in 1D BZ defined by nodes at [-0.5  0.   0.5]
+
+ Path in 1D BZ defined by nodes at [-0.5  0.   0.5]
+
+ Path in 1D BZ defined by nodes at [-0.5  0.   0.5]
+
+ Path in 1D BZ defined by nodes at [-0.5  0.   0.5]
+
+ Path in 1D BZ defined by nodes at [-0.5  0.   0.5]
+
+ Path in 1D BZ defined by nodes at [-0.5  0.   0.5]
+
+ Path in 1D BZ defined by nodes at [-0.5  0.   0.5]
+
+ Path in 1D BZ defined by nodes at [-0.5  0.   0.5]
+
+ Path in 1D BZ defined by nodes at [-0.5  0.   0.5]
+
+ Path in 1D BZ defined by nodes at [-0.5  0.   0.5]
+
+ Path in 1D BZ defined by nodes at [-0.5  0.   0.5]
+
+ Path in 1D BZ defined by nodes at [-0.5  0.   0.5]
+
+ Path in 1D BZ defined by nodes at [-0.5  0.   0.5]
+
+ Path in 1D BZ defined by nodes at [-0.5  0.   0.5]
+
+ Path in 1D BZ defined by nodes at [-0.5  0.   0.5]
+
+ Path in 1D BZ defined by nodes at [-0.5  0.   0.5]
+
+ Path in 1D BZ defined by nodes at [-0.5  0.   0.5]
+
+ Path in 1D BZ defined by nodes at [-0.5  0.   0.5]
+
+ Path in 1D BZ defined by nodes at [-0.5  0.   0.5]
+
+ Path in 1D BZ defined by nodes at [-0.5  0.   0.5]
+
+ Path in 1D BZ defined by nodes at [-0.5  0.   0.5]
+
+ Path in 1D BZ defined by nodes at [-0.5  0.   0.5]
+
+ Path in 1D BZ defined by nodes at [-0.5  0.   0.5]
+
+ Path in 1D BZ defined by nodes at [-0.5  0.   0.5]
+
+ Path in 1D BZ defined by nodes at [-0.5  0.   0.5]
+
+ Path in 1D BZ defined by nodes at [-0.5  0.   0.5]
+
+ Path in 1D BZ defined by nodes at [-0.5  0.   0.5]
+
+ Path in 1D BZ defined by nodes at [-0.5  0.   0.5]
+
+ Path in 1D BZ defined by nodes at [-0.5  0.   0.5]
+
+ Path in 1D BZ defined by nodes at [-0.5  0.   0.5]
+
+ Path in 1D BZ defined by nodes at [-0.5  0.   0.5]
+
+ Path in 1D BZ defined by nodes at [-0.5  0.   0.5]
+
+ Path in 1D BZ defined by nodes at [-0.5  0.   0.5]
+
+ Path in 1D BZ defined by nodes at [-0.5  0.   0.5]
+
+ Path in 1D BZ defined by nodes at [-0.5  0.   0.5]
+
+ Path in 1D BZ defined by nodes at [-0.5  0.   0.5]
+
+ Path in 1D BZ defined by nodes at [-0.5  0.   0.5]
+
+ Path in 1D BZ defined by nodes at [-0.5  0.   0.5]
+
+ Path in 1D BZ defined by nodes at [-0.5  0.   0.5]
+
+ Path in 1D BZ defined by nodes at [-0.5  0.   0.5]
+
+ Path in 1D BZ defined by nodes at [-0.5  0.   0.5]
+
+ Path in 1D BZ defined by nodes at [-0.5  0.   0.5]
+
+ Path in 1D BZ defined by nodes at [-0.5  0.   0.5]
+
+ Path in 1D BZ defined by nodes at [-0.5  0.   0.5]
+
+ Path in 1D BZ defined by nodes at [-0.5  0.   0.5]
+
+ Path in 1D BZ defined by nodes at [-0.5  0.   0.5]
+
+ Path in 1D BZ defined by nodes at [-0.5  0.   0.5]
+
+ Path in 1D BZ defined by nodes at [-0.5  0.   0.5]
+
+ Path in 1D BZ defined by nodes at [-0.5  0.   0.5]
+
+ Path in 1D BZ defined by nodes at [-0.5  0.   0.5]
+
+ Path in 1D BZ defined by nodes at [-0.5  0.   0.5]
+
+ Path in 1D BZ defined by nodes at [-0.5  0.   0.5]
+
+ Path in 1D BZ defined by nodes at [-0.5  0.   0.5]
+
+ Path in 1D BZ defined by nodes at [-0.5  0.   0.5]
+
+ Path in 1D BZ defined by nodes at [-0.5  0.   0.5]
+
+ Path in 1D BZ defined by nodes at [-0.5  0.   0.5]
+
+ Path in 1D BZ defined by nodes at [-0.5  0.   0.5]
+
+ Path in 1D BZ defined by nodes at [-0.5  0.   0.5]
+
+ Path in 1D BZ defined by nodes at [-0.5  0.   0.5]
+
+ Path in 1D BZ defined by nodes at [-0.5  0.   0.5]
+
+ Path in 1D BZ defined by nodes at [-0.5  0.   0.5]
+
+ Path in 1D BZ defined by nodes at [-0.5  0.   0.5]
+
+ Path in 1D BZ defined by nodes at [-0.5  0.   0.5]
+
+ Path in 1D BZ defined by nodes at [-0.5  0.   0.5]
+
+ Path in 1D BZ defined by nodes at [-0.5  0.   0.5]
+
+ Path in 1D BZ defined by nodes at [-0.5  0.   0.5]
+
+ Path in 1D BZ defined by nodes at [-0.5  0.   0.5]
+
+ Path in 1D BZ defined by nodes at [-0.5  0.   0.5]
+
+ Path in 1D BZ defined by nodes at [-0.5  0.   0.5]
+
+ Path in 1D BZ defined by nodes at [-0.5  0.   0.5]
+
+ Path in 1D BZ defined by nodes at [-0.5  0.   0.5]
+
+ Path in 1D BZ defined by nodes at [-0.5  0.   0.5]
+
+ Path in 1D BZ defined by nodes at [-0.5  0.   0.5]
+
+ Path in 1D BZ defined by nodes at [-0.5  0.   0.5]
+
+ Path in 1D BZ defined by nodes at [-0.5  0.   0.5]
+
+ Path in 1D BZ defined by nodes at [-0.5  0.   0.5]
+
+ Path in 1D BZ defined by nodes at [-0.5  0.   0.5]
+
+ Path in 1D BZ defined by nodes at [-0.5  0.   0.5]
+
+ Path in 1D BZ defined by nodes at [-0.5  0.   0.5]
+
+ Path in 1D BZ defined by nodes at [-0.5  0.   0.5]
+
+ Path in 1D BZ defined by nodes at [-0.5  0.   0.5]
+
+ Path in 1D BZ defined by nodes at [-0.5  0.   0.5]
+
+ Path in 1D BZ defined by nodes at [-0.5  0.   0.5]
+
+ Path in 1D BZ defined by nodes at [-0.5  0.   0.5]
+
+ Path in 1D BZ defined by nodes at [-0.5  0.   0.5]
+
+ Path in 1D BZ defined by nodes at [-0.5  0.   0.5]
+
+ Path in 1D BZ defined by nodes at [-0.5  0.   0.5]
+
+ Path in 1D BZ defined by nodes at [-0.5  0.   0.5]
+
+ Path in 1D BZ defined by nodes at [-0.5  0.   0.5]
+
+ Path in 1D BZ defined by nodes at [-0.5  0.   0.5]
+
+ Path in 1D BZ defined by nodes at [-0.5  0.   0.5]
+
+ Path in 1D BZ defined by nodes at [-0.5  0.   0.5]
+
+ Path in 1D BZ defined by nodes at [-0.5  0.   0.5]
+
+ Path in 1D BZ defined by nodes at [-0.5  0.   0.5]
+
+ Path in 1D BZ defined by nodes at [-0.5  0.   0.5]
+
+ Path in 1D BZ defined by nodes at [-0.5  0.   0.5]
+
+ Path in 1D BZ defined by nodes at [-0.5  0.   0.5]
+
+ Path in 1D BZ defined by nodes at [-0.5  0.   0.5]
+
+ Path in 1D BZ defined by nodes at [-0.5  0.   0.5]
+
+ Path in 1D BZ defined by nodes at [-0.5  0.   0.5]
+
+ Path in 1D BZ defined by nodes at [-0.5  0.   0.5]
+
+ Path in 1D BZ defined by nodes at [-0.5  0.   0.5]
+
+ Path in 1D BZ defined by nodes at [-0.5  0.   0.5]
+
+ Path in 1D BZ defined by nodes at [-0.5  0.   0.5]
+
+ Path in 1D BZ defined by nodes at [-0.5  0.   0.5]
+
+ Path in 1D BZ defined by nodes at [-0.5  0.   0.5]
+
+ Path in 1D BZ defined by nodes at [-0.5  0.   0.5]
+</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>C:\Users\gozu0\AppData\Local\Temp\ipykernel_41008\3543440413.py:9: RuntimeWarning: More than 20 figures have been opened. Figures created through the pyplot interface (`matplotlib.pyplot.figure`) are retained until explicitly closed and may consume too much memory. (To control this warning, see the rcParam `figure.max_open_warning`). Consider using `matplotlib.pyplot.close()`.
+  fig,ax=plt.subplots(figsize=(5, 4))</code></pre>
+</div>
+<div class="cell-output cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="Kitaev_Chain_files/figure-html/cell-4-output-3.png" width="420" height="355" class="figure-img"></p>
+</figure>
+</div>
+</div>
+<div class="cell-output cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="Kitaev_Chain_files/figure-html/cell-4-output-4.png" width="420" height="355" class="figure-img"></p>
+</figure>
+</div>
+</div>
+<div class="cell-output cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="Kitaev_Chain_files/figure-html/cell-4-output-5.png" width="420" height="355" class="figure-img"></p>
+</figure>
+</div>
+</div>
+<div class="cell-output cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="Kitaev_Chain_files/figure-html/cell-4-output-6.png" width="420" height="355" class="figure-img"></p>
+</figure>
+</div>
+</div>
+<div class="cell-output cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="Kitaev_Chain_files/figure-html/cell-4-output-7.png" width="420" height="355" class="figure-img"></p>
+</figure>
+</div>
+</div>
+<div class="cell-output cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="Kitaev_Chain_files/figure-html/cell-4-output-8.png" width="420" height="355" class="figure-img"></p>
+</figure>
+</div>
+</div>
+<div class="cell-output cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="Kitaev_Chain_files/figure-html/cell-4-output-9.png" width="420" height="355" class="figure-img"></p>
+</figure>
+</div>
+</div>
+<div class="cell-output cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="Kitaev_Chain_files/figure-html/cell-4-output-10.png" width="420" height="355" class="figure-img"></p>
+</figure>
+</div>
+</div>
+<div class="cell-output cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="Kitaev_Chain_files/figure-html/cell-4-output-11.png" width="420" height="355" class="figure-img"></p>
+</figure>
+</div>
+</div>
+<div class="cell-output cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="Kitaev_Chain_files/figure-html/cell-4-output-12.png" width="420" height="355" class="figure-img"></p>
+</figure>
+</div>
+</div>
+<div class="cell-output cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="Kitaev_Chain_files/figure-html/cell-4-output-13.png" width="420" height="355" class="figure-img"></p>
+</figure>
+</div>
+</div>
+<div class="cell-output cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="Kitaev_Chain_files/figure-html/cell-4-output-14.png" width="420" height="355" class="figure-img"></p>
+</figure>
+</div>
+</div>
+<div class="cell-output cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="Kitaev_Chain_files/figure-html/cell-4-output-15.png" width="420" height="355" class="figure-img"></p>
+</figure>
+</div>
+</div>
+<div class="cell-output cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="Kitaev_Chain_files/figure-html/cell-4-output-16.png" width="420" height="355" class="figure-img"></p>
+</figure>
+</div>
+</div>
+<div class="cell-output cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="Kitaev_Chain_files/figure-html/cell-4-output-17.png" width="420" height="355" class="figure-img"></p>
+</figure>
+</div>
+</div>
+<div class="cell-output cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="Kitaev_Chain_files/figure-html/cell-4-output-18.png" width="420" height="355" class="figure-img"></p>
+</figure>
+</div>
+</div>
+<div class="cell-output cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="Kitaev_Chain_files/figure-html/cell-4-output-19.png" width="420" height="355" class="figure-img"></p>
+</figure>
+</div>
+</div>
+<div class="cell-output cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="Kitaev_Chain_files/figure-html/cell-4-output-20.png" width="420" height="355" class="figure-img"></p>
+</figure>
+</div>
+</div>
+<div class="cell-output cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="Kitaev_Chain_files/figure-html/cell-4-output-21.png" width="420" height="355" class="figure-img"></p>
+</figure>
+</div>
+</div>
+<div class="cell-output cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="Kitaev_Chain_files/figure-html/cell-4-output-22.png" width="420" height="355" class="figure-img"></p>
+</figure>
+</div>
+</div>
+<div class="cell-output cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="Kitaev_Chain_files/figure-html/cell-4-output-23.png" width="420" height="355" class="figure-img"></p>
+</figure>
+</div>
+</div>
+<div class="cell-output cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="Kitaev_Chain_files/figure-html/cell-4-output-24.png" width="420" height="355" class="figure-img"></p>
+</figure>
+</div>
+</div>
+<div class="cell-output cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="Kitaev_Chain_files/figure-html/cell-4-output-25.png" width="420" height="355" class="figure-img"></p>
+</figure>
+</div>
+</div>
+<div class="cell-output cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="Kitaev_Chain_files/figure-html/cell-4-output-26.png" width="420" height="355" class="figure-img"></p>
+</figure>
+</div>
+</div>
+<div class="cell-output cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="Kitaev_Chain_files/figure-html/cell-4-output-27.png" width="420" height="355" class="figure-img"></p>
+</figure>
+</div>
+</div>
+</div>
+<div id="c56ae27c" class="cell" data-execution_count="4">
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> Zak_Ph(model):</span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>  Nk<span class="op">=</span><span class="dv">500</span></span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>  ptsK<span class="op">=</span>[[<span class="fl">0.</span>],[<span class="fl">1.</span>]] <span class="co"># Debe ser la 1ZB</span></span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>  kpts, kdist, knode <span class="op">=</span> model.k_path(ptsK,Nk,report<span class="op">=</span><span class="va">False</span>)</span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a>  ϵk,evec<span class="op">=</span>model.solve_all(kpts,eig_vectors<span class="op">=</span><span class="va">True</span>)</span>
+<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a>  Zak<span class="op">=</span>[]</span>
+<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a>  <span class="cf">for</span> band <span class="kw">in</span> <span class="bu">range</span>(<span class="bu">len</span>(evec)):</span>
+<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a>    eveb<span class="op">=</span>evec[band]</span>
+<span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a>    Prod<span class="op">=</span>prod([ np.vdot(eveb[i<span class="op">-</span><span class="dv">1</span>],eveb[i]) <span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">1</span>,Nk)])</span>
+<span id="cb7-10"><a href="#cb7-10" aria-hidden="true" tabindex="-1"></a>    Zak.append(<span class="op">-</span>imag( np.log(Prod) ))</span>
+<span id="cb7-11"><a href="#cb7-11" aria-hidden="true" tabindex="-1"></a>  <span class="cf">return</span> Zak</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div id="6d7425d7" class="cell" data-execution_count="5">
+<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>PhZak<span class="op">=</span><span class="bu">list</span>(<span class="bu">map</span>(Zak_Ph,KitaevChain))</span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>PhZak<span class="op">=</span>np.array(PhZak)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div id="1c032a7f" class="cell" data-execution_count="6">
+<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>fig, (ax1,ax2) <span class="op">=</span> plt.subplots(<span class="dv">2</span>,figsize<span class="op">=</span>(<span class="dv">8</span>, <span class="dv">8</span>))</span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>ax1.plot(M,PhZak.T[<span class="dv">0</span>])</span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a>ax1.set_xlabel(<span class="st">'$\mu/t$'</span>)</span>
+<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a>ax1.set_ylabel(<span class="st">'Fase de Zak </span><span class="ch">\n</span><span class="st"> (banda valencia)'</span>)</span>
+<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a>ax1.grid(<span class="va">True</span>)</span>
+<span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-8"><a href="#cb9-8" aria-hidden="true" tabindex="-1"></a>ax2.plot(M,PhZak.T[<span class="dv">1</span>])</span>
+<span id="cb9-9"><a href="#cb9-9" aria-hidden="true" tabindex="-1"></a>ax2.set_xlabel(<span class="st">'$\mu/t$'</span>)</span>
+<span id="cb9-10"><a href="#cb9-10" aria-hidden="true" tabindex="-1"></a>ax2.set_ylabel(<span class="st">'Fase de Zak </span><span class="ch">\n</span><span class="st"> (banda conducción)'</span>)</span>
+<span id="cb9-11"><a href="#cb9-11" aria-hidden="true" tabindex="-1"></a>ax2.grid(<span class="va">True</span>)</span>
+<span id="cb9-12"><a href="#cb9-12" aria-hidden="true" tabindex="-1"></a>ax2.grid(<span class="va">True</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="Kitaev_Chain_files/figure-html/cell-7-output-1.png" width="677" height="653" class="figure-img"></p>
+</figure>
+</div>
+</div>
+</div>
+
+
+</section>
+
+</main> <!-- /main -->
 <script id="quarto-html-after-body" type="application/javascript">
 window.document.addEventListener("DOMContentLoaded", function (event) {
   const toggleBodyColorMode = (bsSheetEl) => {
@@ -544,6 +1874,18 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
   }
 });
 </script>
+<nav class="page-navigation">
+  <div class="nav-page nav-page-previous">
+      <a href="./intro.html" class="pagination-link  aria-label=" &lt;span="">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Introduction</span></span>
+      </a>          
+  </div>
+  <div class="nav-page nav-page-next">
+      <a href="./summary.html" class="pagination-link" aria-label="<span class='chapter-number'>3</span>&nbsp; <span class='chapter-title'>Summary</span>">
+        <span class="nav-page-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Summary</span></span> <i class="bi bi-arrow-right-short"></i>
+      </a>
+  </div>
+</nav>
 </div> <!-- /content -->
 
 
