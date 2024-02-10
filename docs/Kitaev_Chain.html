@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
-<title>Topological_Superconductors - 2&nbsp; Cadena de Kitaev</title>
+<title>Topological_Superconductors - 3&nbsp; Cadena de Kitaev</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -65,7 +65,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <script src="site_libs/quarto-search/quarto-search.js"></script>
 <meta name="quarto:offset" content="./">
 <link href="./summary.html" rel="next">
-<link href="./intro.html" rel="prev">
+<link href="./SSH.html" rel="prev">
 <script src="site_libs/quarto-html/quarto.js"></script>
 <script src="site_libs/quarto-html/popper.min.js"></script>
 <script src="site_libs/quarto-html/tippy.umd.min.js"></script>
@@ -144,7 +144,7 @@ window.Quarto = {
       <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
-        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./Kitaev_Chain.html"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Cadena de Kitaev</span></a></li></ol></nav>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./Kitaev_Chain.html"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Cadena de Kitaev</span></a></li></ol></nav>
         <a class="flex-grow-1" role="button" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
         </a>
       <button type="button" class="btn quarto-search-button" aria-label="" onclick="window.quartoOpenSearch();">
@@ -183,14 +183,20 @@ window.Quarto = {
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
+  <a href="./SSH.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">SSH model</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
   <a href="./Kitaev_Chain.html" class="sidebar-item-text sidebar-link active">
- <span class="menu-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Cadena de Kitaev</span></span></a>
+ <span class="menu-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Cadena de Kitaev</span></span></a>
   </div>
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./summary.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Summary</span></span></a>
+ <span class="menu-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Summary</span></span></a>
   </div>
 </li>
         <li class="sidebar-item">
@@ -209,10 +215,10 @@ window.Quarto = {
     <h2 id="toc-title">Table of contents</h2>
    
   <ul>
-  <li><a href="#estructura-de-bandas" id="toc-estructura-de-bandas" class="nav-link active" data-scroll-target="#estructura-de-bandas"><span class="header-section-number">2.1</span> Estructura de bandas</a></li>
-  <li><a href="#fase-de-zak" id="toc-fase-de-zak" class="nav-link" data-scroll-target="#fase-de-zak"><span class="header-section-number">2.2</span> Fase de Zak</a></li>
-  <li><a href="#estados-de-borde" id="toc-estados-de-borde" class="nav-link" data-scroll-target="#estados-de-borde"><span class="header-section-number">2.3</span> Estados de borde</a></li>
-  <li><a href="#espectro-v.s.-mut" id="toc-espectro-v.s.-mut" class="nav-link" data-scroll-target="#espectro-v.s.-mut"><span class="header-section-number">2.4</span> Espectro v.s. <span class="math inline">\(\mu/t\)</span></a></li>
+  <li><a href="#estructura-de-bandas" id="toc-estructura-de-bandas" class="nav-link active" data-scroll-target="#estructura-de-bandas"><span class="header-section-number">3.1</span> Estructura de bandas</a></li>
+  <li><a href="#fase-de-zak" id="toc-fase-de-zak" class="nav-link" data-scroll-target="#fase-de-zak"><span class="header-section-number">3.2</span> Fase de Zak</a></li>
+  <li><a href="#estados-de-borde" id="toc-estados-de-borde" class="nav-link" data-scroll-target="#estados-de-borde"><span class="header-section-number">3.3</span> Estados de borde</a></li>
+  <li><a href="#espectro-v.s.-mut" id="toc-espectro-v.s.-mut" class="nav-link" data-scroll-target="#espectro-v.s.-mut"><span class="header-section-number">3.4</span> Espectro v.s. <span class="math inline">\(\mu/t\)</span></a></li>
   </ul>
 </nav>
     </div>
@@ -221,7 +227,7 @@ window.Quarto = {
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Cadena de Kitaev</span></h1>
+<h1 class="title"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Cadena de Kitaev</span></h1>
 </div>
 
 
@@ -271,8 +277,8 @@ window.Quarto = {
 </div>
 </div>
 </div>
-<section id="estructura-de-bandas" class="level2" data-number="2.1">
-<h2 data-number="2.1" class="anchored" data-anchor-id="estructura-de-bandas"><span class="header-section-number">2.1</span> Estructura de bandas</h2>
+<section id="estructura-de-bandas" class="level2" data-number="3.1">
+<h2 data-number="3.1" class="anchored" data-anchor-id="estructura-de-bandas"><span class="header-section-number">3.1</span> Estructura de bandas</h2>
 <div id="14d87dac" class="cell" data-execution_count="2">
 <div class="sourceCode cell-code" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="op">%%</span>capture</span>
 <span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>Xm <span class="op">=</span> [<span class="op">-</span><span class="fl">0.5</span>]</span>
@@ -472,8 +478,8 @@ window.Quarto = {
 </div>
 </div>
 </section>
-<section id="fase-de-zak" class="level2" data-number="2.2">
-<h2 data-number="2.2" class="anchored" data-anchor-id="fase-de-zak"><span class="header-section-number">2.2</span> Fase de Zak</h2>
+<section id="fase-de-zak" class="level2" data-number="3.2">
+<h2 data-number="3.2" class="anchored" data-anchor-id="fase-de-zak"><span class="header-section-number">3.2</span> Fase de Zak</h2>
 <div id="d2c73427" class="cell" data-execution_count="4">
 <div class="sourceCode cell-code" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> Zak_Ph(model):</span>
 <span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>  Nk<span class="op">=</span><span class="dv">500</span></span>
@@ -513,8 +519,8 @@ window.Quarto = {
 </div>
 </div>
 </section>
-<section id="estados-de-borde" class="level2" data-number="2.3">
-<h2 data-number="2.3" class="anchored" data-anchor-id="estados-de-borde"><span class="header-section-number">2.3</span> Estados de borde</h2>
+<section id="estados-de-borde" class="level2" data-number="3.3">
+<h2 data-number="3.3" class="anchored" data-anchor-id="estados-de-borde"><span class="header-section-number">3.3</span> Estados de borde</h2>
 <div id="24398fea" class="cell" data-execution_count="7">
 <div class="sourceCode cell-code" id="cb8"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>NL<span class="op">=</span><span class="dv">50</span></span>
 <span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>KC_Cortado<span class="op">=</span>[KitaevChain[i].cut_piece(NL,<span class="dv">0</span>,glue_edgs<span class="op">=</span><span class="va">False</span>) <span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span>(Nμ)]</span>
@@ -733,8 +739,8 @@ window.Quarto = {
 </div>
 </div>
 </section>
-<section id="espectro-v.s.-mut" class="level2" data-number="2.4">
-<h2 data-number="2.4" class="anchored" data-anchor-id="espectro-v.s.-mut"><span class="header-section-number">2.4</span> Espectro v.s. <span class="math inline">\(\mu/t\)</span></h2>
+<section id="espectro-v.s.-mut" class="level2" data-number="3.4">
+<h2 data-number="3.4" class="anchored" data-anchor-id="espectro-v.s.-mut"><span class="header-section-number">3.4</span> Espectro v.s. <span class="math inline">\(\mu/t\)</span></h2>
 <div id="effb82df" class="cell" data-execution_count="11">
 <div class="sourceCode cell-code" id="cb13"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> colorFader(c1,c2,mix<span class="op">=</span><span class="dv">0</span>): <span class="co"># Interpolación lineal del color c1 (en mix=0) al color c2 (mix=1)</span></span>
 <span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a>    c1<span class="op">=</span>np.array(mpl.colors.to_rgb(c1))</span>
@@ -1241,13 +1247,13 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 </script>
 <nav class="page-navigation">
   <div class="nav-page nav-page-previous">
-      <a href="./intro.html" class="pagination-link  aria-label=" &lt;span="">
-        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Introduction</span></span>
+      <a href="./SSH.html" class="pagination-link  aria-label=" &lt;span="" model&lt;="" span&gt;"="">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">SSH model</span></span>
       </a>          
   </div>
   <div class="nav-page nav-page-next">
-      <a href="./summary.html" class="pagination-link" aria-label="<span class='chapter-number'>3</span>&nbsp; <span class='chapter-title'>Summary</span>">
-        <span class="nav-page-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Summary</span></span> <i class="bi bi-arrow-right-short"></i>
+      <a href="./summary.html" class="pagination-link" aria-label="<span class='chapter-number'>4</span>&nbsp; <span class='chapter-title'>Summary</span>">
+        <span class="nav-page-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Summary</span></span> <i class="bi bi-arrow-right-short"></i>
       </a>
   </div>
 </nav>

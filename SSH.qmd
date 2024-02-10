@@ -1,0 +1,228 @@
+# SSH model
+
+This code aims to get an understanding of topological phases of matter and their characterisation through the SSH model. To achieve this we calculate three relevant quantities: Zak's phase, the Inverse Ratio Participation (IPR) and the entanglement entropy.
+
+We begin by defining the SSH model in PythTB.
+
+```{python}
+from pythtb import *
+from pylab import *
+
+lat=[[1.0]]
+sites=[[0.0],[0.5]]
+# We vary the intra-cell hopping t2 and set the inter-cell hopping t1
+t1 = 1
+Nt=500
+T2 = linspace(0,2,Nt)
+
+SSH_model=[]
+for t2 in T2:
+  SSH=tb_model(1,1,lat,sites)
+  SSH.set_hop(t1,1,0,[1])
+  SSH.set_hop(t2,0,1,[0])
+  SSH.set_onsite([0,0])
+  SSH_model.append(SSH)
+
+SSH_model[1].visualize(0)
+```
+
+## Band structure
+
+First we calculate the SSH band structure for different values of $t_2/t_1$. We can easily observe how the band gap closes when $t_2=t_1$, this alredy indicates a phase transition.
+
+```{python}
+%%capture
+Xm = [-0.5]
+Xp = [ 0.5]
+puntosK = [Xm,[0],Xp]
+Ek=[]
+for i in range(0,Nt):
+  kpts, kdist, knode = SSH_model[i].k_path(puntosK,101,report=True)
+  Ek.append(SSH_model[i].solve_all(kpts,eig_vectors=False))
+```
+```{python}
+for i in range(0,Nt,50):
+  plt.plot(kdist,Ek[i].T)
+  plt.xticks(knode)
+  plt.title("$t_2/t_1$="+str(T2[i]),fontsize=10)
+  plt.grid(True)
+  plt.show()
+```
+
+## Zak's phase
+
+In order to characterize a topological phase of matter we must associate it a topological invariant. One possible topololgical invariant is Zak's phase which is defined as the Berry phase of a particle that traverses the reciprocal space $k$ from 0 to $2\pi$, that is
+$$
+\phi=
+$$
+
+```{python}
+def Zak_Ph(model):
+  Nk=100
+  ptsK=[[0.],[1.]] # 1ZB
+  kpts, kdist, knode = model.k_path(ptsK,Nk,report=False)
+  ϵk,evec=model.solve_all(kpts,eig_vectors=True)
+  Zak=[]
+  for band in range(len(evec)):
+    eveb=evec[band]
+    Prod=prod([ np.vdot(eveb[i-1],eveb[i]) for i in range(1,Nk)])
+    Zak.append(-imag( np.log(Prod) ))
+  return Zak
+```
+```{python}
+%%capture
+PhZak=list(map(Zak_Ph,SSH_model))
+PhZak=np.array(PhZak)
+```
+```{python}
+fig, (ax1,ax2) = plt.subplots(2,figsize=(8, 8))
+ax1.plot(T2,PhZak.T[0])
+ax1.set_xlabel('$t_2/t_1$')
+ax1.set_ylabel('Fase de Zak \n (banda valencia)')
+ax1.grid(True)
+ax2.plot(T2,PhZak.T[1])
+ax2.set_xlabel('$t_2/t_1$')
+ax2.set_ylabel('Fase de Zak \n (banda conducción)')
+ax2.grid(True)
+```
+
+
+
+## Finite SSH chain
+Ahora estudiamos los estados de borde de una cadena SSH finita.
+```{python}
+NL=50 # Longitud de cadena
+SSH_Cortado=[]
+for i in range(Nt):
+  SSH_Cortado.append(SSH_model[i].cut_piece(NL,0,glue_edgs=False))
+SSH_Cortado[1].visualize(0)
+```
+
+En la siguiente celda calculamos todos los eigenestados de la cadena.
+```{python}
+evals,evecs,ed=[],[],[]
+for i in range(Nt):
+  Ek,evec = SSH_Cortado[i].solve_all(eig_vectors=True)
+  evals.append(Ek)
+  evecs.append(evec)
+  ed.append(SSH_Cortado[i].get_num_orbitals()//2) # edo de borde
+evals=np.array(evals)
+```
+
+Visualizamos la función de onda de los estados con energía más cercana al cero. Podemos ver que para $|t_2/t_1|<1$ existen estados de borde.
+```{python}
+for i in range(0,Nt,50):
+  (fig,ax)=SSH_Cortado[i].visualize(0,eig_dr=evecs[i][ed[i],:],draw_hoppings=True)
+  ax.set_title("$t_2$="+str(T2[i])+"$t_1$"+"  E="+str(evals[i][ed[i]]))
+  ax.set_ylim(-5,5)
+```
+
+## IPR
+Para tener un mejor entendimiento de la evolución de los eigenestados de la cadena, graficamos la evolución de los niveles de energía como función de $t_2/t_1$. Deseamos caracterizar que tan localizados estan los eigenestados, para ello calculamos el IPR de todos los estados y asignamos un color a tal grafica. 
+
+```{python}
+IPR=[]
+for i in range(Nt):
+  IPR.append([])
+  for edo in evecs[i]:
+    C2=sum(np.absolute(edo)**2)
+    C4=sum(np.absolute(edo)**4)
+    IPR[i].append(C4/C2)
+```
+```{python}
+def colorFader(c1,c2,mix=0): # Interpolación lineal del color c1 (en mix=0) al color c2 (mix=1)
+    c1=np.array(mpl.colors.to_rgb(c1))
+    c2=np.array(mpl.colors.to_rgb(c2))
+    return mpl.colors.to_hex((1-mix)*c1 + mix*c2)
+
+def Fader(Lc,mix): # Interpolación lineal de colores en lista Lc
+    i=int(np.floor(mix*(len(Lc)-1)))
+    if i==len(Lc)-1:
+      c1,c2=Lc[-2],Lc[-1]
+      return c2
+    else:
+      c1,c2=Lc[i],Lc[i+1]
+      return colorFader(c1,c2,mix*(len(Lc)-1)-i)
+
+Lc=['red','Blue']
+
+fig, ax = plt.subplots(figsize=(10, 8))
+for i in range(2*NL): # Número de eigenestados
+  colors = []
+  for j in range(Nt):
+    colors.append(Fader(Lc,IPR[j][i]))
+  ax.scatter(T2,evals.T[i],c=colors,s=0.5)
+  #ax.set_facecolor("black")
+  ax.set_xlabel('t2/t1')
+  ax.set_ylabel('E')
+fig, ax = plt.subplots(figsize=(10, 1))
+n=500
+for x in linspace(0,1,n):
+    ax.axvline(x, color=Fader(Lc,x), linewidth=4)
+    ax.set_xlabel('IPR')
+    ax.tick_params(axis='y', which='both', left=False, labelleft=False)
+plt.show()
+```
+
+En la figura vemos la presencia de estados con un IPR cercano a uno y energía cercana a cero para $t_2/t_1<1$, lo que indica la presencia de estados localizados. Para el resto de estados se tiene un IPR cercano a cero, lo que indica que los estados con energía distinta de cero no son estados localizados, sino que pertencen a estados de bulto.
+
+Esto no demuestra que estos estados sean de borde, tan solo demuestran que son estados localizados. Para comprobar que sean estados de borde usamos la entropía de entrelazamiento.
+
+## Entanglement entropy
+
+Primero calculamos los eigenvalores de la matriz de correlaciones como indica el articulo de Ryu y Hatsugai (@Ryu_2006). Observamos como existen dos eigenvalores del hamiltoniano $C$ cercanos a $1/2$, lo que indica la presencia de estados de borde. Vemos como estos estados desaparecen para $t_2/t_1>1$.
+
+```{python}
+def C_Spectre(model):
+  Ek,evec=model.solve_all(eig_vectors=True)
+  nF=model.get_num_orbitals()//2 # Sist de 2 niveles
+  P=np.sum([evec[l][:,None]*np.conjugate(evec[l]) for l in range(nF)],0)
+  C=P[0:nF,0:nF]
+  ζ=list(sort(np.linalg.eigvals(C)))
+  return ζ
+
+ζ=np.array(list(map(C_Spectre,SSH_Cortado)))
+```
+```{python}
+fig, ax = plt.subplots(figsize=(10, 8))
+for L in ζ.T:
+  ax.scatter(T2,L,s=1,c='black')
+  ax.set_ylim(-0.1,1.1)
+  ax.set_xlabel('$t_2/t_1$')
+  ax.set_ylabel('Espectro de $C$')
+  ax.grid(True)
+```
+
+Calculamos la entropía de entrelazamiento usando los eigenvalores del hamiltoniano C por medio de la formula.
+$$
+S_A=-\sum_{\ell}(\zeta_\ell \log(\zeta_\ell) + (1-\zeta_\ell)\log(1-\zeta_\ell)) 
+$$
+
+Claro que aquí nos aprovechamos de la simetría quiral del sistema, por lo que podemos calcular de forma equivalente
+$$
+S_A=-2\sum_{\zeta_\ell\geq0.5} (\zeta_\ell \log(\zeta_\ell) + (1-\zeta_\ell)\log(1-\zeta_\ell)).
+$$
+
+```{python}
+def EEntropy(model):
+  Ek,evec=model.solve_all(eig_vectors=True)
+  nF=model.get_num_orbitals()//2 #sum([1 for ϵ in Ek if ϵ<0]) # Numero de estados en mar de Fermi
+  P=np.sum([evec[l][:,None]*np.conjugate(evec[l]) for l in range(nF)],0)
+  C=P[0:nF,0:nF]
+  ζ=sort(np.linalg.eigvals(C))[nF//2:nF] # Aqui es necesario sim.quiral
+  ζ=np.array([z for z in ζ if(z!=0 and z!=1)]) # Quitamos los que no contribuyen
+  SEE=-sum((1-ζ)*np.log(1-ζ)+ζ*np.log(ζ))
+  return 2*SEE
+
+See=list(map(EEntropy,SSH_Cortado))
+```
+```{python}
+fig, ax = plt.subplots(figsize=(9, 7))
+ax.plot(T2,See,c='black')
+ax.set_xlabel('$t_2/t_1$')
+ax.axhline(2*np.log(2),c='red')
+ax.set_ylabel('Entropia de entrelazamiento $S_A$')
+ax.grid(True)
+```
+
+De acuerdo con Ryu y Hatsugai, la entropía de entrelazamiento en el limite termodinamico es $\log 2 \times$ el número de fronteras del sistema. En este caso vemos como la entropía de entrelazamiento baja por debajo de la cota inferior de $2\log 2$ alrededor de $t_2=0.5 t_1$ lo que indica que los estados de borde en ambos extremos de la cadena desaparecen en este limite. 
