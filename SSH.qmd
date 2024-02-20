@@ -1,8 +1,10 @@
 # SSH model
 
-This code aims to get an understanding of topological phases of matter and their characterisation through the SSH model. To achieve this we calculate three relevant quantities: Zak's phase, the Inverse Ratio Participation (IPR) and the entanglement entropy.
+This code aims to gain an understanding of topological phases of matter and their characterization through the SSH model. To achieve this, we calculate three relevant quantities: the Inverse Ratio Participation (IPR), the entanglement entropy, and Zak's phase.
 
-We begin by defining the SSH model in PythTB.
+The Su-Schrieffer-Heeger model was devised by Wu-Pei Su, John Robert Schrieffer, and Alan J. Heeger in 1979 to describe a polyacetylene polymer chain when doped (@SSH_original). The structural diagram of polyacetylene consists of a chain of carbon atoms with two kinds of bonds. This can be described using a tight-binding Hamiltonian of a chain of sites with alternating hoppings between neighbors.
+
+We begin by defining the SSH model using the Python library PythTB, where we vary the intra-cell hopping $t_2$ and set the inter-cell hopping $t_1=1$.
 
 ```{python}
 from pythtb import *
@@ -28,7 +30,7 @@ SSH_model[1].visualize(0)
 
 ## Band structure
 
-First we calculate the SSH band structure for different values of $t_2/t_1$. We can easily observe how the band gap closes when $t_2=t_1$, this alredy indicates a phase transition.
+First, we calculate the SSH band structure for different values of $t_2/t_1$. We can easily observe how the band gap closes when $t_2=t_1$, indicating a phase transition dependent on the ratio $t_2/t_1$.
 
 ```{python}
 %%capture
@@ -49,47 +51,10 @@ for i in range(0,Nt,50):
   plt.show()
 ```
 
-## Zak's phase
-
-In order to characterize a topological phase of matter we must associate it a topological invariant. One possible topololgical invariant is Zak's phase which is defined as the Berry phase of a particle that traverses the reciprocal space $k$ from 0 to $2\pi$, that is
-$$
-\phi=
-$$
-
-```{python}
-def Zak_Ph(model):
-  Nk=100
-  ptsK=[[0.],[1.]] # 1ZB
-  kpts, kdist, knode = model.k_path(ptsK,Nk,report=False)
-  ϵk,evec=model.solve_all(kpts,eig_vectors=True)
-  Zak=[]
-  for band in range(len(evec)):
-    eveb=evec[band]
-    Prod=prod([ np.vdot(eveb[i-1],eveb[i]) for i in range(1,Nk)])
-    Zak.append(-imag( np.log(Prod) ))
-  return Zak
-```
-```{python}
-%%capture
-PhZak=list(map(Zak_Ph,SSH_model))
-PhZak=np.array(PhZak)
-```
-```{python}
-fig, (ax1,ax2) = plt.subplots(2,figsize=(8, 8))
-ax1.plot(T2,PhZak.T[0])
-ax1.set_xlabel('$t_2/t_1$')
-ax1.set_ylabel('Fase de Zak \n (banda valencia)')
-ax1.grid(True)
-ax2.plot(T2,PhZak.T[1])
-ax2.set_xlabel('$t_2/t_1$')
-ax2.set_ylabel('Fase de Zak \n (banda conducción)')
-ax2.grid(True)
-```
-
-
-
 ## Finite SSH chain
-Ahora estudiamos los estados de borde de una cadena SSH finita.
+
+In order to study this fase transition we now consider a finite SSH chain. 
+
 ```{python}
 NL=50 # Longitud de cadena
 SSH_Cortado=[]
@@ -98,18 +63,20 @@ for i in range(Nt):
 SSH_Cortado[1].visualize(0)
 ```
 
-En la siguiente celda calculamos todos los eigenestados de la cadena.
+In the next cell, we calculate all the eigenstates of the chain. To study the gap closure, we concentrate our attention on the state whose energy is closest to zero.
+
 ```{python}
 evals,evecs,ed=[],[],[]
 for i in range(Nt):
   Ek,evec = SSH_Cortado[i].solve_all(eig_vectors=True)
   evals.append(Ek)
   evecs.append(evec)
-  ed.append(SSH_Cortado[i].get_num_orbitals()//2) # edo de borde
+  ed.append(SSH_Cortado[i].get_num_orbitals()//2)
 evals=np.array(evals)
 ```
 
-Visualizamos la función de onda de los estados con energía más cercana al cero. Podemos ver que para $|t_2/t_1|<1$ existen estados de borde.
+We now visualize the evolution of the state with energy closest to zero when we vary the ratio $t_2/t_1$. We can observe that for $|t_2/t_1|<1$ the state is localized near the edges of the chain and for $|t_2/t_1|\geq1$ this state is now unlocalized. In other words, for $|t_2/t_1|<1$ we observe an edge state and for $|t_2/t_1|\geq1$ it becomes a bulk state.
+
 ```{python}
 for i in range(0,Nt,50):
   (fig,ax)=SSH_Cortado[i].visualize(0,eig_dr=evecs[i][ed[i],:],draw_hoppings=True)
@@ -118,7 +85,33 @@ for i in range(0,Nt,50):
 ```
 
 ## IPR
-Para tener un mejor entendimiento de la evolución de los eigenestados de la cadena, graficamos la evolución de los niveles de energía como función de $t_2/t_1$. Deseamos caracterizar que tan localizados estan los eigenestados, para ello calculamos el IPR de todos los estados y asignamos un color a tal grafica. 
+
+We now aim to understand the evolution of all the eigenstates of the chain. To achieve this, we use the Inverse Ratio Participation (IPR) which is defined as
+$$
+\begin{equation}
+\text{IPR}=\sum_{n=1}^{N} |\psi_n|^4 / \sum_{n=1}^{N} |\psi_n|^2 \label{eq : IPR}
+\end{equation}
+$$
+
+where $\psi_n$ is the amplitude of the wavefunction in the $n$-th site of the chain, which has $N$ sites. Notice that if we asume $\psi_n$ is normalized, the term in the denominator is equal to 1. 
+
+The IPR is a simple way to quantify how many states a particle is distributed over a system. To see this, suppose that the particle is equally distributed over $M$ sites, i.e., $|\psi_n|^2=\frac{1}{M}$ for $n=1,...,M$ and zero otherwise. In that case, 
+$$
+\begin{equation}
+\text{IPR}=\sum_{n=1}^{N} |\psi_n|^4 = \sum_{n=1}^{M} \frac{1}{M^2} = \frac{1}{M}. \label{eq : IPR-example}
+\end{equation}
+$$
+
+If we asume that the particle is localized in one state, we see that $\text{IPR}=1$. In contrast, if we asume that the particle is distributed across every state in the system, then $\text{IPR}=1/N$, and in the thermodynamic limit, the IPR would tend to zero. A simple exercise of extremation shows that, assuming $\psi_n$ is normalized, then
+$$
+\begin{equation}
+\frac{1}{N}\leq \text{IPR}\leq 1
+\end{equation}
+$$
+
+which makes it a good way to measure the localization of a certain state.
+
+In the next cell we calculate the IPR of all the eigenstates of our finite system.
 
 ```{python}
 IPR=[]
@@ -129,13 +122,16 @@ for i in range(Nt):
     C4=sum(np.absolute(edo)**4)
     IPR[i].append(C4/C2)
 ```
+
+We now graph the evolution of the energy levels as a function of $t_2/t_1$ and we color the graph using the IPR.
+
 ```{python}
-def colorFader(c1,c2,mix=0): # Interpolación lineal del color c1 (en mix=0) al color c2 (mix=1)
+def colorFader(c1,c2,mix=0): 
     c1=np.array(mpl.colors.to_rgb(c1))
     c2=np.array(mpl.colors.to_rgb(c2))
     return mpl.colors.to_hex((1-mix)*c1 + mix*c2)
 
-def Fader(Lc,mix): # Interpolación lineal de colores en lista Lc
+def Fader(Lc,mix): # Linear interpolation of colors in Lc
     i=int(np.floor(mix*(len(Lc)-1)))
     if i==len(Lc)-1:
       c1,c2=Lc[-2],Lc[-1]
@@ -146,7 +142,7 @@ def Fader(Lc,mix): # Interpolación lineal de colores en lista Lc
 
 Lc=['red','Blue']
 
-fig, ax = plt.subplots(figsize=(10, 8))
+fig, ax = plt.subplots(figsize=(7, 6))
 for i in range(2*NL): # Número de eigenestados
   colors = []
   for j in range(Nt):
@@ -155,7 +151,7 @@ for i in range(2*NL): # Número de eigenestados
   #ax.set_facecolor("black")
   ax.set_xlabel('t2/t1')
   ax.set_ylabel('E')
-fig, ax = plt.subplots(figsize=(10, 1))
+fig, ax = plt.subplots(figsize=(7, 1))
 n=500
 for x in linspace(0,1,n):
     ax.axvline(x, color=Fader(Lc,x), linewidth=4)
@@ -164,11 +160,17 @@ for x in linspace(0,1,n):
 plt.show()
 ```
 
-En la figura vemos la presencia de estados con un IPR cercano a uno y energía cercana a cero para $t_2/t_1<1$, lo que indica la presencia de estados localizados. Para el resto de estados se tiene un IPR cercano a cero, lo que indica que los estados con energía distinta de cero no son estados localizados, sino que pertencen a estados de bulto.
+We observe the presence of eigenstates with an IPR close to one in the region close to zero when $|t_2/t_1|<1$, indicating the presence of localized eigenstates. For the remaining eigenstates, we observe an IPR very close to zero, suggesting that these are bulk states that we can associate with the Bloch states found when we calculated the band structures. While strictly speaking, in this system, there is no band structure as we have not imposed periodic boundary conditions, considering a long enough chain allows us to approximate the eigenstates of the bulk with the Bloch eigenfunctions of the band structure.
 
-Esto no demuestra que estos estados sean de borde, tan solo demuestran que son estados localizados. Para comprobar que sean estados de borde usamos la entropía de entrelazamiento.
+Notice that in the previous example of Eq. $\ref{eq: IPR-example}$, we made no clear specification of the position of the sites in the system to which the particle was distributed. This means that the IPR cannot tell us if the localized eigenstates are edge states. To address this limitation, we turn to the entanglement entropy.
 
 ## Entanglement entropy
+
+Consider two systems $S_1$ and $S_2$ described by states $\varphi_1$ and $\varphi_2$ with their respective Hilbert space $\mathcal{H}_1$ and $\mathcal{H}_2$. Then, the compound system $S_1+S_2$ is accurately described by the tensor-product $\mathcal{H}_1\otimes\mathcal{H}_2$ whose basis states are of the form $\varphi_1\otimes\varphi_2$. A state $\psi_0$ is called pure if it can be written as $\psi_0=\varphi_1\otimes\varphi_2$ for some $\varphi_{1/2}\in\mathcal{H}_{1/2}$ and in any other case we call $\psi_0$ an entangled state. For example $\psi_0=\varphi_1\otimes\varphi_2+\psi_1\otimes\psi_2$ is in general an entangled state.
+
+Consider an 
+
+The entanglement entropy (or entropy of entanglement) is a measure 
 
 Primero calculamos los eigenvalores de la matriz de correlaciones como indica el articulo de Ryu y Hatsugai (@Ryu_2006). Observamos como existen dos eigenvalores del hamiltoniano $C$ cercanos a $1/2$, lo que indica la presencia de estados de borde. Vemos como estos estados desaparecen para $t_2/t_1>1$.
 
@@ -184,7 +186,7 @@ def C_Spectre(model):
 ζ=np.array(list(map(C_Spectre,SSH_Cortado)))
 ```
 ```{python}
-fig, ax = plt.subplots(figsize=(10, 8))
+fig, ax = plt.subplots(figsize=(7, 6))
 for L in ζ.T:
   ax.scatter(T2,L,s=1,c='black')
   ax.set_ylim(-0.1,1.1)
@@ -217,7 +219,7 @@ def EEntropy(model):
 See=list(map(EEntropy,SSH_Cortado))
 ```
 ```{python}
-fig, ax = plt.subplots(figsize=(9, 7))
+fig, ax = plt.subplots(figsize=(7, 6))
 ax.plot(T2,See,c='black')
 ax.set_xlabel('$t_2/t_1$')
 ax.axhline(2*np.log(2),c='red')
