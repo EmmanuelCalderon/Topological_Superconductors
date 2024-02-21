@@ -28,9 +28,8 @@ for t2 in T2:
 SSH_model[1].visualize(0)
 ```
 
-## Band structure
 
-First, we calculate the SSH band structure for different values of $t_2/t_1$. We can easily observe how the band gap closes when $t_2=t_1$, indicating a phase transition dependent on the ratio $t_2/t_1$.
+Now we calculate the SSH band structure for different values of $t_2/t_1$ over the first Brillouin zone. 
 
 ```{python}
 %%capture
@@ -50,6 +49,10 @@ for i in range(0,Nt,50):
   plt.grid(True)
   plt.show()
 ```
+
+We can easily observe how the band gap closes when $t_2=t_1$, indicating a phase transition dependent on the ratio $t_2/t_1$. 
+
+
 
 ## Finite SSH chain
 
@@ -123,7 +126,7 @@ for i in range(Nt):
     IPR[i].append(C4/C2)
 ```
 
-We now graph the evolution of the energy levels as a function of $t_2/t_1$ and we color the graph using the IPR.
+We now graph the evolution of the energy levels as a function of $t_2/t_1$ and color them using the IPR.
 
 ```{python}
 def colorFader(c1,c2,mix=0): 
@@ -160,24 +163,55 @@ for x in linspace(0,1,n):
 plt.show()
 ```
 
-We observe the presence of eigenstates with an IPR close to one in the region close to zero when $|t_2/t_1|<1$, indicating the presence of localized eigenstates. For the remaining eigenstates, we observe an IPR very close to zero, suggesting that these are bulk states that we can associate with the Bloch states found when we calculated the band structures. While strictly speaking, in this system, there is no band structure as we have not imposed periodic boundary conditions, considering a long enough chain allows us to approximate the eigenstates of the bulk with the Bloch eigenfunctions of the band structure.
+We observe eigenstates with an IPR close to one and energy close to zero when $|t_2/t_1|<1$, indicating localized eigenstates with (almost) zero energy. For the remaining eigenstates, we observe an IPR very close to zero, which implies bulk states that we can associate with the Bloch states of the band structures calculated previously. While strictly speaking, in this system, there is no band structure as we have not imposed periodic boundary conditions, considering a long enough chain allows us to approximate the eigenstates of the bulk with the Bloch eigenfunctions of the band structure.
 
 Notice that in the previous example of Eq. $\ref{eq: IPR-example}$, we made no clear specification of the position of the sites in the system to which the particle was distributed. This means that the IPR cannot tell us if the localized eigenstates are edge states. To address this limitation, we turn to the entanglement entropy.
 
 ## Entanglement entropy
 
-Consider two systems $S_1$ and $S_2$ described by states $\varphi_1$ and $\varphi_2$ with their respective Hilbert space $\mathcal{H}_1$ and $\mathcal{H}_2$. Then, the compound system $S_1+S_2$ is accurately described by the tensor-product $\mathcal{H}_1\otimes\mathcal{H}_2$ whose basis states are of the form $\varphi_1\otimes\varphi_2$. A state $\psi_0$ is called pure if it can be written as $\psi_0=\varphi_1\otimes\varphi_2$ for some $\varphi_{1/2}\in\mathcal{H}_{1/2}$ and in any other case we call $\psi_0$ an entangled state. For example $\psi_0=\varphi_1\otimes\varphi_2+\psi_1\otimes\psi_2$ is in general an entangled state.
+Consider two systems $A$ and $B$ described by states $|\phi^A\rangle$ and $|\phi^B\rangle$ with their respective Hilbert space $\mathcal{H}_A$ and $\mathcal{H}_B$. Then, the compound system $A+B$ is accurately described by the tensor-product $\mathcal{H}_A\otimes\mathcal{H}_B$ whose basis states are of the form $|\phi^A\rangle\otimes|\phi^B\rangle$. A state $|\psi\rangle$ of the compound system is called pure if it can be written as $|\psi\rangle=|\phi^A\rangle\otimes|\phi^B\rangle$ for some $\varphi_{A/B}\in\mathcal{H}_{A/B}$. In any other case we call $|\psi\rangle$ an entangled state. For example $|\psi\rangle=|\phi^A_1\rangle\otimes|\phi^B_1\rangle+|\phi^A_2\rangle\otimes|\phi^B_2\rangle$ is in general an entangled state.
 
-Consider an 
+Consider an entangled state $|\psi^{AB}\rangle$, we can then expand it as
+$$
+\begin{equation}
+|\psi^{AB}\rangle=\sum_{j=1}^d c_j |\phi_j^{A}\rangle\otimes |\phi_j^{B}\rangle. \label{eq : AB}
+\end{equation}
+$$
 
-The entanglement entropy (or entropy of entanglement) is a measure 
+Equation $\ref{eq : AB}$ is called the $\textit{Schmidt decomposition}$ of $|\psi^{AB}\rangle$ where $d$ is, at most, the dimension of the smaller subsystem. If we now wish to study only one of the subsystems, we can no longer describe it using a wave function because $|\psi^{AB}\rangle$ is not pure. Instead we turn our attention to the density matrix $\rho_{AB}=|\psi^{AB}\rangle\langle\psi^{AB}|$ and calculate its reduced state on A and B by taking the $\textit{parcial trace}$ over the subsystem as
+$$
+\rho_A=\text{Tr}_A(\rho_{AB})\equiv\sum_{j=1}^d |c_j|^2 |\phi_j^{A}\rangle\langle\phi_j^{A}|, 
+$$
+$$
+\rho_B=\text{Tr}_B(\rho_{AB})\equiv\sum_{j=1}^d |c_j|^2 |\phi_j^{B}\rangle\langle\phi_j^{B}|.
+$$
 
-Primero calculamos los eigenvalores de la matriz de correlaciones como indica el articulo de Ryu y Hatsugai (@Ryu_2006). Observamos como existen dos eigenvalores del hamiltoniano $C$ cercanos a $1/2$, lo que indica la presencia de estados de borde. Vemos como estos estados desaparecen para $t_2/t_1>1$.
+The physical reason why both $\rho_A$ and $\rho_B$ use the same probability distribution $p_j=|c_j|^2$ stems from the fact that when we measure a particle in an entangled state, we colapse it to a state $|\phi^{A}\rangle\otimes |\phi^{B}\rangle$ with a probability $|c_j|^2$. This probability sets the state of A and B at the same time, and since this occurs when we measure any observable associated with subsystem A or B, it means that the probability of measuring such a state is the same when the state is entangled. As a corollary, since both $\rho_A$ and $\rho_B$ have the same probabilities, they also have the same Von Neumann entropy. This defines the entanglement entropy as
+$$
+S(\rho_B)=S(\rho_A)=-\text{Tr}\rho_A\ln\rho_A=-\sum_{i} p_i \ln p_i.
+$$
+
+In their paper (@Ryu_2006) S.Ryu and Y.Hatsugai proposed that the entanglement entropy could be used to characterize edge states and, as a consequence, topological phases. They also propose a novel way to calculate it, by means of a $C$ Hamiltonian which, for a bipartite system with chiral symmetry is defined as the restriction of the density matrix of the Fermi sea to a subsystem A. 
+
+In detail, we first calculate the eigenstates $\psi_\ell$ with energy $\epsilon_\ell<0$, we then calculate the density matrix of the Fermi sea as,
+$$
+P = \sum_{\epsilon_\ell<0} \psi_\ell \psi_\ell^{\dagger},
+$$
+
+and finaly we calculate the restriction of the P matrix to a subsystem. Notice that we have the liberty of defining the subsystems when we "cut" the density matrix:
+$$
+P=\begin{pmatrix} 
+C & \ast \\
+\ast & \ast 
+\end{pmatrix}
+$$
+
+In the next cell we calculate the eigenvalues of the $C$ Hamiltonian for the SSH chain, in this case we define the subsystems as both halfs of the chain when we cut it right through the middle.
 
 ```{python}
 def C_Spectre(model):
   Ek,evec=model.solve_all(eig_vectors=True)
-  nF=model.get_num_orbitals()//2 # Sist de 2 niveles
+  nF=model.get_num_orbitals()//2 # 2 level system
   P=np.sum([evec[l][:,None]*np.conjugate(evec[l]) for l in range(nF)],0)
   C=P[0:nF,0:nF]
   ζ=list(sort(np.linalg.eigvals(C)))
@@ -191,16 +225,23 @@ for L in ζ.T:
   ax.scatter(T2,L,s=1,c='black')
   ax.set_ylim(-0.1,1.1)
   ax.set_xlabel('$t_2/t_1$')
-  ax.set_ylabel('Espectro de $C$')
+  ax.set_ylabel('Spectre of $C$')
   ax.grid(True)
 ```
 
-Calculamos la entropía de entrelazamiento usando los eigenvalores del hamiltoniano C por medio de la formula.
+Now, from its definition, $P$ has only two eigenvalues, namely 0 and 1. The eigenvectors with eigenvalue 1 span the Fermi sea and hence offer 
+
+Since $C$ has, approximately, the same eigenvectors as $P$ 
+
+
+If we then compute the eigenvalues of $C$, we can calculate the entanglement entropy as
 $$
-S_A=-\sum_{\ell}(\zeta_\ell \log(\zeta_\ell) + (1-\zeta_\ell)\log(1-\zeta_\ell)) 
+S_A=-\sum_{\ell} \zeta_\ell \ln\zeta_\ell + (1-\zeta_\ell)\ln(1-\zeta_\ell),
 $$
 
-Claro que aquí nos aprovechamos de la simetría quiral del sistema, por lo que podemos calcular de forma equivalente
+where $\{\zeta_\ell\}$ are the eigenvalues of $C$.
+
+In this example we take advantge of the sublattice symettry of the SSH chain to calculate $S_A$ in an equivalent form as
 $$
 S_A=-2\sum_{\zeta_\ell\geq0.5} (\zeta_\ell \log(\zeta_\ell) + (1-\zeta_\ell)\log(1-\zeta_\ell)).
 $$
@@ -208,11 +249,11 @@ $$
 ```{python}
 def EEntropy(model):
   Ek,evec=model.solve_all(eig_vectors=True)
-  nF=model.get_num_orbitals()//2 #sum([1 for ϵ in Ek if ϵ<0]) # Numero de estados en mar de Fermi
+  nF=model.get_num_orbitals()//2 # Number of states on the Fermi sea
   P=np.sum([evec[l][:,None]*np.conjugate(evec[l]) for l in range(nF)],0)
   C=P[0:nF,0:nF]
-  ζ=sort(np.linalg.eigvals(C))[nF//2:nF] # Aqui es necesario sim.quiral
-  ζ=np.array([z for z in ζ if(z!=0 and z!=1)]) # Quitamos los que no contribuyen
+  ζ=sort(np.linalg.eigvals(C))[nF//2:nF] # Here we use chiral simmetry
+  ζ=np.array([z for z in ζ if(z!=0 and z!=1)]) # We remove the eigenvalues that dont contribute
   SEE=-sum((1-ζ)*np.log(1-ζ)+ζ*np.log(ζ))
   return 2*SEE
 
@@ -223,8 +264,67 @@ fig, ax = plt.subplots(figsize=(7, 6))
 ax.plot(T2,See,c='black')
 ax.set_xlabel('$t_2/t_1$')
 ax.axhline(2*np.log(2),c='red')
-ax.set_ylabel('Entropia de entrelazamiento $S_A$')
+ax.set_ylabel('Entanglement entropy $S_A$')
 ax.grid(True)
 ```
 
-De acuerdo con Ryu y Hatsugai, la entropía de entrelazamiento en el limite termodinamico es $\log 2 \times$ el número de fronteras del sistema. En este caso vemos como la entropía de entrelazamiento baja por debajo de la cota inferior de $2\log 2$ alrededor de $t_2=0.5 t_1$ lo que indica que los estados de borde en ambos extremos de la cadena desaparecen en este limite. 
+According to Ryu and Hatsugai, the entanglement entropy in the thermodynamic limit is greater or equal to $\log 2$ times the number of edges of the system. In this case we can see that $S_A$ goes under this inferior limit $2\ln 2$  around $t_2=\pm t_1$ which means that the two edge states disapear in this limit. 
+
+## Zak's phase
+
+In order to say that this is a topological phase transition we must asociate each phase with a $\textit{topological invariant}$. A prime example of a topological invariant is the \textit{Berry phase} also called the \textit{geometric phase} which is a quantity that describes how a global phase accumulates as some state $|\psi\rangle$ is carried around a closed loop in a complex space. For example, if we consider a loop of states $\{|\psi_0\rangle, |\psi_1\rangle , \dots , |\psi_N\rangle\}$ where we set $|\psi_0\rangle=|\psi_N\rangle$. The Berry phase for this discrete loop is defined as
+$$
+\phi=-\arg( \langle\psi_0|\psi_1\rangle \langle\psi_1|\psi_2\rangle \cdots \langle\psi_{N-1}|\psi_0\rangle ).
+$$
+
+It can be easily seen that $\phi$ is a gauge invariant to the transformation $|\psi_n\rangle\rightarrow e^{i \alpha_n} |\psi_n\rangle$ because the ket $|\psi_n\rangle$ will cancel the phase $e^{i \alpha_n}$ carried by the bra $\langle \psi_n |$.  
+
+The Berry phase has a generalization for a continuous loop of states $\{ |\psi_\lambda\rangle ; \:\:\lambda\in[0,1] \}$ :
+$$
+\phi=\oint \langle u_\lambda| i\partial_\lambda u_\lambda\rangle \text{d}\lambda
+$$
+
+A proof of this expression can be found in @Vanderbilt_2018.
+
+Here we will calculate Zak's phase, which is defined as the Berry phase where $\mathcal{C}$ is the Brillouin Zone, which means
+$$
+\gamma=\int_{-\pi}^{\pi} \langle u_k^n| i \partial_k |u_k^n\rangle \text{d} k,
+$$
+
+where $u_k^n$ is the amplitude of the Bloch wavefunction with crystaline momentum $k$ associated with the $n$-th band. 
+
+```{python}
+def HamSSH(t1,t2): # We define the SSH hamiltonian in k space
+    def H(k):
+        H = np.array([[            0, t1+t2*exp(-1J*k)],
+                      [t1+t2*exp(1J*k),              0]])
+        return H
+    return H
+
+def Zak(H): # Given the hamiltonian in k space, calculates the zak phase
+    kpath = np.linspace(-pi,pi,100,endpoint=False)
+    Ek,vk = eig(H(kpath[-1]))
+    uN    = vk.T[Ek<0]
+    Ek,vk = eig(H(kpath[0]))
+    u0    = vk.T[Ek<0]
+    Prod  = np.vdot(uN,u0)
+    un1   = u0
+    for k in kpath[1:]:
+        Ek,vk = eig(H(k))
+        un   = vk.T[Ek<0]
+        Prod  = Prod*np.vdot(un1,un)
+        un1   = un
+    ϕ = -imag( log(Prod) )
+    if(ϕ<-10**(-10)): ϕ=ϕ+2*np.pi # We use the log branch [0,2*pi) with 10 digits of resolution
+    return ϕ
+
+t2_path=np.linspace(-2,2,500)
+Lzak=[Zak(HamSSH(1,t2)) for t2 in t2_path]
+
+fig, ax = plt.subplots(figsize=(7, 6))
+ax.plot(t2_path,Lzak,c='green')
+ax.set_xlabel('$t_2/t_1$')
+ax.set_ylabel('Zak phase')
+ax.grid(True)
+```
+

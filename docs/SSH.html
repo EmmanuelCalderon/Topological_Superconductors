@@ -235,10 +235,10 @@ window.Quarto = {
     <h2 id="toc-title">Table of contents</h2>
    
   <ul>
-  <li><a href="#band-structure" id="toc-band-structure" class="nav-link active" data-scroll-target="#band-structure"><span class="header-section-number">2.1</span> Band structure</a></li>
-  <li><a href="#finite-ssh-chain" id="toc-finite-ssh-chain" class="nav-link" data-scroll-target="#finite-ssh-chain"><span class="header-section-number">2.2</span> Finite SSH chain</a></li>
-  <li><a href="#ipr" id="toc-ipr" class="nav-link" data-scroll-target="#ipr"><span class="header-section-number">2.3</span> IPR</a></li>
-  <li><a href="#entanglement-entropy" id="toc-entanglement-entropy" class="nav-link" data-scroll-target="#entanglement-entropy"><span class="header-section-number">2.4</span> Entanglement entropy</a></li>
+  <li><a href="#finite-ssh-chain" id="toc-finite-ssh-chain" class="nav-link active" data-scroll-target="#finite-ssh-chain"><span class="header-section-number">2.1</span> Finite SSH chain</a></li>
+  <li><a href="#ipr" id="toc-ipr" class="nav-link" data-scroll-target="#ipr"><span class="header-section-number">2.2</span> IPR</a></li>
+  <li><a href="#entanglement-entropy" id="toc-entanglement-entropy" class="nav-link" data-scroll-target="#entanglement-entropy"><span class="header-section-number">2.3</span> Entanglement entropy</a></li>
+  <li><a href="#zaks-phase" id="toc-zaks-phase" class="nav-link" data-scroll-target="#zaks-phase"><span class="header-section-number">2.4</span> Zak’s phase</a></li>
   </ul>
 </nav>
     </div>
@@ -267,7 +267,7 @@ window.Quarto = {
 <p>This code aims to gain an understanding of topological phases of matter and their characterization through the SSH model. To achieve this, we calculate three relevant quantities: the Inverse Ratio Participation (IPR), the entanglement entropy, and Zak’s phase.</p>
 <p>The Su-Schrieffer-Heeger model was devised by Wu-Pei Su, John Robert Schrieffer, and Alan J. Heeger in 1979 to describe a polyacetylene polymer chain when doped (<span class="citation" data-cites="SSH_original">Su, Schrieffer, and Heeger (<a href="references.html#ref-SSH_original" role="doc-biblioref">1979</a>)</span>). The structural diagram of polyacetylene consists of a chain of carbon atoms with two kinds of bonds. This can be described using a tight-binding Hamiltonian of a chain of sites with alternating hoppings between neighbors.</p>
 <p>We begin by defining the SSH model using the Python library PythTB, where we vary the intra-cell hopping <span class="math inline">\(t_2\)</span> and set the inter-cell hopping <span class="math inline">\(t_1=1\)</span>.</p>
-<div id="6ff0e0e9" class="cell" data-execution_count="1">
+<div id="27394ee0" class="cell" data-execution_count="1">
 <div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> pythtb <span class="im">import</span> <span class="op">*</span></span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> pylab <span class="im">import</span> <span class="op">*</span></span>
 <span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a></span>
@@ -295,10 +295,8 @@ window.Quarto = {
 </div>
 </div>
 </div>
-<section id="band-structure" class="level2" data-number="2.1">
-<h2 data-number="2.1" class="anchored" data-anchor-id="band-structure"><span class="header-section-number">2.1</span> Band structure</h2>
-<p>First, we calculate the SSH band structure for different values of <span class="math inline">\(t_2/t_1\)</span>. We can easily observe how the band gap closes when <span class="math inline">\(t_2=t_1\)</span>, indicating a phase transition dependent on the ratio <span class="math inline">\(t_2/t_1\)</span>.</p>
-<div id="afe83d5e" class="cell" data-execution_count="2">
+<p>Now we calculate the SSH band structure for different values of <span class="math inline">\(t_2/t_1\)</span> over the first Brillouin zone.</p>
+<div id="e883dff6" class="cell" data-execution_count="2">
 <div class="sourceCode cell-code" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="op">%%</span>capture</span>
 <span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>Xm <span class="op">=</span> [<span class="op">-</span><span class="fl">0.5</span>]</span>
 <span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>Xp <span class="op">=</span> [ <span class="fl">0.5</span>]</span>
@@ -308,7 +306,7 @@ window.Quarto = {
 <span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a>  kpts, kdist, knode <span class="op">=</span> SSH_model[i].k_path(puntosK,<span class="dv">101</span>,report<span class="op">=</span><span class="va">True</span>)</span>
 <span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a>  Ek.append(SSH_model[i].solve_all(kpts,eig_vectors<span class="op">=</span><span class="va">False</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<div id="bc2503f3" class="cell" data-execution_count="3">
+<div id="dd457dcb" class="cell" data-execution_count="3">
 <div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">0</span>,Nt,<span class="dv">50</span>):</span>
 <span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>  plt.plot(kdist,Ek[i].T)</span>
 <span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>  plt.xticks(knode)</span>
@@ -386,11 +384,11 @@ window.Quarto = {
 </div>
 </div>
 </div>
-</section>
-<section id="finite-ssh-chain" class="level2" data-number="2.2">
-<h2 data-number="2.2" class="anchored" data-anchor-id="finite-ssh-chain"><span class="header-section-number">2.2</span> Finite SSH chain</h2>
+<p>We can easily observe how the band gap closes when <span class="math inline">\(t_2=t_1\)</span>, indicating a phase transition dependent on the ratio <span class="math inline">\(t_2/t_1\)</span>.</p>
+<section id="finite-ssh-chain" class="level2" data-number="2.1">
+<h2 data-number="2.1" class="anchored" data-anchor-id="finite-ssh-chain"><span class="header-section-number">2.1</span> Finite SSH chain</h2>
 <p>In order to study this fase transition we now consider a finite SSH chain.</p>
-<div id="77c65f7a" class="cell" data-execution_count="4">
+<div id="8df86415" class="cell" data-execution_count="4">
 <div class="sourceCode cell-code" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>NL<span class="op">=</span><span class="dv">50</span> <span class="co"># Longitud de cadena</span></span>
 <span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>SSH_Cortado<span class="op">=</span>[]</span>
 <span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span>(Nt):</span>
@@ -405,7 +403,7 @@ window.Quarto = {
 </div>
 </div>
 <p>In the next cell, we calculate all the eigenstates of the chain. To study the gap closure, we concentrate our attention on the state whose energy is closest to zero.</p>
-<div id="f91e158b" class="cell" data-execution_count="5">
+<div id="f71e40fa" class="cell" data-execution_count="5">
 <div class="sourceCode cell-code" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>evals,evecs,ed<span class="op">=</span>[],[],[]</span>
 <span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span>(Nt):</span>
 <span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>  Ek,evec <span class="op">=</span> SSH_Cortado[i].solve_all(eig_vectors<span class="op">=</span><span class="va">True</span>)</span>
@@ -415,7 +413,7 @@ window.Quarto = {
 <span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a>evals<span class="op">=</span>np.array(evals)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>We now visualize the evolution of the state with energy closest to zero when we vary the ratio <span class="math inline">\(t_2/t_1\)</span>. We can observe that for <span class="math inline">\(|t_2/t_1|&lt;1\)</span> the state is localized near the edges of the chain and for <span class="math inline">\(|t_2/t_1|\geq1\)</span> this state is now unlocalized. In other words, for <span class="math inline">\(|t_2/t_1|&lt;1\)</span> we observe an edge state and for <span class="math inline">\(|t_2/t_1|\geq1\)</span> it becomes a bulk state.</p>
-<div id="30fa1805" class="cell" data-execution_count="6">
+<div id="809442d3" class="cell" data-execution_count="6">
 <div class="sourceCode cell-code" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">0</span>,Nt,<span class="dv">50</span>):</span>
 <span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>  (fig,ax)<span class="op">=</span>SSH_Cortado[i].visualize(<span class="dv">0</span>,eig_dr<span class="op">=</span>evecs[i][ed[i],:],draw_hoppings<span class="op">=</span><span class="va">True</span>)</span>
 <span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>  ax.set_title(<span class="st">"$t_2$="</span><span class="op">+</span><span class="bu">str</span>(T2[i])<span class="op">+</span><span class="st">"$t_1$"</span><span class="op">+</span><span class="st">"  E="</span><span class="op">+</span><span class="bu">str</span>(evals[i][ed[i]]))</span>
@@ -492,8 +490,8 @@ window.Quarto = {
 </div>
 </div>
 </section>
-<section id="ipr" class="level2" data-number="2.3">
-<h2 data-number="2.3" class="anchored" data-anchor-id="ipr"><span class="header-section-number">2.3</span> IPR</h2>
+<section id="ipr" class="level2" data-number="2.2">
+<h2 data-number="2.2" class="anchored" data-anchor-id="ipr"><span class="header-section-number">2.2</span> IPR</h2>
 <p>We now aim to understand the evolution of all the eigenstates of the chain. To achieve this, we use the Inverse Ratio Participation (IPR) which is defined as <span class="math display">\[
 \begin{equation}
 \text{IPR}=\sum_{n=1}^{N} |\psi_n|^4 / \sum_{n=1}^{N} |\psi_n|^2 \label{eq : IPR}
@@ -512,7 +510,7 @@ window.Quarto = {
 \]</span></p>
 <p>which makes it a good way to measure the localization of a certain state.</p>
 <p>In the next cell we calculate the IPR of all the eigenstates of our finite system.</p>
-<div id="46c9377d" class="cell" data-execution_count="7">
+<div id="b2ff3c4b" class="cell" data-execution_count="7">
 <div class="sourceCode cell-code" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>IPR<span class="op">=</span>[]</span>
 <span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span>(Nt):</span>
 <span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>  IPR.append([])</span>
@@ -521,8 +519,8 @@ window.Quarto = {
 <span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a>    C4<span class="op">=</span><span class="bu">sum</span>(np.absolute(edo)<span class="op">**</span><span class="dv">4</span>)</span>
 <span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a>    IPR[i].append(C4<span class="op">/</span>C2)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<p>We now graph the evolution of the energy levels as a function of <span class="math inline">\(t_2/t_1\)</span> and we color the graph using the IPR.</p>
-<div id="97298b3d" class="cell" data-execution_count="8">
+<p>We now graph the evolution of the energy levels as a function of <span class="math inline">\(t_2/t_1\)</span> and color them using the IPR.</p>
+<div id="61e01899" class="cell" data-execution_count="8">
 <div class="sourceCode cell-code" id="cb8"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> colorFader(c1,c2,mix<span class="op">=</span><span class="dv">0</span>): </span>
 <span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>    c1<span class="op">=</span>np.array(mpl.colors.to_rgb(c1))</span>
 <span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>    c2<span class="op">=</span>np.array(mpl.colors.to_rgb(c2))</span>
@@ -570,19 +568,40 @@ window.Quarto = {
 </div>
 </div>
 </div>
-<p>We observe the presence of eigenstates with an IPR close to one in the region close to zero when <span class="math inline">\(|t_2/t_1|&lt;1\)</span>, indicating the presence of localized eigenstates. For the remaining eigenstates, we observe an IPR very close to zero, suggesting that these are bulk states that we can associate with the Bloch states found when we calculated the band structures. While strictly speaking, in this system, there is no band structure as we have not imposed periodic boundary conditions, considering a long enough chain allows us to approximate the eigenstates of the bulk with the Bloch eigenfunctions of the band structure.</p>
+<p>We observe eigenstates with an IPR close to one and energy close to zero when <span class="math inline">\(|t_2/t_1|&lt;1\)</span>, indicating localized eigenstates with (almost) zero energy. For the remaining eigenstates, we observe an IPR very close to zero, which implies bulk states that we can associate with the Bloch states of the band structures calculated previously. While strictly speaking, in this system, there is no band structure as we have not imposed periodic boundary conditions, considering a long enough chain allows us to approximate the eigenstates of the bulk with the Bloch eigenfunctions of the band structure.</p>
 <p>Notice that in the previous example of Eq. <span class="math inline">\(\ref{eq: IPR-example}\)</span>, we made no clear specification of the position of the sites in the system to which the particle was distributed. This means that the IPR cannot tell us if the localized eigenstates are edge states. To address this limitation, we turn to the entanglement entropy.</p>
 </section>
-<section id="entanglement-entropy" class="level2" data-number="2.4">
-<h2 data-number="2.4" class="anchored" data-anchor-id="entanglement-entropy"><span class="header-section-number">2.4</span> Entanglement entropy</h2>
-<p>Consider two systems <span class="math inline">\(S_1\)</span> and <span class="math inline">\(S_2\)</span> described by states <span class="math inline">\(\varphi_1\)</span> and <span class="math inline">\(\varphi_2\)</span> with their respective Hilbert space <span class="math inline">\(\mathcal{H}_1\)</span> and <span class="math inline">\(\mathcal{H}_2\)</span>. Then, the compound system <span class="math inline">\(S_1+S_2\)</span> is accurately described by the tensor-product <span class="math inline">\(\mathcal{H}_1\otimes\mathcal{H}_2\)</span> whose basis states are of the form <span class="math inline">\(\varphi_1\otimes\varphi_2\)</span>. A state <span class="math inline">\(\psi_0\)</span> is called pure if it can be written as <span class="math inline">\(\psi_0=\varphi_1\otimes\varphi_2\)</span> for some <span class="math inline">\(\varphi_{1/2}\in\mathcal{H}_{1/2}\)</span> and in any other case we call <span class="math inline">\(\psi_0\)</span> an entangled state. For example <span class="math inline">\(\psi_0=\varphi_1\otimes\varphi_2+\psi_1\otimes\psi_2\)</span> is in general an entangled state.</p>
-<p>Consider an</p>
-<p>The entanglement entropy (or entropy of entanglement) is a measure</p>
-<p>Primero calculamos los eigenvalores de la matriz de correlaciones como indica el articulo de Ryu y Hatsugai (<span class="citation" data-cites="Ryu_2006">Ryu and Hatsugai (<a href="references.html#ref-Ryu_2006" role="doc-biblioref">2006</a>)</span>). Observamos como existen dos eigenvalores del hamiltoniano <span class="math inline">\(C\)</span> cercanos a <span class="math inline">\(1/2\)</span>, lo que indica la presencia de estados de borde. Vemos como estos estados desaparecen para <span class="math inline">\(t_2/t_1&gt;1\)</span>.</p>
-<div id="4bfa9842" class="cell" data-execution_count="9">
+<section id="entanglement-entropy" class="level2" data-number="2.3">
+<h2 data-number="2.3" class="anchored" data-anchor-id="entanglement-entropy"><span class="header-section-number">2.3</span> Entanglement entropy</h2>
+<p>Consider two systems <span class="math inline">\(A\)</span> and <span class="math inline">\(B\)</span> described by states <span class="math inline">\(|\phi^A\rangle\)</span> and <span class="math inline">\(|\phi^B\rangle\)</span> with their respective Hilbert space <span class="math inline">\(\mathcal{H}_A\)</span> and <span class="math inline">\(\mathcal{H}_B\)</span>. Then, the compound system <span class="math inline">\(A+B\)</span> is accurately described by the tensor-product <span class="math inline">\(\mathcal{H}_A\otimes\mathcal{H}_B\)</span> whose basis states are of the form <span class="math inline">\(|\phi^A\rangle\otimes|\phi^B\rangle\)</span>. A state <span class="math inline">\(|\psi\rangle\)</span> of the compound system is called pure if it can be written as <span class="math inline">\(|\psi\rangle=|\phi^A\rangle\otimes|\phi^B\rangle\)</span> for some <span class="math inline">\(\varphi_{A/B}\in\mathcal{H}_{A/B}\)</span>. In any other case we call <span class="math inline">\(|\psi\rangle\)</span> an entangled state. For example <span class="math inline">\(|\psi\rangle=|\phi^A_1\rangle\otimes|\phi^B_1\rangle+|\phi^A_2\rangle\otimes|\phi^B_2\rangle\)</span> is in general an entangled state.</p>
+<p>Consider an entangled state <span class="math inline">\(|\psi^{AB}\rangle\)</span>, we can then expand it as <span class="math display">\[
+\begin{equation}
+|\psi^{AB}\rangle=\sum_{j=1}^d c_j |\phi_j^{A}\rangle\otimes |\phi_j^{B}\rangle. \label{eq : AB}
+\end{equation}
+\]</span></p>
+<p>Equation <span class="math inline">\(\ref{eq : AB}\)</span> is called the <span class="math inline">\(\textit{Schmidt decomposition}\)</span> of <span class="math inline">\(|\psi^{AB}\rangle\)</span> where <span class="math inline">\(d\)</span> is, at most, the dimension of the smaller subsystem. If we now wish to study only one of the subsystems, we can no longer describe it using a wave function because <span class="math inline">\(|\psi^{AB}\rangle\)</span> is not pure. Instead we turn our attention to the density matrix <span class="math inline">\(\rho_{AB}=|\psi^{AB}\rangle\langle\psi^{AB}|\)</span> and calculate its reduced state on A and B by taking the <span class="math inline">\(\textit{parcial trace}\)</span> over the subsystem as <span class="math display">\[
+\rho_A=\text{Tr}_A(\rho_{AB})\equiv\sum_{j=1}^d |c_j|^2 |\phi_j^{A}\rangle\langle\phi_j^{A}|,
+\]</span> <span class="math display">\[
+\rho_B=\text{Tr}_B(\rho_{AB})\equiv\sum_{j=1}^d |c_j|^2 |\phi_j^{B}\rangle\langle\phi_j^{B}|.
+\]</span></p>
+<p>The physical reason why both <span class="math inline">\(\rho_A\)</span> and <span class="math inline">\(\rho_B\)</span> use the same probability distribution <span class="math inline">\(p_j=|c_j|^2\)</span> stems from the fact that when we measure a particle in an entangled state, we colapse it to a state <span class="math inline">\(|\phi^{A}\rangle\otimes |\phi^{B}\rangle\)</span> with a probability <span class="math inline">\(|c_j|^2\)</span>. This probability sets the state of A and B at the same time, and since this occurs when we measure any observable associated with subsystem A or B, it means that the probability of measuring such a state is the same when the state is entangled. As a corollary, since both <span class="math inline">\(\rho_A\)</span> and <span class="math inline">\(\rho_B\)</span> have the same probabilities, they also have the same Von Neumann entropy. This defines the entanglement entropy as <span class="math display">\[
+S(\rho_B)=S(\rho_A)=-\text{Tr}\rho_A\ln\rho_A=-\sum_{i} p_i \ln p_i.
+\]</span></p>
+<p>In their paper (<span class="citation" data-cites="Ryu_2006">Ryu and Hatsugai (<a href="references.html#ref-Ryu_2006" role="doc-biblioref">2006</a>)</span>) S.Ryu and Y.Hatsugai proposed that the entanglement entropy could be used to characterize edge states and, as a consequence, topological phases. They also propose a novel way to calculate it, by means of a <span class="math inline">\(C\)</span> Hamiltonian which, for a bipartite system with chiral symmetry is defined as the restriction of the density matrix of the Fermi sea to a subsystem A.</p>
+<p>In detail, we first calculate the eigenstates <span class="math inline">\(\psi_\ell\)</span> with energy <span class="math inline">\(\epsilon_\ell&lt;0\)</span>, we then calculate the density matrix of the Fermi sea as, <span class="math display">\[
+P = \sum_{\epsilon_\ell&lt;0} \psi_\ell \psi_\ell^{\dagger},
+\]</span></p>
+<p>and finaly we calculate the restriction of the P matrix to a subsystem. Notice that we have the liberty of defining the subsystems when we “cut” the density matrix: <span class="math display">\[
+P=\begin{pmatrix}
+C &amp; \ast \\
+\ast &amp; \ast
+\end{pmatrix}
+\]</span></p>
+<p>In the next cell we calculate the eigenvalues of the <span class="math inline">\(C\)</span> Hamiltonian for the SSH chain, in this case we define the subsystems as both halfs of the chain when we cut it right through the middle.</p>
+<div id="18cb226c" class="cell" data-execution_count="9">
 <div class="sourceCode cell-code" id="cb9"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> C_Spectre(model):</span>
 <span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>  Ek,evec<span class="op">=</span>model.solve_all(eig_vectors<span class="op">=</span><span class="va">True</span>)</span>
-<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>  nF<span class="op">=</span>model.get_num_orbitals()<span class="op">//</span><span class="dv">2</span> <span class="co"># Sist de 2 niveles</span></span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>  nF<span class="op">=</span>model.get_num_orbitals()<span class="op">//</span><span class="dv">2</span> <span class="co"># 2 level system</span></span>
 <span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a>  P<span class="op">=</span>np.<span class="bu">sum</span>([evec[l][:,<span class="va">None</span>]<span class="op">*</span>np.conjugate(evec[l]) <span class="cf">for</span> l <span class="kw">in</span> <span class="bu">range</span>(nF)],<span class="dv">0</span>)</span>
 <span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a>  C<span class="op">=</span>P[<span class="dv">0</span>:nF,<span class="dv">0</span>:nF]</span>
 <span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a>  ζ<span class="op">=</span><span class="bu">list</span>(sort(np.linalg.eigvals(C)))</span>
@@ -590,57 +609,126 @@ window.Quarto = {
 <span id="cb9-8"><a href="#cb9-8" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb9-9"><a href="#cb9-9" aria-hidden="true" tabindex="-1"></a>ζ<span class="op">=</span>np.array(<span class="bu">list</span>(<span class="bu">map</span>(C_Spectre,SSH_Cortado)))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<div id="393ca384" class="cell" data-execution_count="10">
+<div id="42559f4e" class="cell" data-execution_count="10">
 <div class="sourceCode cell-code" id="cb10"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>fig, ax <span class="op">=</span> plt.subplots(figsize<span class="op">=</span>(<span class="dv">7</span>, <span class="dv">6</span>))</span>
 <span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> L <span class="kw">in</span> ζ.T:</span>
 <span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a>  ax.scatter(T2,L,s<span class="op">=</span><span class="dv">1</span>,c<span class="op">=</span><span class="st">'black'</span>)</span>
 <span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a>  ax.set_ylim(<span class="op">-</span><span class="fl">0.1</span>,<span class="fl">1.1</span>)</span>
 <span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a>  ax.set_xlabel(<span class="st">'$t_2/t_1$'</span>)</span>
-<span id="cb10-6"><a href="#cb10-6" aria-hidden="true" tabindex="-1"></a>  ax.set_ylabel(<span class="st">'Espectro de $C$'</span>)</span>
+<span id="cb10-6"><a href="#cb10-6" aria-hidden="true" tabindex="-1"></a>  ax.set_ylabel(<span class="st">'Spectre of $C$'</span>)</span>
 <span id="cb10-7"><a href="#cb10-7" aria-hidden="true" tabindex="-1"></a>  ax.grid(<span class="va">True</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>c:\Users\gozu0\Topological_Superconductors\.conda\Lib\site-packages\matplotlib\cbook.py:1699: ComplexWarning: Casting complex values to real discards the imaginary part
+  return math.isfinite(val)
+c:\Users\gozu0\Topological_Superconductors\.conda\Lib\site-packages\matplotlib\collections.py:194: ComplexWarning: Casting complex values to real discards the imaginary part
+  offsets = np.asanyarray(offsets, float)</code></pre>
+</div>
 <div class="cell-output cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="SSH_files/figure-html/cell-11-output-1.png" width="591" height="505" class="figure-img"></p>
+<p><img src="SSH_files/figure-html/cell-11-output-2.png" width="591" height="505" class="figure-img"></p>
 </figure>
 </div>
 </div>
 </div>
-<p>Calculamos la entropía de entrelazamiento usando los eigenvalores del hamiltoniano C por medio de la formula. <span class="math display">\[
-S_A=-\sum_{\ell}(\zeta_\ell \log(\zeta_\ell) + (1-\zeta_\ell)\log(1-\zeta_\ell))
+<p>Now, from its definition, <span class="math inline">\(P\)</span> has only two eigenvalues, namely 0 and 1. The eigenvectors with eigenvalue 1 span the Fermi sea and hence offer</p>
+<p>Since <span class="math inline">\(C\)</span> has, approximately, the same eigenvectors as <span class="math inline">\(P\)</span></p>
+<p>If we then compute the eigenvalues of <span class="math inline">\(C\)</span>, we can calculate the entanglement entropy as <span class="math display">\[
+S_A=-\sum_{\ell} \zeta_\ell \ln\zeta_\ell + (1-\zeta_\ell)\ln(1-\zeta_\ell),
 \]</span></p>
-<p>Claro que aquí nos aprovechamos de la simetría quiral del sistema, por lo que podemos calcular de forma equivalente <span class="math display">\[
+<p>where <span class="math inline">\(\{\zeta_\ell\}\)</span> are the eigenvalues of <span class="math inline">\(C\)</span>.</p>
+<p>In this example we take advantge of the sublattice symettry of the SSH chain to calculate <span class="math inline">\(S_A\)</span> in an equivalent form as <span class="math display">\[
 S_A=-2\sum_{\zeta_\ell\geq0.5} (\zeta_\ell \log(\zeta_\ell) + (1-\zeta_\ell)\log(1-\zeta_\ell)).
 \]</span></p>
-<div id="953c6c5f" class="cell" data-execution_count="11">
-<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> EEntropy(model):</span>
-<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>  Ek,evec<span class="op">=</span>model.solve_all(eig_vectors<span class="op">=</span><span class="va">True</span>)</span>
-<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a>  nF<span class="op">=</span>model.get_num_orbitals()<span class="op">//</span><span class="dv">2</span> <span class="co">#sum([1 for ϵ in Ek if ϵ&lt;0]) # Numero de estados en mar de Fermi</span></span>
-<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a>  P<span class="op">=</span>np.<span class="bu">sum</span>([evec[l][:,<span class="va">None</span>]<span class="op">*</span>np.conjugate(evec[l]) <span class="cf">for</span> l <span class="kw">in</span> <span class="bu">range</span>(nF)],<span class="dv">0</span>)</span>
-<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a>  C<span class="op">=</span>P[<span class="dv">0</span>:nF,<span class="dv">0</span>:nF]</span>
-<span id="cb11-6"><a href="#cb11-6" aria-hidden="true" tabindex="-1"></a>  ζ<span class="op">=</span>sort(np.linalg.eigvals(C))[nF<span class="op">//</span><span class="dv">2</span>:nF] <span class="co"># Aqui es necesario sim.quiral</span></span>
-<span id="cb11-7"><a href="#cb11-7" aria-hidden="true" tabindex="-1"></a>  ζ<span class="op">=</span>np.array([z <span class="cf">for</span> z <span class="kw">in</span> ζ <span class="cf">if</span>(z<span class="op">!=</span><span class="dv">0</span> <span class="kw">and</span> z<span class="op">!=</span><span class="dv">1</span>)]) <span class="co"># Quitamos los que no contribuyen</span></span>
-<span id="cb11-8"><a href="#cb11-8" aria-hidden="true" tabindex="-1"></a>  SEE<span class="op">=-</span><span class="bu">sum</span>((<span class="dv">1</span><span class="op">-</span>ζ)<span class="op">*</span>np.log(<span class="dv">1</span><span class="op">-</span>ζ)<span class="op">+</span>ζ<span class="op">*</span>np.log(ζ))</span>
-<span id="cb11-9"><a href="#cb11-9" aria-hidden="true" tabindex="-1"></a>  <span class="cf">return</span> <span class="dv">2</span><span class="op">*</span>SEE</span>
-<span id="cb11-10"><a href="#cb11-10" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb11-11"><a href="#cb11-11" aria-hidden="true" tabindex="-1"></a>See<span class="op">=</span><span class="bu">list</span>(<span class="bu">map</span>(EEntropy,SSH_Cortado))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div id="9a01caab" class="cell" data-execution_count="11">
+<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> EEntropy(model):</span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>  Ek,evec<span class="op">=</span>model.solve_all(eig_vectors<span class="op">=</span><span class="va">True</span>)</span>
+<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a>  nF<span class="op">=</span>model.get_num_orbitals()<span class="op">//</span><span class="dv">2</span> <span class="co"># Number of states on the Fermi sea</span></span>
+<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a>  P<span class="op">=</span>np.<span class="bu">sum</span>([evec[l][:,<span class="va">None</span>]<span class="op">*</span>np.conjugate(evec[l]) <span class="cf">for</span> l <span class="kw">in</span> <span class="bu">range</span>(nF)],<span class="dv">0</span>)</span>
+<span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a>  C<span class="op">=</span>P[<span class="dv">0</span>:nF,<span class="dv">0</span>:nF]</span>
+<span id="cb12-6"><a href="#cb12-6" aria-hidden="true" tabindex="-1"></a>  ζ<span class="op">=</span>sort(np.linalg.eigvals(C))[nF<span class="op">//</span><span class="dv">2</span>:nF] <span class="co"># Here we use chiral simmetry</span></span>
+<span id="cb12-7"><a href="#cb12-7" aria-hidden="true" tabindex="-1"></a>  ζ<span class="op">=</span>np.array([z <span class="cf">for</span> z <span class="kw">in</span> ζ <span class="cf">if</span>(z<span class="op">!=</span><span class="dv">0</span> <span class="kw">and</span> z<span class="op">!=</span><span class="dv">1</span>)]) <span class="co"># We remove the eigenvalues that dont contribute</span></span>
+<span id="cb12-8"><a href="#cb12-8" aria-hidden="true" tabindex="-1"></a>  SEE<span class="op">=-</span><span class="bu">sum</span>((<span class="dv">1</span><span class="op">-</span>ζ)<span class="op">*</span>np.log(<span class="dv">1</span><span class="op">-</span>ζ)<span class="op">+</span>ζ<span class="op">*</span>np.log(ζ))</span>
+<span id="cb12-9"><a href="#cb12-9" aria-hidden="true" tabindex="-1"></a>  <span class="cf">return</span> <span class="dv">2</span><span class="op">*</span>SEE</span>
+<span id="cb12-10"><a href="#cb12-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-11"><a href="#cb12-11" aria-hidden="true" tabindex="-1"></a>See<span class="op">=</span><span class="bu">list</span>(<span class="bu">map</span>(EEntropy,SSH_Cortado))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<div id="3bac8b33" class="cell" data-execution_count="12">
-<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>fig, ax <span class="op">=</span> plt.subplots(figsize<span class="op">=</span>(<span class="dv">7</span>, <span class="dv">6</span>))</span>
-<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>ax.plot(T2,See,c<span class="op">=</span><span class="st">'black'</span>)</span>
-<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a>ax.set_xlabel(<span class="st">'$t_2/t_1$'</span>)</span>
-<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a>ax.axhline(<span class="dv">2</span><span class="op">*</span>np.log(<span class="dv">2</span>),c<span class="op">=</span><span class="st">'red'</span>)</span>
-<span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a>ax.set_ylabel(<span class="st">'Entropia de entrelazamiento $S_A$'</span>)</span>
-<span id="cb12-6"><a href="#cb12-6" aria-hidden="true" tabindex="-1"></a>ax.grid(<span class="va">True</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div id="715fc3ac" class="cell" data-execution_count="12">
+<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a>fig, ax <span class="op">=</span> plt.subplots(figsize<span class="op">=</span>(<span class="dv">7</span>, <span class="dv">6</span>))</span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a>ax.plot(T2,See,c<span class="op">=</span><span class="st">'black'</span>)</span>
+<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a>ax.set_xlabel(<span class="st">'$t_2/t_1$'</span>)</span>
+<span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a>ax.axhline(<span class="dv">2</span><span class="op">*</span>np.log(<span class="dv">2</span>),c<span class="op">=</span><span class="st">'red'</span>)</span>
+<span id="cb13-5"><a href="#cb13-5" aria-hidden="true" tabindex="-1"></a>ax.set_ylabel(<span class="st">'Entanglement entropy $S_A$'</span>)</span>
+<span id="cb13-6"><a href="#cb13-6" aria-hidden="true" tabindex="-1"></a>ax.grid(<span class="va">True</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>c:\Users\gozu0\Topological_Superconductors\.conda\Lib\site-packages\matplotlib\cbook.py:1345: ComplexWarning: Casting complex values to real discards the imaginary part
+  return np.asarray(x, float)</code></pre>
+</div>
 <div class="cell-output cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="SSH_files/figure-html/cell-13-output-1.png" width="591" height="505" class="figure-img"></p>
+<p><img src="SSH_files/figure-html/cell-13-output-2.png" width="591" height="505" class="figure-img"></p>
 </figure>
 </div>
 </div>
 </div>
-<p>De acuerdo con Ryu y Hatsugai, la entropía de entrelazamiento en el limite termodinamico es <span class="math inline">\(\log 2 \times\)</span> el número de fronteras del sistema. En este caso vemos como la entropía de entrelazamiento baja por debajo de la cota inferior de <span class="math inline">\(2\log 2\)</span> alrededor de <span class="math inline">\(t_2=0.5 t_1\)</span> lo que indica que los estados de borde en ambos extremos de la cadena desaparecen en este limite.</p>
+<p>According to Ryu and Hatsugai, the entanglement entropy in the thermodynamic limit is greater or equal to <span class="math inline">\(\log 2\)</span> times the number of edges of the system. In this case we can see that <span class="math inline">\(S_A\)</span> goes under this inferior limit <span class="math inline">\(2\ln 2\)</span> around <span class="math inline">\(t_2=\pm t_1\)</span> which means that the two edge states disapear in this limit.</p>
+</section>
+<section id="zaks-phase" class="level2" data-number="2.4">
+<h2 data-number="2.4" class="anchored" data-anchor-id="zaks-phase"><span class="header-section-number">2.4</span> Zak’s phase</h2>
+<p>In order to say that this is a topological phase transition we must asociate each phase with a <span class="math inline">\(\textit{topological invariant}\)</span>. A prime example of a topological invariant is the also called the which is a quantity that describes how a global phase accumulates as some state <span class="math inline">\(|\psi\rangle\)</span> is carried around a closed loop in a complex space. For example, if we consider a loop of states <span class="math inline">\(\{|\psi_0\rangle, |\psi_1\rangle , \dots , |\psi_N\rangle\}\)</span> where we set <span class="math inline">\(|\psi_0\rangle=|\psi_N\rangle\)</span>. The Berry phase for this discrete loop is defined as <span class="math display">\[
+\phi=-\arg( \langle\psi_0|\psi_1\rangle \langle\psi_1|\psi_2\rangle \cdots \langle\psi_{N-1}|\psi_0\rangle ).
+\]</span></p>
+<p>It can be easily seen that <span class="math inline">\(\phi\)</span> is a gauge invariant to the transformation <span class="math inline">\(|\psi_n\rangle\rightarrow e^{i \alpha_n} |\psi_n\rangle\)</span> because the ket <span class="math inline">\(|\psi_n\rangle\)</span> will cancel the phase <span class="math inline">\(e^{i \alpha_n}\)</span> carried by the bra <span class="math inline">\(\langle \psi_n |\)</span>.</p>
+<p>The Berry phase has a generalization for a continuous loop of states <span class="math inline">\(\{ |\psi_\lambda\rangle ; \:\:\lambda\in[0,1] \}\)</span> : <span class="math display">\[
+\phi=\oint \langle u_\lambda| i\partial_\lambda u_\lambda\rangle \text{d}\lambda
+\]</span></p>
+<p>A proof of this expression can be found in <span class="citation" data-cites="Vanderbilt_2018">Vanderbilt (<a href="references.html#ref-Vanderbilt_2018" role="doc-biblioref">2018</a>)</span>.</p>
+<p>Here we will calculate Zak’s phase, which is defined as the Berry phase where <span class="math inline">\(\mathcal{C}\)</span> is the Brillouin Zone, which means <span class="math display">\[
+\gamma=\int_{-\pi}^{\pi} \langle u_k^n| i \partial_k |u_k^n\rangle \text{d} k,
+\]</span></p>
+<p>where <span class="math inline">\(u_k^n\)</span> is the amplitude of the Bloch wavefunction with crystaline momentum <span class="math inline">\(k\)</span> associated with the <span class="math inline">\(n\)</span>-th band.</p>
+<div id="968ee477" class="cell" data-execution_count="13">
+<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> HamSSH(t1,t2): <span class="co"># We define the SSH hamiltonian in k space</span></span>
+<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> H(k):</span>
+<span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a>        H <span class="op">=</span> np.array([[            <span class="dv">0</span>, t1<span class="op">+</span>t2<span class="op">*</span>exp(<span class="op">-</span><span class="ot">1J</span><span class="op">*</span>k)],</span>
+<span id="cb15-4"><a href="#cb15-4" aria-hidden="true" tabindex="-1"></a>                      [t1<span class="op">+</span>t2<span class="op">*</span>exp(<span class="ot">1J</span><span class="op">*</span>k),              <span class="dv">0</span>]])</span>
+<span id="cb15-5"><a href="#cb15-5" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> H</span>
+<span id="cb15-6"><a href="#cb15-6" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> H</span>
+<span id="cb15-7"><a href="#cb15-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-8"><a href="#cb15-8" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> Zak(H): <span class="co"># Given the hamiltonian in k space, calculates the zak phase</span></span>
+<span id="cb15-9"><a href="#cb15-9" aria-hidden="true" tabindex="-1"></a>    kpath <span class="op">=</span> np.linspace(<span class="op">-</span>pi,pi,<span class="dv">100</span>,endpoint<span class="op">=</span><span class="va">False</span>)</span>
+<span id="cb15-10"><a href="#cb15-10" aria-hidden="true" tabindex="-1"></a>    Ek,vk <span class="op">=</span> eig(H(kpath[<span class="op">-</span><span class="dv">1</span>]))</span>
+<span id="cb15-11"><a href="#cb15-11" aria-hidden="true" tabindex="-1"></a>    uN    <span class="op">=</span> vk.T[Ek<span class="op">&lt;</span><span class="dv">0</span>]</span>
+<span id="cb15-12"><a href="#cb15-12" aria-hidden="true" tabindex="-1"></a>    Ek,vk <span class="op">=</span> eig(H(kpath[<span class="dv">0</span>]))</span>
+<span id="cb15-13"><a href="#cb15-13" aria-hidden="true" tabindex="-1"></a>    u0    <span class="op">=</span> vk.T[Ek<span class="op">&lt;</span><span class="dv">0</span>]</span>
+<span id="cb15-14"><a href="#cb15-14" aria-hidden="true" tabindex="-1"></a>    Prod  <span class="op">=</span> np.vdot(uN,u0)</span>
+<span id="cb15-15"><a href="#cb15-15" aria-hidden="true" tabindex="-1"></a>    un1   <span class="op">=</span> u0</span>
+<span id="cb15-16"><a href="#cb15-16" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> k <span class="kw">in</span> kpath[<span class="dv">1</span>:]:</span>
+<span id="cb15-17"><a href="#cb15-17" aria-hidden="true" tabindex="-1"></a>        Ek,vk <span class="op">=</span> eig(H(k))</span>
+<span id="cb15-18"><a href="#cb15-18" aria-hidden="true" tabindex="-1"></a>        un   <span class="op">=</span> vk.T[Ek<span class="op">&lt;</span><span class="dv">0</span>]</span>
+<span id="cb15-19"><a href="#cb15-19" aria-hidden="true" tabindex="-1"></a>        Prod  <span class="op">=</span> Prod<span class="op">*</span>np.vdot(un1,un)</span>
+<span id="cb15-20"><a href="#cb15-20" aria-hidden="true" tabindex="-1"></a>        un1   <span class="op">=</span> un</span>
+<span id="cb15-21"><a href="#cb15-21" aria-hidden="true" tabindex="-1"></a>    ϕ <span class="op">=</span> <span class="op">-</span>imag( log(Prod) )</span>
+<span id="cb15-22"><a href="#cb15-22" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span>(ϕ<span class="op">&lt;-</span><span class="dv">10</span><span class="op">**</span>(<span class="op">-</span><span class="dv">10</span>)): ϕ<span class="op">=</span>ϕ<span class="op">+</span><span class="dv">2</span><span class="op">*</span>np.pi <span class="co"># We use the log branch [0,2*pi) with 10 digits of resolution</span></span>
+<span id="cb15-23"><a href="#cb15-23" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> ϕ</span>
+<span id="cb15-24"><a href="#cb15-24" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-25"><a href="#cb15-25" aria-hidden="true" tabindex="-1"></a>t2_path<span class="op">=</span>np.linspace(<span class="op">-</span><span class="dv">2</span>,<span class="dv">2</span>,<span class="dv">500</span>)</span>
+<span id="cb15-26"><a href="#cb15-26" aria-hidden="true" tabindex="-1"></a>Lzak<span class="op">=</span>[Zak(HamSSH(<span class="dv">1</span>,t2)) <span class="cf">for</span> t2 <span class="kw">in</span> t2_path]</span>
+<span id="cb15-27"><a href="#cb15-27" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-28"><a href="#cb15-28" aria-hidden="true" tabindex="-1"></a>fig, ax <span class="op">=</span> plt.subplots(figsize<span class="op">=</span>(<span class="dv">7</span>, <span class="dv">6</span>))</span>
+<span id="cb15-29"><a href="#cb15-29" aria-hidden="true" tabindex="-1"></a>ax.plot(t2_path,Lzak,c<span class="op">=</span><span class="st">'green'</span>)</span>
+<span id="cb15-30"><a href="#cb15-30" aria-hidden="true" tabindex="-1"></a>ax.set_xlabel(<span class="st">'$t_2/t_1$'</span>)</span>
+<span id="cb15-31"><a href="#cb15-31" aria-hidden="true" tabindex="-1"></a>ax.set_ylabel(<span class="st">'Zak phase'</span>)</span>
+<span id="cb15-32"><a href="#cb15-32" aria-hidden="true" tabindex="-1"></a>ax.grid(<span class="va">True</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="SSH_files/figure-html/cell-14-output-1.png" width="589" height="505" class="figure-img"></p>
+</figure>
+</div>
+</div>
+</div>
 
 
 <div id="refs" class="references csl-bib-body hanging-indent" data-entry-spacing="0" role="list" style="display: none">
@@ -649,6 +737,9 @@ Ryu, S., and Y. Hatsugai. 2006. <span>“Entanglement Entropy and the Berry Phas
 </div>
 <div id="ref-SSH_original" class="csl-entry" role="listitem">
 Su, W. P., J. R. Schrieffer, and A. J. Heeger. 1979. <span>“Solitons in Polyacetylene.”</span> <em>Phys. Rev. Lett.</em> 42 (June): 1698–1701. <a href="https://doi.org/10.1103/PhysRevLett.42.1698">https://doi.org/10.1103/PhysRevLett.42.1698</a>.
+</div>
+<div id="ref-Vanderbilt_2018" class="csl-entry" role="listitem">
+Vanderbilt, David. 2018. <em>Berry Phases in Electronic Structure Theory</em>. First. Cambdridge University Press. <a href="https://doi.org/10.1017/9781316662205">https://doi.org/10.1017/9781316662205</a>.
 </div>
 </div>
 </section>
