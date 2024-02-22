@@ -133,6 +133,7 @@ window.Quarto = {
 };
 </script>
 
+<link rel="stylesheet" href="styles.css">
 </head>
 
 <body class="nav-sidebar floating">
@@ -246,29 +247,32 @@ window.Quarto = {
 
 <p>Este codigo estudia la cadena de Kitaev. Buscamos caracterizar sus fases topologicas.</p>
 <div id="60f5a32d" class="cell" data-execution_count="1">
-<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> pythtb <span class="im">import</span> <span class="op">*</span></span>
-<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> pylab <span class="im">import</span> <span class="op">*</span></span>
-<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Cadena de Kitaev</span></span>
-<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>lat<span class="op">=</span>[[<span class="fl">1.0</span>,<span class="fl">0.0</span>],[<span class="fl">0.0</span>,<span class="fl">1.0</span>]]</span>
-<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a>orb<span class="op">=</span>[[<span class="fl">0.0</span>,<span class="op">-</span><span class="fl">1.0</span>],[<span class="fl">0.</span>,<span class="fl">1.0</span>]]</span>
-<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a>t <span class="op">=</span> <span class="dv">1</span></span>
-<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a>Δ <span class="op">=</span> <span class="fl">0.5</span></span>
-<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a>Nμ<span class="op">=</span><span class="dv">500</span></span>
-<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a>KitaevChain<span class="op">=</span>[]</span>
-<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a>M<span class="op">=</span>np.linspace(<span class="op">-</span><span class="dv">3</span><span class="op">*</span>t, <span class="dv">3</span><span class="op">*</span>t, num<span class="op">=</span>Nμ)</span>
-<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> μ <span class="kw">in</span> M:</span>
-<span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a>  KC<span class="op">=</span>tb_model(<span class="dv">1</span>,<span class="dv">2</span>,lat,orb,per<span class="op">=</span>[<span class="dv">0</span>])</span>
-<span id="cb1-16"><a href="#cb1-16" aria-hidden="true" tabindex="-1"></a>  KC.set_hop(<span class="op">-</span>t,<span class="dv">0</span>,<span class="dv">0</span>,[<span class="dv">1</span>,<span class="dv">0</span>]) <span class="co"># [1] : significa e^{i([1].a1)(k)}</span></span>
-<span id="cb1-17"><a href="#cb1-17" aria-hidden="true" tabindex="-1"></a>  KC.set_hop(t,<span class="dv">1</span>,<span class="dv">1</span>,[<span class="dv">1</span>,<span class="dv">0</span>])</span>
-<span id="cb1-18"><a href="#cb1-18" aria-hidden="true" tabindex="-1"></a>  KC.set_hop(<span class="op">-</span>Δ,<span class="dv">0</span>,<span class="dv">1</span>,[<span class="dv">1</span>,<span class="dv">0</span>])</span>
-<span id="cb1-19"><a href="#cb1-19" aria-hidden="true" tabindex="-1"></a>  KC.set_hop( Δ,<span class="dv">0</span>,<span class="dv">1</span>,[<span class="op">-</span><span class="dv">1</span>,<span class="dv">0</span>])</span>
-<span id="cb1-20"><a href="#cb1-20" aria-hidden="true" tabindex="-1"></a>  KC.set_onsite([<span class="op">-</span>μ,μ])</span>
-<span id="cb1-21"><a href="#cb1-21" aria-hidden="true" tabindex="-1"></a>  KitaevChain.append(KC)</span>
-<span id="cb1-22"><a href="#cb1-22" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-23"><a href="#cb1-23" aria-hidden="true" tabindex="-1"></a>KitaevChain[<span class="dv">1</span>].visualize(<span class="dv">0</span>,<span class="dv">1</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1"></a><span class="im">from</span> pythtb <span class="im">import</span> <span class="op">*</span></span>
+<span id="cb1-2"><a href="#cb1-2"></a><span class="im">from</span> pylab <span class="im">import</span> <span class="op">*</span></span>
+<span id="cb1-3"><a href="#cb1-3"></a></span>
+<span id="cb1-4"><a href="#cb1-4"></a><span class="co"># Cadena de Kitaev</span></span>
+<span id="cb1-5"><a href="#cb1-5"></a></span>
+<span id="cb1-6"><a href="#cb1-6"></a>lat<span class="op">=</span>[[<span class="fl">1.0</span>,<span class="fl">0.0</span>],[<span class="fl">0.0</span>,<span class="fl">1.0</span>]]</span>
+<span id="cb1-7"><a href="#cb1-7"></a>orb<span class="op">=</span>[[<span class="fl">0.0</span>,<span class="op">-</span><span class="fl">1.0</span>],[<span class="fl">0.</span>,<span class="fl">1.0</span>]]</span>
+<span id="cb1-8"><a href="#cb1-8"></a></span>
+<span id="cb1-9"><a href="#cb1-9"></a>t <span class="op">=</span> <span class="dv">1</span></span>
+<span id="cb1-10"><a href="#cb1-10"></a>Δ <span class="op">=</span> <span class="fl">0.5</span></span>
+<span id="cb1-11"><a href="#cb1-11"></a>Nμ<span class="op">=</span><span class="dv">500</span></span>
+<span id="cb1-12"><a href="#cb1-12"></a>KitaevChain<span class="op">=</span>[]</span>
+<span id="cb1-13"><a href="#cb1-13"></a>M<span class="op">=</span>np.linspace(<span class="op">-</span><span class="dv">3</span><span class="op">*</span>t, <span class="dv">3</span><span class="op">*</span>t, num<span class="op">=</span>Nμ)</span>
+<span id="cb1-14"><a href="#cb1-14"></a><span class="cf">for</span> μ <span class="kw">in</span> M:</span>
+<span id="cb1-15"><a href="#cb1-15"></a>  KC<span class="op">=</span>tb_model(<span class="dv">1</span>,<span class="dv">2</span>,lat,orb,per<span class="op">=</span>[<span class="dv">0</span>])</span>
+<span id="cb1-16"><a href="#cb1-16"></a>  KC.set_hop(<span class="op">-</span>t,<span class="dv">0</span>,<span class="dv">0</span>,[<span class="dv">1</span>,<span class="dv">0</span>]) <span class="co"># [1] : significa e^{i([1].a1)(k)}</span></span>
+<span id="cb1-17"><a href="#cb1-17"></a>  KC.set_hop(t,<span class="dv">1</span>,<span class="dv">1</span>,[<span class="dv">1</span>,<span class="dv">0</span>])</span>
+<span id="cb1-18"><a href="#cb1-18"></a>  KC.set_hop(<span class="op">-</span>Δ,<span class="dv">0</span>,<span class="dv">1</span>,[<span class="dv">1</span>,<span class="dv">0</span>])</span>
+<span id="cb1-19"><a href="#cb1-19"></a>  KC.set_hop( Δ,<span class="dv">0</span>,<span class="dv">1</span>,[<span class="op">-</span><span class="dv">1</span>,<span class="dv">0</span>])</span>
+<span id="cb1-20"><a href="#cb1-20"></a>  KC.set_onsite([<span class="op">-</span>μ,μ])</span>
+<span id="cb1-21"><a href="#cb1-21"></a>  KitaevChain.append(KC)</span>
+<span id="cb1-22"><a href="#cb1-22"></a></span>
+<span id="cb1-23"><a href="#cb1-23"></a>KitaevChain[<span class="dv">1</span>].visualize(<span class="dv">0</span>,<span class="dv">1</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
 <div class="cell-output cell-output-display">
 <div>
 <figure class="figure">
@@ -280,23 +284,29 @@ window.Quarto = {
 <section id="estructura-de-bandas" class="level2" data-number="3.1">
 <h2 data-number="3.1" class="anchored" data-anchor-id="estructura-de-bandas"><span class="header-section-number">3.1</span> Estructura de bandas</h2>
 <div id="14d87dac" class="cell" data-execution_count="2">
-<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="op">%%</span>capture</span>
-<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>Xm <span class="op">=</span> [<span class="op">-</span><span class="fl">0.5</span>]</span>
-<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>Xp <span class="op">=</span> [ <span class="fl">0.5</span>]</span>
-<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>puntosK <span class="op">=</span> [Xm,[<span class="dv">0</span>],Xp]</span>
-<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>Ek<span class="op">=</span>[]</span>
-<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span>(Nμ):</span>
-<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a>  kpts, kdist, knode <span class="op">=</span> KitaevChain[i].k_path(puntosK,<span class="dv">101</span>,report<span class="op">=</span><span class="va">True</span>)</span>
-<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a>  Ek.append(KitaevChain[i].solve_all(kpts,eig_vectors<span class="op">=</span><span class="va">False</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1"></a><span class="op">%%</span>capture</span>
+<span id="cb2-2"><a href="#cb2-2"></a>Xm <span class="op">=</span> [<span class="op">-</span><span class="fl">0.5</span>]</span>
+<span id="cb2-3"><a href="#cb2-3"></a>Xp <span class="op">=</span> [ <span class="fl">0.5</span>]</span>
+<span id="cb2-4"><a href="#cb2-4"></a>puntosK <span class="op">=</span> [Xm,[<span class="dv">0</span>],Xp]</span>
+<span id="cb2-5"><a href="#cb2-5"></a>Ek<span class="op">=</span>[]</span>
+<span id="cb2-6"><a href="#cb2-6"></a><span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span>(Nμ):</span>
+<span id="cb2-7"><a href="#cb2-7"></a>  kpts, kdist, knode <span class="op">=</span> KitaevChain[i].k_path(puntosK,<span class="dv">101</span>,report<span class="op">=</span><span class="va">True</span>)</span>
+<span id="cb2-8"><a href="#cb2-8"></a>  Ek.append(KitaevChain[i].solve_all(kpts,eig_vectors<span class="op">=</span><span class="va">False</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
 </div>
 <div id="668ff59d" class="cell" data-execution_count="3">
-<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">0</span>,Nμ,<span class="dv">20</span>):</span>
-<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>  fig,ax<span class="op">=</span>plt.subplots(figsize<span class="op">=</span>(<span class="dv">5</span>, <span class="dv">4</span>))</span>
-<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>  ax.plot(kdist,Ek[i].T)</span>
-<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>  ax.set_xticks(knode)</span>
-<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>  ax.set_title(<span class="st">"μ="</span><span class="op">+</span><span class="bu">str</span>(M[i]),fontsize<span class="op">=</span><span class="dv">10</span>)</span>
-<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a>  ax.grid(<span class="va">True</span>)</span>
-<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a>  ax.set_xticklabels([<span class="st">"-π"</span>,<span class="dv">0</span>,<span class="st">"π"</span>])</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1"></a><span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">0</span>,Nμ,<span class="dv">20</span>):</span>
+<span id="cb3-2"><a href="#cb3-2"></a>  fig,ax<span class="op">=</span>plt.subplots(figsize<span class="op">=</span>(<span class="dv">5</span>, <span class="dv">4</span>))</span>
+<span id="cb3-3"><a href="#cb3-3"></a>  ax.plot(kdist,Ek[i].T)</span>
+<span id="cb3-4"><a href="#cb3-4"></a>  ax.set_xticks(knode)</span>
+<span id="cb3-5"><a href="#cb3-5"></a>  ax.set_title(<span class="st">"μ="</span><span class="op">+</span><span class="bu">str</span>(M[i]),fontsize<span class="op">=</span><span class="dv">10</span>)</span>
+<span id="cb3-6"><a href="#cb3-6"></a>  ax.grid(<span class="va">True</span>)</span>
+<span id="cb3-7"><a href="#cb3-7"></a>  ax.set_xticklabels([<span class="st">"-π"</span>,<span class="dv">0</span>,<span class="st">"π"</span>])</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
 <div class="cell-output cell-output-stderr">
 <pre><code>C:\Users\gozu0\AppData\Local\Temp\ipykernel_10676\1760376919.py:2: RuntimeWarning: More than 20 figures have been opened. Figures created through the pyplot interface (`matplotlib.pyplot.figure`) are retained until explicitly closed and may consume too much memory. (To control this warning, see the rcParam `figure.max_open_warning`). Consider using `matplotlib.pyplot.close()`.
   fig,ax=plt.subplots(figsize=(5, 4))</code></pre>
@@ -481,35 +491,44 @@ window.Quarto = {
 <section id="fase-de-zak" class="level2" data-number="3.2">
 <h2 data-number="3.2" class="anchored" data-anchor-id="fase-de-zak"><span class="header-section-number">3.2</span> Fase de Zak</h2>
 <div id="d2c73427" class="cell" data-execution_count="4">
-<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> Zak_Ph(model):</span>
-<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>  Nk<span class="op">=</span><span class="dv">500</span></span>
-<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>  ptsK<span class="op">=</span>[[<span class="fl">0.</span>],[<span class="fl">1.</span>]] <span class="co"># Debe ser la 1ZB</span></span>
-<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>  kpts, kdist, knode <span class="op">=</span> model.k_path(ptsK,Nk,report<span class="op">=</span><span class="va">False</span>)</span>
-<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>  ϵk,evec<span class="op">=</span>model.solve_all(kpts,eig_vectors<span class="op">=</span><span class="va">True</span>)</span>
-<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a>  Zak<span class="op">=</span>[]</span>
-<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a>  <span class="cf">for</span> band <span class="kw">in</span> <span class="bu">range</span>(<span class="bu">len</span>(evec)):</span>
-<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a>    eveb<span class="op">=</span>evec[band]</span>
-<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a>    Prod<span class="op">=</span>prod([ np.vdot(eveb[i<span class="op">-</span><span class="dv">1</span>],eveb[i]) <span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">1</span>,Nk)])</span>
-<span id="cb5-10"><a href="#cb5-10" aria-hidden="true" tabindex="-1"></a>    Zak.append(<span class="op">-</span>imag( np.log(Prod) ))</span>
-<span id="cb5-11"><a href="#cb5-11" aria-hidden="true" tabindex="-1"></a>  <span class="cf">return</span> Zak</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1"></a><span class="kw">def</span> Zak_Ph(model):</span>
+<span id="cb5-2"><a href="#cb5-2"></a>  Nk<span class="op">=</span><span class="dv">500</span></span>
+<span id="cb5-3"><a href="#cb5-3"></a>  ptsK<span class="op">=</span>[[<span class="fl">0.</span>],[<span class="fl">1.</span>]] <span class="co"># Debe ser la 1ZB</span></span>
+<span id="cb5-4"><a href="#cb5-4"></a>  kpts, kdist, knode <span class="op">=</span> model.k_path(ptsK,Nk,report<span class="op">=</span><span class="va">False</span>)</span>
+<span id="cb5-5"><a href="#cb5-5"></a>  ϵk,evec<span class="op">=</span>model.solve_all(kpts,eig_vectors<span class="op">=</span><span class="va">True</span>)</span>
+<span id="cb5-6"><a href="#cb5-6"></a>  Zak<span class="op">=</span>[]</span>
+<span id="cb5-7"><a href="#cb5-7"></a>  <span class="cf">for</span> band <span class="kw">in</span> <span class="bu">range</span>(<span class="bu">len</span>(evec)):</span>
+<span id="cb5-8"><a href="#cb5-8"></a>    eveb<span class="op">=</span>evec[band]</span>
+<span id="cb5-9"><a href="#cb5-9"></a>    Prod<span class="op">=</span>prod([ np.vdot(eveb[i<span class="op">-</span><span class="dv">1</span>],eveb[i]) <span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">1</span>,Nk)])</span>
+<span id="cb5-10"><a href="#cb5-10"></a>    Zak.append(<span class="op">-</span>imag( np.log(Prod) ))</span>
+<span id="cb5-11"><a href="#cb5-11"></a>  <span class="cf">return</span> Zak</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
 </div>
 <div id="ab738f91" class="cell" data-execution_count="5">
-<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>PhZak<span class="op">=</span><span class="bu">list</span>(<span class="bu">map</span>(Zak_Ph,KitaevChain))</span>
-<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>PhZak<span class="op">=</span>np.array(PhZak)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1"></a>PhZak<span class="op">=</span><span class="bu">list</span>(<span class="bu">map</span>(Zak_Ph,KitaevChain))</span>
+<span id="cb6-2"><a href="#cb6-2"></a>PhZak<span class="op">=</span>np.array(PhZak)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
 </div>
 <div id="80062eb6" class="cell" data-execution_count="6">
-<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>fig, (ax1,ax2) <span class="op">=</span> plt.subplots(<span class="dv">2</span>,figsize<span class="op">=</span>(<span class="dv">8</span>, <span class="dv">8</span>))</span>
-<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>ax1.plot(M,PhZak.T[<span class="dv">0</span>])</span>
-<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>ax1.set_xlabel(<span class="st">'$\mu/t$'</span>)</span>
-<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a>ax1.set_ylabel(<span class="st">'Fase de Zak </span><span class="ch">\n</span><span class="st"> (banda valencia)'</span>)</span>
-<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a>ax1.grid(<span class="va">True</span>)</span>
-<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a>ax2.plot(M,PhZak.T[<span class="dv">1</span>])</span>
-<span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a>ax2.set_xlabel(<span class="st">'$\mu/t$'</span>)</span>
-<span id="cb7-10"><a href="#cb7-10" aria-hidden="true" tabindex="-1"></a>ax2.set_ylabel(<span class="st">'Fase de Zak </span><span class="ch">\n</span><span class="st"> (banda conducción)'</span>)</span>
-<span id="cb7-11"><a href="#cb7-11" aria-hidden="true" tabindex="-1"></a>ax2.grid(<span class="va">True</span>)</span>
-<span id="cb7-12"><a href="#cb7-12" aria-hidden="true" tabindex="-1"></a>ax2.grid(<span class="va">True</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1"></a>fig, (ax1,ax2) <span class="op">=</span> plt.subplots(<span class="dv">2</span>,figsize<span class="op">=</span>(<span class="dv">8</span>, <span class="dv">8</span>))</span>
+<span id="cb7-2"><a href="#cb7-2"></a></span>
+<span id="cb7-3"><a href="#cb7-3"></a>ax1.plot(M,PhZak.T[<span class="dv">0</span>])</span>
+<span id="cb7-4"><a href="#cb7-4"></a>ax1.set_xlabel(<span class="st">'$\mu/t$'</span>)</span>
+<span id="cb7-5"><a href="#cb7-5"></a>ax1.set_ylabel(<span class="st">'Fase de Zak </span><span class="ch">\n</span><span class="st"> (banda valencia)'</span>)</span>
+<span id="cb7-6"><a href="#cb7-6"></a>ax1.grid(<span class="va">True</span>)</span>
+<span id="cb7-7"><a href="#cb7-7"></a></span>
+<span id="cb7-8"><a href="#cb7-8"></a>ax2.plot(M,PhZak.T[<span class="dv">1</span>])</span>
+<span id="cb7-9"><a href="#cb7-9"></a>ax2.set_xlabel(<span class="st">'$\mu/t$'</span>)</span>
+<span id="cb7-10"><a href="#cb7-10"></a>ax2.set_ylabel(<span class="st">'Fase de Zak </span><span class="ch">\n</span><span class="st"> (banda conducción)'</span>)</span>
+<span id="cb7-11"><a href="#cb7-11"></a>ax2.grid(<span class="va">True</span>)</span>
+<span id="cb7-12"><a href="#cb7-12"></a>ax2.grid(<span class="va">True</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
 <div class="cell-output cell-output-display">
 <div>
 <figure class="figure">
@@ -522,9 +541,12 @@ window.Quarto = {
 <section id="estados-de-borde" class="level2" data-number="3.3">
 <h2 data-number="3.3" class="anchored" data-anchor-id="estados-de-borde"><span class="header-section-number">3.3</span> Estados de borde</h2>
 <div id="24398fea" class="cell" data-execution_count="7">
-<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>NL<span class="op">=</span><span class="dv">50</span></span>
-<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>KC_Cortado<span class="op">=</span>[KitaevChain[i].cut_piece(NL,<span class="dv">0</span>,glue_edgs<span class="op">=</span><span class="va">False</span>) <span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span>(Nμ)]</span>
-<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>KC_Cortado[<span class="dv">1</span>].visualize(<span class="dv">0</span>,<span class="dv">1</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1"></a>NL<span class="op">=</span><span class="dv">50</span></span>
+<span id="cb8-2"><a href="#cb8-2"></a>KC_Cortado<span class="op">=</span>[KitaevChain[i].cut_piece(NL,<span class="dv">0</span>,glue_edgs<span class="op">=</span><span class="va">False</span>) <span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span>(Nμ)]</span>
+<span id="cb8-3"><a href="#cb8-3"></a>KC_Cortado[<span class="dv">1</span>].visualize(<span class="dv">0</span>,<span class="dv">1</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
 <div class="cell-output cell-output-display">
 <div>
 <figure class="figure">
@@ -534,30 +556,39 @@ window.Quarto = {
 </div>
 </div>
 <div id="aacd9887" class="cell" data-execution_count="8">
-<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Obtenemos todos los estados</span></span>
-<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>evals,evecs,ed<span class="op">=</span>[],[],[]</span>
-<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span>(Nμ):</span>
-<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a>  Ek,evec<span class="op">=</span>KC_Cortado[i].solve_all(eig_vectors<span class="op">=</span><span class="va">True</span>)</span>
-<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a>  evals.append(Ek)</span>
-<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a>  evecs.append(evec)</span>
-<span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a>  ed.append(KC_Cortado[i].get_num_orbitals()<span class="op">//</span><span class="dv">2</span>) <span class="co"># Energia al centro del espectro, debe corresponder con el edo de borde</span></span>
-<span id="cb9-8"><a href="#cb9-8" aria-hidden="true" tabindex="-1"></a>evals<span class="op">=</span>np.array(evals)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1"></a><span class="co"># Obtenemos todos los estados</span></span>
+<span id="cb9-2"><a href="#cb9-2"></a>evals,evecs,ed<span class="op">=</span>[],[],[]</span>
+<span id="cb9-3"><a href="#cb9-3"></a><span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span>(Nμ):</span>
+<span id="cb9-4"><a href="#cb9-4"></a>  Ek,evec<span class="op">=</span>KC_Cortado[i].solve_all(eig_vectors<span class="op">=</span><span class="va">True</span>)</span>
+<span id="cb9-5"><a href="#cb9-5"></a>  evals.append(Ek)</span>
+<span id="cb9-6"><a href="#cb9-6"></a>  evecs.append(evec)</span>
+<span id="cb9-7"><a href="#cb9-7"></a>  ed.append(KC_Cortado[i].get_num_orbitals()<span class="op">//</span><span class="dv">2</span>) <span class="co"># Energia al centro del espectro, debe corresponder con el edo de borde</span></span>
+<span id="cb9-8"><a href="#cb9-8"></a>evals<span class="op">=</span>np.array(evals)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
 </div>
 <div id="39c21b2c" class="cell" data-execution_count="9">
-<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> ipr(edo):</span>
-<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>  <span class="bu">abs</span><span class="op">=</span>np.absolute(edo)<span class="op">**</span><span class="dv">2</span></span>
-<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a>  C2<span class="op">=</span><span class="bu">sum</span>(<span class="bu">abs</span><span class="op">**</span><span class="dv">2</span>)</span>
-<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a>  C4<span class="op">=</span><span class="bu">sum</span>(<span class="bu">abs</span><span class="op">**</span><span class="dv">4</span>)</span>
-<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a>  <span class="cf">return</span> C4<span class="op">/</span>C2</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb10-1"><a href="#cb10-1"></a><span class="kw">def</span> ipr(edo):</span>
+<span id="cb10-2"><a href="#cb10-2"></a>  <span class="bu">abs</span><span class="op">=</span>np.absolute(edo)<span class="op">**</span><span class="dv">2</span></span>
+<span id="cb10-3"><a href="#cb10-3"></a>  C2<span class="op">=</span><span class="bu">sum</span>(<span class="bu">abs</span><span class="op">**</span><span class="dv">2</span>)</span>
+<span id="cb10-4"><a href="#cb10-4"></a>  C4<span class="op">=</span><span class="bu">sum</span>(<span class="bu">abs</span><span class="op">**</span><span class="dv">4</span>)</span>
+<span id="cb10-5"><a href="#cb10-5"></a>  <span class="cf">return</span> C4<span class="op">/</span>C2</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
 </div>
 <div id="48bc32f3" class="cell" data-execution_count="10">
-<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>IPR<span class="op">=</span>[<span class="bu">list</span>(<span class="bu">map</span>(ipr,evecs[i])) <span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span>(Nμ)]</span>
-<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a><span class="co"># Mostramos estados de borde</span></span>
-<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">0</span>,Nμ,<span class="dv">20</span>):</span>
-<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a>  (fig,ax)<span class="op">=</span>KC_Cortado[i].visualize(<span class="dv">0</span>,<span class="dv">1</span>,eig_dr<span class="op">=</span>evecs[i][ed[i],:],draw_hoppings<span class="op">=</span><span class="va">True</span>)</span>
-<span id="cb11-6"><a href="#cb11-6" aria-hidden="true" tabindex="-1"></a>  ax.set_title(<span class="st">"μ="</span><span class="op">+</span><span class="bu">str</span>(M[i])<span class="op">+</span><span class="st">"  E="</span><span class="op">+</span><span class="bu">str</span>(evals[i][ed[i]]))</span>
-<span id="cb11-7"><a href="#cb11-7" aria-hidden="true" tabindex="-1"></a>  ax.set_ylim(<span class="op">-</span><span class="dv">5</span>,<span class="dv">5</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb11-1"><a href="#cb11-1"></a>IPR<span class="op">=</span>[<span class="bu">list</span>(<span class="bu">map</span>(ipr,evecs[i])) <span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span>(Nμ)]</span>
+<span id="cb11-2"><a href="#cb11-2"></a></span>
+<span id="cb11-3"><a href="#cb11-3"></a><span class="co"># Mostramos estados de borde</span></span>
+<span id="cb11-4"><a href="#cb11-4"></a><span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">0</span>,Nμ,<span class="dv">20</span>):</span>
+<span id="cb11-5"><a href="#cb11-5"></a>  (fig,ax)<span class="op">=</span>KC_Cortado[i].visualize(<span class="dv">0</span>,<span class="dv">1</span>,eig_dr<span class="op">=</span>evecs[i][ed[i],:],draw_hoppings<span class="op">=</span><span class="va">True</span>)</span>
+<span id="cb11-6"><a href="#cb11-6"></a>  ax.set_title(<span class="st">"μ="</span><span class="op">+</span><span class="bu">str</span>(M[i])<span class="op">+</span><span class="st">"  E="</span><span class="op">+</span><span class="bu">str</span>(evals[i][ed[i]]))</span>
+<span id="cb11-7"><a href="#cb11-7"></a>  ax.set_ylim(<span class="op">-</span><span class="dv">5</span>,<span class="dv">5</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
 <div class="cell-output cell-output-stderr">
 <pre><code>c:\Users\gozu0\Topological_Superconductors\.conda\Lib\site-packages\pythtb.py:734: RuntimeWarning: More than 20 figures have been opened. Figures created through the pyplot interface (`matplotlib.pyplot.figure`) are retained until explicitly closed and may consume too much memory. (To control this warning, see the rcParam `figure.max_open_warning`). Consider using `matplotlib.pyplot.close()`.
   fig=plt.figure(figsize=[plt.rcParams["figure.figsize"][0],</code></pre>
@@ -742,40 +773,43 @@ window.Quarto = {
 <section id="espectro-v.s.-mut" class="level2" data-number="3.4">
 <h2 data-number="3.4" class="anchored" data-anchor-id="espectro-v.s.-mut"><span class="header-section-number">3.4</span> Espectro v.s. <span class="math inline">\(\mu/t\)</span></h2>
 <div id="effb82df" class="cell" data-execution_count="11">
-<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> colorFader(c1,c2,mix<span class="op">=</span><span class="dv">0</span>): <span class="co"># Interpolación lineal del color c1 (en mix=0) al color c2 (mix=1)</span></span>
-<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a>    c1<span class="op">=</span>np.array(mpl.colors.to_rgb(c1))</span>
-<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a>    c2<span class="op">=</span>np.array(mpl.colors.to_rgb(c2))</span>
-<span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> mpl.colors.to_hex((<span class="dv">1</span><span class="op">-</span>mix)<span class="op">*</span>c1 <span class="op">+</span> mix<span class="op">*</span>c2)</span>
-<span id="cb13-5"><a href="#cb13-5" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb13-6"><a href="#cb13-6" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> Fader(Lc,mix): <span class="co"># Interpolación lineal de colores en lista Lc</span></span>
-<span id="cb13-7"><a href="#cb13-7" aria-hidden="true" tabindex="-1"></a>    i<span class="op">=</span><span class="bu">int</span>(np.floor(mix<span class="op">*</span>(<span class="bu">len</span>(Lc)<span class="op">-</span><span class="dv">1</span>)))</span>
-<span id="cb13-8"><a href="#cb13-8" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> i<span class="op">==</span><span class="bu">len</span>(Lc)<span class="op">-</span><span class="dv">1</span>:</span>
-<span id="cb13-9"><a href="#cb13-9" aria-hidden="true" tabindex="-1"></a>      c1,c2<span class="op">=</span>Lc[<span class="op">-</span><span class="dv">2</span>],Lc[<span class="op">-</span><span class="dv">1</span>]</span>
-<span id="cb13-10"><a href="#cb13-10" aria-hidden="true" tabindex="-1"></a>      <span class="cf">return</span> c2</span>
-<span id="cb13-11"><a href="#cb13-11" aria-hidden="true" tabindex="-1"></a>    <span class="cf">else</span>:</span>
-<span id="cb13-12"><a href="#cb13-12" aria-hidden="true" tabindex="-1"></a>      c1,c2<span class="op">=</span>Lc[i],Lc[i<span class="op">+</span><span class="dv">1</span>]</span>
-<span id="cb13-13"><a href="#cb13-13" aria-hidden="true" tabindex="-1"></a>      <span class="cf">return</span> colorFader(c1,c2,mix<span class="op">*</span>(<span class="bu">len</span>(Lc)<span class="op">-</span><span class="dv">1</span>)<span class="op">-</span>i)</span>
-<span id="cb13-14"><a href="#cb13-14" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb13-15"><a href="#cb13-15" aria-hidden="true" tabindex="-1"></a>Lc<span class="op">=</span>[<span class="st">'red'</span>,<span class="st">'Blue'</span>]</span>
-<span id="cb13-16"><a href="#cb13-16" aria-hidden="true" tabindex="-1"></a>fig, ax <span class="op">=</span> plt.subplots(figsize<span class="op">=</span>(<span class="dv">10</span>, <span class="dv">8</span>))</span>
-<span id="cb13-17"><a href="#cb13-17" aria-hidden="true" tabindex="-1"></a>Max<span class="op">=</span>np.<span class="bu">max</span>(np.<span class="bu">max</span>(IPR))</span>
-<span id="cb13-18"><a href="#cb13-18" aria-hidden="true" tabindex="-1"></a>Min<span class="op">=</span>np.<span class="bu">min</span>(np.<span class="bu">min</span>(IPR))</span>
-<span id="cb13-19"><a href="#cb13-19" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">2</span><span class="op">*</span>NL): <span class="co"># Número de eigenestados</span></span>
-<span id="cb13-20"><a href="#cb13-20" aria-hidden="true" tabindex="-1"></a>  colors <span class="op">=</span> []</span>
-<span id="cb13-21"><a href="#cb13-21" aria-hidden="true" tabindex="-1"></a>  <span class="cf">for</span> j <span class="kw">in</span> <span class="bu">range</span>(Nμ):</span>
-<span id="cb13-22"><a href="#cb13-22" aria-hidden="true" tabindex="-1"></a>    colors.append(Fader(Lc,(IPR[j][i]<span class="op">-</span>Min)<span class="op">/</span>(Max<span class="op">-</span>Min)))</span>
-<span id="cb13-23"><a href="#cb13-23" aria-hidden="true" tabindex="-1"></a>  ax.scatter(M,evals.T[i],c<span class="op">=</span>colors,s<span class="op">=</span><span class="fl">0.5</span>)</span>
-<span id="cb13-24"><a href="#cb13-24" aria-hidden="true" tabindex="-1"></a>  <span class="co">#ax.set_facecolor("black")</span></span>
-<span id="cb13-25"><a href="#cb13-25" aria-hidden="true" tabindex="-1"></a>  ax.set_xlabel(<span class="st">'$\mu/t$'</span>)</span>
-<span id="cb13-26"><a href="#cb13-26" aria-hidden="true" tabindex="-1"></a>  ax.set_ylabel(<span class="st">'E'</span>)</span>
-<span id="cb13-27"><a href="#cb13-27" aria-hidden="true" tabindex="-1"></a>fig, ax <span class="op">=</span> plt.subplots(figsize<span class="op">=</span>(<span class="dv">10</span>, <span class="dv">1</span>))</span>
-<span id="cb13-28"><a href="#cb13-28" aria-hidden="true" tabindex="-1"></a>n<span class="op">=</span><span class="dv">500</span></span>
-<span id="cb13-29"><a href="#cb13-29" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> x <span class="kw">in</span> linspace(<span class="dv">0</span>,<span class="dv">1</span>,n):</span>
-<span id="cb13-30"><a href="#cb13-30" aria-hidden="true" tabindex="-1"></a>    ax.axvline((Max<span class="op">-</span>Min)<span class="op">*</span>x<span class="op">+</span>Min, color<span class="op">=</span>Fader(Lc,x), linewidth<span class="op">=</span><span class="dv">4</span>)</span>
-<span id="cb13-31"><a href="#cb13-31" aria-hidden="true" tabindex="-1"></a>    ax.set_xlabel(<span class="st">'IPR'</span>)</span>
-<span id="cb13-32"><a href="#cb13-32" aria-hidden="true" tabindex="-1"></a>    ax.set_xlim(Min,Max)</span>
-<span id="cb13-33"><a href="#cb13-33" aria-hidden="true" tabindex="-1"></a>    ax.tick_params(axis<span class="op">=</span><span class="st">'y'</span>, which<span class="op">=</span><span class="st">'both'</span>, left<span class="op">=</span><span class="va">False</span>, labelleft<span class="op">=</span><span class="va">False</span>)</span>
-<span id="cb13-34"><a href="#cb13-34" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb13-1"><a href="#cb13-1"></a><span class="kw">def</span> colorFader(c1,c2,mix<span class="op">=</span><span class="dv">0</span>): <span class="co"># Interpolación lineal del color c1 (en mix=0) al color c2 (mix=1)</span></span>
+<span id="cb13-2"><a href="#cb13-2"></a>    c1<span class="op">=</span>np.array(mpl.colors.to_rgb(c1))</span>
+<span id="cb13-3"><a href="#cb13-3"></a>    c2<span class="op">=</span>np.array(mpl.colors.to_rgb(c2))</span>
+<span id="cb13-4"><a href="#cb13-4"></a>    <span class="cf">return</span> mpl.colors.to_hex((<span class="dv">1</span><span class="op">-</span>mix)<span class="op">*</span>c1 <span class="op">+</span> mix<span class="op">*</span>c2)</span>
+<span id="cb13-5"><a href="#cb13-5"></a></span>
+<span id="cb13-6"><a href="#cb13-6"></a><span class="kw">def</span> Fader(Lc,mix): <span class="co"># Interpolación lineal de colores en lista Lc</span></span>
+<span id="cb13-7"><a href="#cb13-7"></a>    i<span class="op">=</span><span class="bu">int</span>(np.floor(mix<span class="op">*</span>(<span class="bu">len</span>(Lc)<span class="op">-</span><span class="dv">1</span>)))</span>
+<span id="cb13-8"><a href="#cb13-8"></a>    <span class="cf">if</span> i<span class="op">==</span><span class="bu">len</span>(Lc)<span class="op">-</span><span class="dv">1</span>:</span>
+<span id="cb13-9"><a href="#cb13-9"></a>      c1,c2<span class="op">=</span>Lc[<span class="op">-</span><span class="dv">2</span>],Lc[<span class="op">-</span><span class="dv">1</span>]</span>
+<span id="cb13-10"><a href="#cb13-10"></a>      <span class="cf">return</span> c2</span>
+<span id="cb13-11"><a href="#cb13-11"></a>    <span class="cf">else</span>:</span>
+<span id="cb13-12"><a href="#cb13-12"></a>      c1,c2<span class="op">=</span>Lc[i],Lc[i<span class="op">+</span><span class="dv">1</span>]</span>
+<span id="cb13-13"><a href="#cb13-13"></a>      <span class="cf">return</span> colorFader(c1,c2,mix<span class="op">*</span>(<span class="bu">len</span>(Lc)<span class="op">-</span><span class="dv">1</span>)<span class="op">-</span>i)</span>
+<span id="cb13-14"><a href="#cb13-14"></a></span>
+<span id="cb13-15"><a href="#cb13-15"></a>Lc<span class="op">=</span>[<span class="st">'red'</span>,<span class="st">'Blue'</span>]</span>
+<span id="cb13-16"><a href="#cb13-16"></a>fig, ax <span class="op">=</span> plt.subplots(figsize<span class="op">=</span>(<span class="dv">10</span>, <span class="dv">8</span>))</span>
+<span id="cb13-17"><a href="#cb13-17"></a>Max<span class="op">=</span>np.<span class="bu">max</span>(np.<span class="bu">max</span>(IPR))</span>
+<span id="cb13-18"><a href="#cb13-18"></a>Min<span class="op">=</span>np.<span class="bu">min</span>(np.<span class="bu">min</span>(IPR))</span>
+<span id="cb13-19"><a href="#cb13-19"></a><span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">2</span><span class="op">*</span>NL): <span class="co"># Número de eigenestados</span></span>
+<span id="cb13-20"><a href="#cb13-20"></a>  colors <span class="op">=</span> []</span>
+<span id="cb13-21"><a href="#cb13-21"></a>  <span class="cf">for</span> j <span class="kw">in</span> <span class="bu">range</span>(Nμ):</span>
+<span id="cb13-22"><a href="#cb13-22"></a>    colors.append(Fader(Lc,(IPR[j][i]<span class="op">-</span>Min)<span class="op">/</span>(Max<span class="op">-</span>Min)))</span>
+<span id="cb13-23"><a href="#cb13-23"></a>  ax.scatter(M,evals.T[i],c<span class="op">=</span>colors,s<span class="op">=</span><span class="fl">0.5</span>)</span>
+<span id="cb13-24"><a href="#cb13-24"></a>  <span class="co">#ax.set_facecolor("black")</span></span>
+<span id="cb13-25"><a href="#cb13-25"></a>  ax.set_xlabel(<span class="st">'$\mu/t$'</span>)</span>
+<span id="cb13-26"><a href="#cb13-26"></a>  ax.set_ylabel(<span class="st">'E'</span>)</span>
+<span id="cb13-27"><a href="#cb13-27"></a>fig, ax <span class="op">=</span> plt.subplots(figsize<span class="op">=</span>(<span class="dv">10</span>, <span class="dv">1</span>))</span>
+<span id="cb13-28"><a href="#cb13-28"></a>n<span class="op">=</span><span class="dv">500</span></span>
+<span id="cb13-29"><a href="#cb13-29"></a><span class="cf">for</span> x <span class="kw">in</span> linspace(<span class="dv">0</span>,<span class="dv">1</span>,n):</span>
+<span id="cb13-30"><a href="#cb13-30"></a>    ax.axvline((Max<span class="op">-</span>Min)<span class="op">*</span>x<span class="op">+</span>Min, color<span class="op">=</span>Fader(Lc,x), linewidth<span class="op">=</span><span class="dv">4</span>)</span>
+<span id="cb13-31"><a href="#cb13-31"></a>    ax.set_xlabel(<span class="st">'IPR'</span>)</span>
+<span id="cb13-32"><a href="#cb13-32"></a>    ax.set_xlim(Min,Max)</span>
+<span id="cb13-33"><a href="#cb13-33"></a>    ax.tick_params(axis<span class="op">=</span><span class="st">'y'</span>, which<span class="op">=</span><span class="st">'both'</span>, left<span class="op">=</span><span class="va">False</span>, labelleft<span class="op">=</span><span class="va">False</span>)</span>
+<span id="cb13-34"><a href="#cb13-34"></a>plt.show()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
 <div class="cell-output cell-output-display">
 <div>
 <figure class="figure">
@@ -792,34 +826,43 @@ window.Quarto = {
 </div>
 </div>
 <div id="8ee8a2b7" class="cell" data-execution_count="12">
-<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> EEntropy(model):</span>
-<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a>  Ek,evec<span class="op">=</span>model.solve_all(eig_vectors<span class="op">=</span><span class="va">True</span>)</span>
-<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a>  nF<span class="op">=</span><span class="bu">sum</span>([<span class="dv">1</span> <span class="cf">for</span> ϵ <span class="kw">in</span> Ek <span class="cf">if</span> ϵ<span class="op">&lt;</span><span class="dv">0</span>]) <span class="co"># Numero de estados en mar de Fermi</span></span>
-<span id="cb14-4"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a>  P<span class="op">=</span>np.<span class="bu">sum</span>([evec[l][:,<span class="va">None</span>]<span class="op">*</span>np.conjugate(evec[l]) <span class="cf">for</span> l <span class="kw">in</span> <span class="bu">range</span>(nF)],<span class="dv">0</span>)</span>
-<span id="cb14-5"><a href="#cb14-5" aria-hidden="true" tabindex="-1"></a>  C<span class="op">=</span>P[<span class="dv">0</span>:nF,<span class="dv">0</span>:nF]</span>
-<span id="cb14-6"><a href="#cb14-6" aria-hidden="true" tabindex="-1"></a>  ζ<span class="op">=</span>sort(np.linalg.eigvals(C)) <span class="co"># Hay que mejorar esta parte</span></span>
-<span id="cb14-7"><a href="#cb14-7" aria-hidden="true" tabindex="-1"></a>  ζ<span class="op">=</span>np.array([z <span class="cf">for</span> z <span class="kw">in</span> ζ <span class="cf">if</span>(z<span class="op">!=</span><span class="dv">0</span> <span class="kw">and</span> z<span class="op">!=</span><span class="dv">1</span>)]) <span class="co"># Quitamos los que no contribuyen</span></span>
-<span id="cb14-8"><a href="#cb14-8" aria-hidden="true" tabindex="-1"></a>  SEE<span class="op">=-</span><span class="bu">sum</span>((<span class="dv">1</span><span class="op">-</span>ζ)<span class="op">*</span>np.log(<span class="dv">1</span><span class="op">-</span>ζ)<span class="op">+</span>ζ<span class="op">*</span>np.log(ζ))</span>
-<span id="cb14-9"><a href="#cb14-9" aria-hidden="true" tabindex="-1"></a>  <span class="cf">return</span> SEE</span>
-<span id="cb14-10"><a href="#cb14-10" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb14-11"><a href="#cb14-11" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> C_Spectre(model):</span>
-<span id="cb14-12"><a href="#cb14-12" aria-hidden="true" tabindex="-1"></a>  Ek,evec<span class="op">=</span>model.solve_all(eig_vectors<span class="op">=</span><span class="va">True</span>)</span>
-<span id="cb14-13"><a href="#cb14-13" aria-hidden="true" tabindex="-1"></a>  nF<span class="op">=</span><span class="bu">sum</span>([<span class="dv">1</span> <span class="cf">for</span> ϵ <span class="kw">in</span> Ek <span class="cf">if</span> ϵ<span class="op">&lt;</span><span class="dv">0</span>]) <span class="co"># Numero de estados en mar de Fermi</span></span>
-<span id="cb14-14"><a href="#cb14-14" aria-hidden="true" tabindex="-1"></a>  P<span class="op">=</span>np.<span class="bu">sum</span>([evec[l][:,<span class="va">None</span>]<span class="op">*</span>np.conjugate(evec[l]) <span class="cf">for</span> l <span class="kw">in</span> <span class="bu">range</span>(nF)],<span class="dv">0</span>)</span>
-<span id="cb14-15"><a href="#cb14-15" aria-hidden="true" tabindex="-1"></a>  C<span class="op">=</span>P[<span class="dv">0</span>:nF,<span class="dv">0</span>:nF]</span>
-<span id="cb14-16"><a href="#cb14-16" aria-hidden="true" tabindex="-1"></a>  ζ<span class="op">=</span>sort(np.linalg.eigvals(C))</span>
-<span id="cb14-17"><a href="#cb14-17" aria-hidden="true" tabindex="-1"></a>  <span class="cf">return</span> ζ</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb14-1"><a href="#cb14-1"></a><span class="kw">def</span> EEntropy(model):</span>
+<span id="cb14-2"><a href="#cb14-2"></a>  Ek,evec<span class="op">=</span>model.solve_all(eig_vectors<span class="op">=</span><span class="va">True</span>)</span>
+<span id="cb14-3"><a href="#cb14-3"></a>  nF<span class="op">=</span><span class="bu">sum</span>([<span class="dv">1</span> <span class="cf">for</span> ϵ <span class="kw">in</span> Ek <span class="cf">if</span> ϵ<span class="op">&lt;</span><span class="dv">0</span>]) <span class="co"># Numero de estados en mar de Fermi</span></span>
+<span id="cb14-4"><a href="#cb14-4"></a>  P<span class="op">=</span>np.<span class="bu">sum</span>([evec[l][:,<span class="va">None</span>]<span class="op">*</span>np.conjugate(evec[l]) <span class="cf">for</span> l <span class="kw">in</span> <span class="bu">range</span>(nF)],<span class="dv">0</span>)</span>
+<span id="cb14-5"><a href="#cb14-5"></a>  C<span class="op">=</span>P[<span class="dv">0</span>:nF,<span class="dv">0</span>:nF]</span>
+<span id="cb14-6"><a href="#cb14-6"></a>  ζ<span class="op">=</span>sort(np.linalg.eigvals(C)) <span class="co"># Hay que mejorar esta parte</span></span>
+<span id="cb14-7"><a href="#cb14-7"></a>  ζ<span class="op">=</span>np.array([z <span class="cf">for</span> z <span class="kw">in</span> ζ <span class="cf">if</span>(z<span class="op">!=</span><span class="dv">0</span> <span class="kw">and</span> z<span class="op">!=</span><span class="dv">1</span>)]) <span class="co"># Quitamos los que no contribuyen</span></span>
+<span id="cb14-8"><a href="#cb14-8"></a>  SEE<span class="op">=-</span><span class="bu">sum</span>((<span class="dv">1</span><span class="op">-</span>ζ)<span class="op">*</span>np.log(<span class="dv">1</span><span class="op">-</span>ζ)<span class="op">+</span>ζ<span class="op">*</span>np.log(ζ))</span>
+<span id="cb14-9"><a href="#cb14-9"></a>  <span class="cf">return</span> SEE</span>
+<span id="cb14-10"><a href="#cb14-10"></a></span>
+<span id="cb14-11"><a href="#cb14-11"></a><span class="kw">def</span> C_Spectre(model):</span>
+<span id="cb14-12"><a href="#cb14-12"></a>  Ek,evec<span class="op">=</span>model.solve_all(eig_vectors<span class="op">=</span><span class="va">True</span>)</span>
+<span id="cb14-13"><a href="#cb14-13"></a>  nF<span class="op">=</span><span class="bu">sum</span>([<span class="dv">1</span> <span class="cf">for</span> ϵ <span class="kw">in</span> Ek <span class="cf">if</span> ϵ<span class="op">&lt;</span><span class="dv">0</span>]) <span class="co"># Numero de estados en mar de Fermi</span></span>
+<span id="cb14-14"><a href="#cb14-14"></a>  P<span class="op">=</span>np.<span class="bu">sum</span>([evec[l][:,<span class="va">None</span>]<span class="op">*</span>np.conjugate(evec[l]) <span class="cf">for</span> l <span class="kw">in</span> <span class="bu">range</span>(nF)],<span class="dv">0</span>)</span>
+<span id="cb14-15"><a href="#cb14-15"></a>  C<span class="op">=</span>P[<span class="dv">0</span>:nF,<span class="dv">0</span>:nF]</span>
+<span id="cb14-16"><a href="#cb14-16"></a>  ζ<span class="op">=</span>sort(np.linalg.eigvals(C))</span>
+<span id="cb14-17"><a href="#cb14-17"></a>  <span class="cf">return</span> ζ</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
 </div>
 <div id="c7a8ecdb" class="cell" data-execution_count="13">
-<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a>See<span class="op">=</span><span class="bu">list</span>(<span class="bu">map</span>(EEntropy,KC_Cortado))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb15-1"><a href="#cb15-1"></a>See<span class="op">=</span><span class="bu">list</span>(<span class="bu">map</span>(EEntropy,KC_Cortado))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
 </div>
 <div id="a49566aa" class="cell" data-execution_count="14">
-<div class="sourceCode cell-code" id="cb16"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a>fig, ax <span class="op">=</span> plt.subplots(figsize<span class="op">=</span>(<span class="dv">9</span>, <span class="dv">7</span>))</span>
-<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a>ax.plot(M,See,c<span class="op">=</span><span class="st">'black'</span>)</span>
-<span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a>ax.set_xlabel(<span class="st">'$\mu/t$'</span>)</span>
-<span id="cb16-4"><a href="#cb16-4" aria-hidden="true" tabindex="-1"></a>ax.axhline(<span class="dv">2</span><span class="op">*</span>np.log(<span class="dv">2</span>),c<span class="op">=</span><span class="st">'red'</span>)</span>
-<span id="cb16-5"><a href="#cb16-5" aria-hidden="true" tabindex="-1"></a>ax.set_ylabel(<span class="st">'Entropia de entrelazamiento $S_A$'</span>)</span>
-<span id="cb16-6"><a href="#cb16-6" aria-hidden="true" tabindex="-1"></a>ax.grid(<span class="va">True</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb16"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb16-1"><a href="#cb16-1"></a>fig, ax <span class="op">=</span> plt.subplots(figsize<span class="op">=</span>(<span class="dv">9</span>, <span class="dv">7</span>))</span>
+<span id="cb16-2"><a href="#cb16-2"></a>ax.plot(M,See,c<span class="op">=</span><span class="st">'black'</span>)</span>
+<span id="cb16-3"><a href="#cb16-3"></a>ax.set_xlabel(<span class="st">'$\mu/t$'</span>)</span>
+<span id="cb16-4"><a href="#cb16-4"></a>ax.axhline(<span class="dv">2</span><span class="op">*</span>np.log(<span class="dv">2</span>),c<span class="op">=</span><span class="st">'red'</span>)</span>
+<span id="cb16-5"><a href="#cb16-5"></a>ax.set_ylabel(<span class="st">'Entropia de entrelazamiento $S_A$'</span>)</span>
+<span id="cb16-6"><a href="#cb16-6"></a>ax.grid(<span class="va">True</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
 <div class="cell-output cell-output-stderr">
 <pre><code>c:\Users\gozu0\Topological_Superconductors\.conda\Lib\site-packages\matplotlib\cbook.py:1699: ComplexWarning: Casting complex values to real discards the imaginary part
   return math.isfinite(val)
@@ -835,16 +878,22 @@ c:\Users\gozu0\Topological_Superconductors\.conda\Lib\site-packages\matplotlib\c
 </div>
 </div>
 <div id="d4d8c8a8" class="cell" data-execution_count="15">
-<div class="sourceCode cell-code" id="cb18"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a>ζ<span class="op">=</span>np.array(<span class="bu">list</span>(<span class="bu">map</span>(C_Spectre,KC_Cortado)))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb18"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb18-1"><a href="#cb18-1"></a>ζ<span class="op">=</span>np.array(<span class="bu">list</span>(<span class="bu">map</span>(C_Spectre,KC_Cortado)))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
 </div>
 <div id="959e687a" class="cell" data-execution_count="16">
-<div class="sourceCode cell-code" id="cb19"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a>fig, ax <span class="op">=</span> plt.subplots(figsize<span class="op">=</span>(<span class="dv">10</span>, <span class="dv">8</span>))</span>
-<span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> L <span class="kw">in</span> ζ.T:</span>
-<span id="cb19-3"><a href="#cb19-3" aria-hidden="true" tabindex="-1"></a>  ax.plot(M,L)</span>
-<span id="cb19-4"><a href="#cb19-4" aria-hidden="true" tabindex="-1"></a>  ax.set_ylim(<span class="op">-</span><span class="fl">0.1</span>,<span class="fl">1.1</span>)</span>
-<span id="cb19-5"><a href="#cb19-5" aria-hidden="true" tabindex="-1"></a>  ax.set_xlabel(<span class="st">'$\mu/t$'</span>)</span>
-<span id="cb19-6"><a href="#cb19-6" aria-hidden="true" tabindex="-1"></a>  ax.set_ylabel(<span class="st">'Espectro de $C$'</span>)</span>
-<span id="cb19-7"><a href="#cb19-7" aria-hidden="true" tabindex="-1"></a>  ax.grid(<span class="va">True</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb19"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb19-1"><a href="#cb19-1"></a>fig, ax <span class="op">=</span> plt.subplots(figsize<span class="op">=</span>(<span class="dv">10</span>, <span class="dv">8</span>))</span>
+<span id="cb19-2"><a href="#cb19-2"></a><span class="cf">for</span> L <span class="kw">in</span> ζ.T:</span>
+<span id="cb19-3"><a href="#cb19-3"></a>  ax.plot(M,L)</span>
+<span id="cb19-4"><a href="#cb19-4"></a>  ax.set_ylim(<span class="op">-</span><span class="fl">0.1</span>,<span class="fl">1.1</span>)</span>
+<span id="cb19-5"><a href="#cb19-5"></a>  ax.set_xlabel(<span class="st">'$\mu/t$'</span>)</span>
+<span id="cb19-6"><a href="#cb19-6"></a>  ax.set_ylabel(<span class="st">'Espectro de $C$'</span>)</span>
+<span id="cb19-7"><a href="#cb19-7"></a>  ax.grid(<span class="va">True</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
 <div class="cell-output cell-output-display">
 <div>
 <figure class="figure">
