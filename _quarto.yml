@@ -3,15 +3,13 @@ project:
   output-dir: docs
 
 book:
-  title: "Topological_Superconductors"
+  title: "Topological Superconductors"
   author: "Emmanuel Calderón"
   date: "9/2/2024"
   chapters:
     - index.qmd
-    - intro.qmd
     - SSH.qmd
     - Kitaev_Chain.qmd
-    - summary.qmd
     - references.qmd
 
 bibliography: references.bib
@@ -27,6 +25,4 @@ format:
     code-copy: true
   pdf:
     documentclass: scrreprt
-
-
 

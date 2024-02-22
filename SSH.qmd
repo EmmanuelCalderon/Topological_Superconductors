@@ -14,7 +14,7 @@ lat=[[1.0]]
 sites=[[0.0],[0.5]]
 # We vary the intra-cell hopping t2 and set the inter-cell hopping t1
 t1 = 1
-Nt=100
+Nt=500
 T2 = linspace(-2,2,Nt)
 
 SSH_model=[]
@@ -59,15 +59,14 @@ fig = go.Figure(
                      name=f'Conductance band')],
     layout=go.Layout(
         title=f"$t_2/t_1={T2[0]:.2f}$",
-#        title=("$t_2/t_1=$"+str(T2[0])),
         xaxis_title="k",
         yaxis_title="E(k)",
         updatemenus=[dict(type="buttons",
-                          x=0.1,y=.8,
+                          x=1.5,y=.8,
                           buttons=[dict(label="Play",
                                         method="animate",
                                         args=[None,
-                                        dict(frame=dict(duration=50,redraw=True),
+                                        dict(frame=dict(duration=100,redraw=True),
                                         transition=dict(duration=0,easing=None))] )])]
 
     ),
@@ -82,8 +81,6 @@ fig.show()
 :::
 
 We can easily observe how the band gap closes when $t_2=t_1$, indicating a phase transition dependent on the ratio $t_2/t_1$. 
-
-
 
 ## Finite SSH chain
 
@@ -112,7 +109,7 @@ evals=np.array(evals)
 We now visualize the evolution of the state with energy closest to zero when we vary the ratio $t_2/t_1$. We can observe that for $|t_2/t_1|<1$ the state is localized near the edges of the chain and for $|t_2/t_1|\geq1$ this state is now unlocalized. In other words, for $|t_2/t_1|<1$ we observe an edge state and for $|t_2/t_1|\geq1$ it becomes a bulk state.
 
 ```{python}
-for i in range(0,Nt,100):
+for i in range(0,Nt,20):
   (fig,ax)=SSH_Cortado[i].visualize(0,eig_dr=evecs[i][ed[i],:],draw_hoppings=True)
   ax.set_title("$t_2$="+str(T2[i])+"$t_1$"+"  E="+str(evals[i][ed[i]]))
   ax.set_ylim(-5,5)
@@ -249,8 +246,7 @@ def C_Spectre(model):
   return ζ
 
 ζ=np.array(list(map(C_Spectre,SSH_Cortado)))
-```
-```{python}
+
 fig, ax = plt.subplots(figsize=(7, 6))
 for L in ζ.T:
   ax.scatter(T2,L,s=1,c='black')
@@ -286,8 +282,7 @@ def EEntropy(model):
   return 2*SEE
 
 See=list(map(EEntropy,SSH_Cortado))
-```
-```{python}
+
 fig, ax = plt.subplots(figsize=(7, 6))
 ax.plot(T2,See,c='black')
 ax.set_xlabel('$t_2/t_1$')
