@@ -14,7 +14,7 @@ lat=[[1.0]]
 sites=[[0.0],[0.5]]
 # We vary the intra-cell hopping t2 and set the inter-cell hopping t1
 t1 = 1
-Nt=500
+Nt=100
 T2 = linspace(-2,2,Nt)
 
 SSH_model=[]
@@ -31,6 +31,7 @@ SSH_model[1].visualize(0)
 
 Now we calculate the SSH band structure for different values of $t_2/t_1$ over the first Brillouin zone. 
 
+::: {.callout-note appearance="simple" icon=false collapse="true"}
 ```{python}
 %%capture
 Xm = [-0.5]
@@ -62,7 +63,7 @@ fig = go.Figure(
         xaxis_title="k",
         yaxis_title="E(k)",
         updatemenus=[dict(type="buttons",
-                          x=0.1,y=1.1,
+                          x=0.1,y=.8,
                           buttons=[dict(label="Play",
                                         method="animate",
                                         args=[None,
@@ -77,6 +78,8 @@ fig.update_xaxes(range=[0,1])
 
 fig.show()
 ```
+
+:::
 
 We can easily observe how the band gap closes when $t_2=t_1$, indicating a phase transition dependent on the ratio $t_2/t_1$. 
 

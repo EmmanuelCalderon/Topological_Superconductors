@@ -19,6 +19,12 @@ bibliography: references.bib
 format:
   html:
     theme: flatly
+    fontsize: 1.0em
+    css: styles.css
+    code-fold: true
+    code-summary: "Code"
+    code-line-numbers: true
+    code-copy: true
   pdf:
     documentclass: scrreprt
 
