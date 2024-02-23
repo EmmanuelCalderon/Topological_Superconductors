@@ -49,7 +49,7 @@ for i in range(Nt):
     cuadros.append( go.Frame(data=[go.Scatter(x=list(kdist), y=Ek[i][0],mode="lines"),
                                    go.Scatter(x=list(kdist), y=Ek[i][1],line=dict(color='firebrick'),mode="lines")],
                              layout=go.Layout(title=f"t2/t1={T2[i]:.2f}" ) ))
-cuadros=cuadros+list(reversed(cuadros))
+#cuadros=cuadros+list(reversed(cuadros))
 
 fig = go.Figure(
     data=[go.Scatter(x=kdist, y=Ek[0][0],  mode="lines",name="Valence band"),
@@ -59,11 +59,11 @@ fig = go.Figure(
         xaxis_title="k",
         yaxis_title="E(k)",
         updatemenus=[dict(type="buttons",
-                          x=1.5,y=.8,
+                          x=1.0,y=.8,
                           buttons=[dict(label="Play",
                                         method="animate",
                                         args=[None,
-                                        dict(frame=dict(duration=100,redraw=True),
+                                        dict(frame=dict(duration=30,redraw=True),
                                         transition=dict(duration=0,easing=None))] )])]
 
     ),
@@ -81,7 +81,6 @@ We can easily observe how the band gap closes when $t_2=t_1$, indicating a phase
 ## Finite SSH chain
 
 In order to study this fase transition we now consider a finite SSH chain. 
-
 ```{python}
 NL=100 # Longitud de cadena
 SSH_Cortado=[]
@@ -90,7 +89,7 @@ for i in range(Nt):
 SSH_Cortado[1].visualize(0)
 ```
 
-In the next cell, we calculate all the eigenstates of the chain. To study the gap closure, we concentrate our attention on the state whose energy is closest to zero.
+In the next cell, we calculate the eigenstates of the chain. To study the gap closure, we concentrate our attention on the state whose energy is closest to zero.
 
 ```{python}
 evals,evecs,ed=[],[],[]
@@ -102,13 +101,37 @@ for i in range(Nt):
 evals=np.array(evals)
 ```
 
-We now visualize the evolution of the state with energy closest to zero when we vary the ratio $t_2/t_1$. We can observe that for $|t_2/t_1|<1$ the state is localized near the edges of the chain and for $|t_2/t_1|\geq1$ this state is now unlocalized. In other words, for $|t_2/t_1|<1$ we observe an edge state and for $|t_2/t_1|\geq1$ it becomes a bulk state.
+We now visualize the evolution of the state with positive energy closest to zero when we vary the ratio $t_2/t_1$. We can observe that for $|t_2/t_1|<1$ the state is localized near the edges of the chain and for $|t_2/t_1|\geq1$ this state is now unlocalized. In other words, for $|t_2/t_1|<1$ we observe an edge state and for $|t_2/t_1|\geq1$ it becomes a bulk state.
 
 ```{python}
-for i in range(0,Nt,20):
-  (fig,ax)=SSH_Cortado[i].visualize(0,eig_dr=evecs[i][ed[i],:],draw_hoppings=True)
-  ax.set_title("$t_2$="+str(T2[i])+"$t_1$"+"  E="+str(evals[i][ed[i]]))
-  ax.set_ylim(-5,5)
+import plotly.graph_objects as go
+cuadros = []
+for i in range(Nt):
+    cuadros.append( go.Frame(data=[go.Scatter(x=list(range(2*NL)), y=real(evecs[i][ed[i],:]),mode="lines")],
+                             layout=go.Layout(title=f"t2/t1={T2[i]:.2f}" ) ))
+
+fig = go.Figure(
+    data=[go.Scatter(x=list(range(2*NL)), y=real(evecs[0][ed[0],:]),  mode="lines")],
+    layout=go.Layout(
+        title=f"t2/t1={T2[0]:.2f}",
+        xaxis_title="Site index",
+        yaxis_title="Wave function",
+        updatemenus=[dict(type="buttons",
+                          x=1.0,y=.9,
+                          buttons=[dict(label="Play",
+                                        method="animate",
+                                        args=[None,
+                                        dict(frame=dict(duration=30,redraw=True),
+                                        transition=dict(duration=0,easing=None))] )])]
+
+    ),
+    frames = cuadros
+)
+
+fig.show()
+
+fig.update_yaxes(range=[-0.11,0.11])
+fig.update_xaxes(range=[0,2*NL])
 ```
 
 ## IPR
@@ -187,7 +210,7 @@ for x in linspace(0,1,n):
 plt.show()
 ```
 
-We observe eigenstates with an IPR close to one and energy close to zero when $|t_2/t_1|<1$, indicating localized eigenstates with (almost) zero energy. For the remaining eigenstates, we observe an IPR very close to zero, which implies bulk states that we can associate with the Bloch states of the band structures calculated previously. While strictly speaking, in this system, there is no band structure as we have not imposed periodic boundary conditions, considering a long enough chain allows us to approximate the eigenstates of the bulk with the Bloch eigenfunctions of the band structure.
+We observe two eigenstates with an IPR close to one and energy close to zero when $|t_2/t_1|<1$, indicating localized eigenstates with (almost) zero energy. For the remaining eigenstates, we observe an IPR very close to zero, which implies bulk states that we can associate with the Bloch states of the band structures calculated previously. While strictly speaking, in this system, there is no band structure as we have not imposed periodic boundary conditions, considering a long enough chain allows us to approximate the eigenstates of the bulk with the Bloch eigenfunctions of the band structure. Another relevant observation is the simetry of the energy levels with respect to zero which is a consequence of the sublattice symmetry.
 
 Notice that in the previous example of Eq. $\ref{eq: IPR-example}$, we made no clear specification of the position of the sites in the system to which the particle was distributed. This means that the IPR cannot tell us if the localized eigenstates are edge states. To address this limitation, we turn to the entanglement entropy.
 
@@ -346,4 +369,5 @@ ax.set_xlabel('$t_2/t_1$')
 ax.set_ylabel('Zak phase')
 ax.grid(True)
 ```
+
 
