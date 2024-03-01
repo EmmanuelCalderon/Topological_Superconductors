@@ -1,6 +1,6 @@
-# SSH model
+# Topological Phases and the SSH model
 
-This code aims to gain an understanding of topological phases of matter and their characterization through the SSH model. To achieve this, we calculate three relevant quantities: the Inverse Ratio Participation (IPR), the entanglement entropy, and Zak's phase.
+This code aims to gain an understanding of topological phases of matter and their characterization taking as an example the SSH model. To achieve this, we calculate three relevant quantities: the Inverse Ratio Participation (IPR), the entanglement entropy, and Zak's phase.
 
 The Su-Schrieffer-Heeger model was devised by Wu-Pei Su, John Robert Schrieffer, and Alan J. Heeger in 1979 to describe a polyacetylene polymer chain when doped (@SSH_original). The structural diagram of polyacetylene consists of a chain of carbon atoms with two kinds of bonds. This can be described using a tight-binding Hamiltonian of a chain of sites with alternating hoppings between neighbors.
 
@@ -15,7 +15,7 @@ sites=[[0.0],[0.5]]
 
 t1 = 1
 Nt=300
-T2 = linspace(-2,2,Nt)
+T2 = linspace(-1.5,1.5,Nt)
 
 SSH_model=[]
 for t2 in T2:
@@ -28,9 +28,7 @@ for t2 in T2:
 SSH_model[1].visualize(0)
 ```
 
-
 Now we calculate the SSH band structure for different values of $t_2/t_1$ over the first Brillouin zone. 
-
 
 ```{python}
 %%capture
@@ -49,7 +47,6 @@ for i in range(Nt):
     cuadros.append( go.Frame(data=[go.Scatter(x=list(kdist), y=Ek[i][0],mode="lines"),
                                    go.Scatter(x=list(kdist), y=Ek[i][1],line=dict(color='firebrick'),mode="lines")],
                              layout=go.Layout(title=f"t2/t1={T2[i]:.2f}" ) ))
-#cuadros=cuadros+list(reversed(cuadros))
 
 fig = go.Figure(
     data=[go.Scatter(x=kdist, y=Ek[0][0],  mode="lines",name="Valence band"),
@@ -69,12 +66,9 @@ fig = go.Figure(
     ),
     frames = cuadros
 )
-#fig.update_yaxes(range=[-3.1,3.1])
-#fig.update_xaxes(range=[0,1])
 
 fig.show()
 ```
-
 
 We can easily observe how the band gap closes when $t_2=t_1$, indicating a phase transition dependent on the ratio $t_2/t_1$. 
 
@@ -128,10 +122,11 @@ fig = go.Figure(
     frames = cuadros
 )
 
-fig.show()
-
 fig.update_yaxes(range=[-0.11,0.11])
 fig.update_xaxes(range=[0,2*NL])
+
+fig.show()
+
 ```
 
 ## IPR
@@ -212,7 +207,7 @@ plt.show()
 
 We observe two eigenstates with an IPR close to one and energy close to zero when $|t_2/t_1|<1$, indicating localized eigenstates with (almost) zero energy. For the remaining eigenstates, we observe an IPR very close to zero, which implies bulk states that we can associate with the Bloch states of the band structures calculated previously. While strictly speaking, in this system, there is no band structure as we have not imposed periodic boundary conditions, considering a long enough chain allows us to approximate the eigenstates of the bulk with the Bloch eigenfunctions of the band structure. Another relevant observation is the simetry of the energy levels with respect to zero which is a consequence of the sublattice symmetry.
 
-Notice that in the previous example of Eq. $\ref{eq: IPR-example}$, we made no clear specification of the position of the sites in the system to which the particle was distributed. This means that the IPR cannot tell us if the localized eigenstates are edge states. To address this limitation, we turn to the entanglement entropy.
+Notice that in the previous example of the IPR, we made no clear specification of the position of the sites in the system to which the particle was distributed. This means that the IPR cannot tell us if the localized eigenstates are edge states. To address this limitation, we turn to the entanglement entropy.
 
 ## Entanglement entropy
 
@@ -225,7 +220,7 @@ $$
 \end{equation}
 $$
 
-Equation $\ref{eq : AB}$ is called the $\textit{Schmidt decomposition}$ of $|\psi^{AB}\rangle$ where $d$ is, at most, the dimension of the smaller subsystem. If we now wish to study only one of the subsystems, we can no longer describe it using a wave function because $|\psi^{AB}\rangle$ is not pure. Instead we turn our attention to the density matrix $\rho_{AB}=|\psi^{AB}\rangle\langle\psi^{AB}|$ and calculate its reduced state on A and B by taking the $\textit{parcial trace}$ over the subsystem as
+This last expression is called the $\textit{Schmidt decomposition}$ of $|\psi^{AB}\rangle$ where $d$ is, at most, the dimension of the smaller subsystem. If we now wish to study only one of the subsystems, we can no longer describe it using a wave function because $|\psi^{AB}\rangle$ is not pure. Instead we turn our attention to the density matrix $\rho_{AB}=|\psi^{AB}\rangle\langle\psi^{AB}|$ and calculate its reduced state on A and B by taking the $\textit{parcial trace}$ over the subsystem as
 $$
 \rho_A=\text{Tr}_A(\rho_{AB})\equiv\sum_{j=1}^d |c_j|^2 |\phi_j^{A}\rangle\langle\phi_j^{A}|, 
 $$
@@ -238,7 +233,7 @@ $$
 S(\rho_B)=S(\rho_A)=-\text{Tr}\rho_A\ln\rho_A=-\sum_{i} p_i \ln p_i.
 $$
 
-In their paper (@Ryu_2006) S.Ryu and Y.Hatsugai proposed that the entanglement entropy could be used to characterize edge states and, as a consequence, topological phases. They also propose a novel way to calculate it, by means of a $C$ Hamiltonian. 
+In their paper @Ryu_2006 proposed that the entanglement entropy could be used to characterize edge states and, as a consequence, topological phases. They also propose a novel way to calculate it, by means of a $C$ Hamiltonian. 
 
 First calculate the eigenstates $\psi_\ell$ with energy $\epsilon_\ell<0$, we then calculate the density matrix of the Fermi sea as,
 $$
@@ -275,11 +270,11 @@ for L in ζ.T:
   ax.grid(True)
 ```
 
-Now, from its definition, $P$ has only two eigenvalues, namely 0 and 1, and the same set of eigen wave functions as the original hamiltonian. This properties allow us to interpret the correlation matrix as a "hamiltonian" called the $C-$ Hamiltonian with periodic boundary conditions. We can observe how the $C-$ hamiltonian of the subsystem keeps both of these eigenvalues and as we aproach $|t_2/t_1|\rightarrow\infty$ all of the eigenvalues tend to 0 or 1. However, when we cut the system and obtain the matrix $C$, we allow for the formation of new states of this "hamiltonian" in the regime $|t_2/t_1|<1$. So the question is how to interpret the eigenstates.
+From its definition, $P$ has only two eigenvalues, namely 0 and 1, and the same set of eigen wave functions as the original Hamiltonian. These properties allow us to interpret the correlation matrix as a "Hamiltonian" called the $C$-Hamiltonian with periodic boundary conditions. We can observe how the $C-$ hamiltonian of the subsystem keeps both of these eigenvalues and as we aproach $|t_2/t_1|\rightarrow\infty$ all of the eigenvalues tend to 0 or 1. However, when we cut the system and obtain the matrix $C$, we allow for the formation of new states of this "hamiltonian" in the regime $|t_2/t_1|<1$. So the question arises: how to interpret this new eigenstates?
 
- It is possible to solve analitically the system in the dimerized limit (for the SSH chain this corresponds to $t_2=0$), and in this regime Ryu and Hatsugai concluded the existence of two eigenstates with an eigenvalue equal to $1/2$ associated with the edge states. This is consistent with our previous calculations.
+ It is possible to solve analytically the system in the dimerized limit (for the SSH chain, this corresponds to $t_2=0$), and in this regime, Ryu and Hatsugai concluded the existence of two eigenstates with an eigenvalue $\zeta_\ell$ very close to $1/2$ associated with the edge states. This is consistent with our previous calculations. Also, we can observe how these edge states tend to the bulk states $\zeta_\ell=0,1$ in pairs. That is, for every edge state with $\zeta_\ell>1/2$, there exists a partner with an eigenvalue equal to $1/2-\zeta_\ell$. This is a general consequence of chiral symmetry, and both of these edge states are chiral partners.
 
-If $\{\zeta_\ell\}$ are the eigenvalues of $C$, we can calculate the etanglement entropy as
+If ${\zeta_\ell}$ are the eigenvalues of $C$, we can calculate the entanglement entropy
 $$
 S_A=-\sum_{\ell} \zeta_\ell \ln\zeta_\ell + (1-\zeta_\ell)\ln(1-\zeta_\ell).
 $$
@@ -310,7 +305,7 @@ ax.set_ylabel('Entanglement entropy $S_A$')
 ax.grid(True)
 ```
 
-According to Ryu and Hatsugai, the entanglement entropy in the thermodynamic limit is greater or equal to $\log 2$ times the number of edges of the system. In this case we can see that $S_A$ goes under this inferior limit $2\ln 2$  around $t_2=\pm t_1$ which means that the two edge states disapear in this limit. 
+According to Ryu and Hatsugai, the entanglement entropy in the thermodynamic limit is greater than or equal to $\log 2$ times the number of edges of the system. In this case we can see that $S_A$ goes under this inferior limit $2\ln 2$  around $t_2=\pm t_1$, indicating that the two edge states disappear in this limit.
 
 ## Zak's phase
 
@@ -338,8 +333,8 @@ where $u_k^n$ is the amplitude of the Bloch wavefunction with crystaline momentu
 ```{python}
 def HamSSH(t1,t2): # We define the SSH hamiltonian in k space
     def H(k):
-        H = np.array([[            0, t1+t2*exp(-1J*k)],
-                      [t1+t2*exp(1J*k),              0]])
+        H = np.array([[            0, t2+t1*exp(-1J*k)],
+                      [t2+t1*exp(1J*k),              0]])
         return H
     return H
 

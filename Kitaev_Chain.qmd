@@ -1,6 +1,23 @@
-# Kitaev Chain
+# Kitaev chain
 
-In this section we study the model a simple model for a 1D topological superconductor.
+In this section we begin to study topological superconductivity and 
+
+the model a simple model for a 1D topological superconductor. The Kitaev chain models a 1D p-wave superconductor, that is, a superconductor between spinless fermions. 
+
+## Superconductivity
+
+
+ Its hamiltonian consists of a spinless fermions on 1-D metal:
+$$
+H=\sum_p c_p^\dagger \left( \frac{p^2}{2m} -\mu \right) c_p
+$$
+
+Adding a $p$-wave pairing potential
+
+$$
+H_\Delta = \frac{1}{2} (\Delta c^\dagger_p c^\dagger_{-p}+\Delta^\ast p)
+$$
+
 
 ```{python}
 from pythtb import *
@@ -27,6 +44,7 @@ for μ in M:
 
 KitaevChain[1].visualize(0,1)
 ```
+
 
 ## Band structure
 
@@ -74,7 +92,7 @@ fig.show()
 ## Visualization of edge states
 
 ```{python}
-NL=50
+NL=10
 KC_cut=[KitaevChain[i].cut_piece(NL,0,glue_edgs=False) for i in range(Nμ)]
 KC_cut[1].visualize(0,1)
 ```
