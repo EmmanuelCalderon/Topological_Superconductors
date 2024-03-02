@@ -309,7 +309,7 @@ According to Ryu and Hatsugai, the entanglement entropy in the thermodynamic lim
 
 ## Zak's phase
 
-In order to say that this is a topological phase transition we must asociate each phase with a $\textit{topological invariant}$. A prime example of a topological invariant is the \textit{Berry phase} also called the \textit{geometric phase} which is a quantity that describes how a global phase accumulates as some state $|\psi\rangle$ is carried around a closed loop in a complex space. For example, if we consider a loop of states $\{|\psi_0\rangle, |\psi_1\rangle , \dots , |\psi_N\rangle\}$ where we set $|\psi_0\rangle=|\psi_N\rangle$. The Berry phase for this discrete loop is defined as
+In order to say that this is a topological phase transition we must asociate each phase with a $\textit{topological invariant}$. A prime example of a topological invariant is the $\textit{Berry phase}$ also called the $\textit{geometric phase}$ which is a quantity that describes how a global phase accumulates as some state $|\psi\rangle$ is carried around a closed loop in a complex space. For example, if we consider a loop of states $\{|\psi_0\rangle, |\psi_1\rangle , \dots , |\psi_N\rangle\}$ where we set $|\psi_0\rangle=|\psi_N\rangle$. The Berry phase for this discrete loop is defined as
 $$
 \phi=-\arg( \langle\psi_0|\psi_1\rangle \langle\psi_1|\psi_2\rangle \cdots \langle\psi_{N-1}|\psi_0\rangle ).
 $$
@@ -365,4 +365,19 @@ ax.set_ylabel('Zak phase')
 ax.grid(True)
 ```
 
+# No funciona correctamente PythTB?
+
+```{python}
+K=linspace(0,1,100)
+ssh1 = [HamSSH(1,1)(k*pi)[0,1] for k in K]
+ssh=SSH_model(1,1)
+ssh2 = [ssh._gen_ham(k)[0,1] for k in K]
+```
+```{python}
+plot(K,ssh1)
+plot(K,ssh2)
+```
+
+
+We can observe how the Zak phase is 0 in the trivial regime and is $\pi$ in the topological regime. 
 

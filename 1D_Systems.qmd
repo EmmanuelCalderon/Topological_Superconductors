@@ -1,0 +1,627 @@
+# Topological 1D systems
+
+This section aims to gain an understanding of topological phases of matter and their characterization. We define and calculate three relevant quantities: the Inverse Ratio Participation (IPR), the entanglement entropy, and Zak's phase. We take as examples the SSH model and Kitaev's chain model.
+
+::: {.callout-note appearance="simple" icon=false collapse="true"}
+### SSH Model
+The Su-Schrieffer-Heeger model was devised by Wu-Pei Su, John Robert Schrieffer, and Alan J. Heeger in 1979 to describe a polyacetylene polymer chain when doped (@SSH_original). The structural diagram of polyacetylene consists of a chain of carbon atoms with two kinds of bonds. This can be described using a tight-binding Hamiltonian of a chain of sites with two orbitals per cite with an intra-cell hopping $v$ and an inter-cell hopping $w$ with alternating hoppings between neighbors:
+$$
+\hat{H}_{SSH} = \sum_{n=1}^N \: v \hat{c}^\dagger_{n,A}\hat{c}_{n,B} + w \hat{c}_{n+1,A}^\dagger \hat{c}_{n,B} + h.c.
+$$
+
+
+We begin by defining the SSH model using the Python library PythTB, where we vary the intra-cell hopping $v$ and set the inter-cell hopping $w=1$.
+
+```{python}
+from pylab import *
+from pythtb import *
+
+def SSH_model(v=1,w=1):
+  lat=[[2,0],[0,2]]
+  sites=[[0,0],[0.5,0.5]]
+  SSH=tb_model(1,2,lat,sites,per=[0])
+  SSH.set_hop(w,1,0,[1,0])
+  SSH.set_hop(v,0,1,[0,0])
+  SSH.set_onsite([0,0])
+  return SSH
+
+SSH_model().visualize(0,1)
+```
+:::
+
+::: {.callout-note appearance="simple" icon=false collapse="true"}
+## Kitaev chain model
+
+The simplest model for a superconductor comes from a mean-field Hamiltonian given by the Bardeen-Cooper-Schrieffer (BCS) theory of superconductivity. Paraphrasing @TSC_a_review, a one band superconductor may be described by the following Hamiltonian,
+
+$$
+\newcommand{\vb}[1]{\mathbf{#1}}
+\newcommand{\ket}[1]{| #1 \rangle}
+\newcommand{\bra}[1]{\langle #1 |}
+$$
+$$
+\begin{aligned}
+\hat{H}_{\text{BCS}} =& \sum_{\vb{k},s_1,s_2} (\varepsilon_{s_1,s_2}(\vb k)-\mu) \hat{c}^\dagger_{\vb k,s_1}\hat{c}_{\vb k,s_2} +\\
+&+ \frac{1}{2}   \sum_{\vb k,\vb k',s_1,s_2,s_3,s_4} V_{s_1,s_2,s_3,s_4}(\vb k, \vb k') \hat{c}^\dagger_{s_1}(-\vb k) \hat{c}^\dagger_{s_2}(\vb k) \hat{c}_{s_3}(\vb k') \hat{c}_{s_4}(-\vb k)
+\end{aligned}
+$$
+
+where $\mu$ is the chemical potential, $\hat c_{\vb k,s}$ ($\hat c_{\vb k,s}^\dagger$) is the annihilation (creation) operator of an electron with momentum $\vb k$ and spin $s$, $\varepsilon_{s_1,s_2}$ is the single particle energy and $V_{s_1,s_2,s_3,s_4}(\vb k,\vb k')$ is the pairing potential. In a superconducting state, there exists an atracction force modulated by phonons in the solid in such a way that, near the Fermi sea, two electrons form a bound state called a $\textit{Cooper pair}$. This is represented in $\hat{H}_{\text{BCS}}$ through the terms $\hat{c}^\dagger_{s}(-\vb k) \hat{c}^\dagger_{s'}(\vb k)$ which create a Cooper pair. It is not possible to solve such model in an exact way, but it is possible to obtain a mean-field Hamiltonian assuming that the wave function of a Cooper pair is non zero, that is, assuming $\bra{0}\hat{c}^\dagger_{s}(-\vb k) \hat{c}^\dagger_{s'}(\vb k)\ket{0}\neq 0$ with $\ket{0}$ the Fermi sea state. For consultation on any details, the reader is referenced to @Annett:730995, the final result of such approximation is 
+$$
+\begin{aligned}
+\hat{H}_{\text{Mean Field}} =& \sum_{\vb{k},s_1,s_2} (\varepsilon_{s_1,s_2}(\vb k)-\mu) \hat{c}^\dagger_{\vb k,s_1}\hat{c}_{\vb k,s_2} +\\
+&+ \frac{1}{2}   \sum_{\vb k,s_1,s_2}  (\Delta_{s_1,s_2}(\vb k) \hat{c}^\dagger_{s_1}(\vb k) \hat{c}^\dagger_{s_2}(-\vb k) + h.c.)
+\end{aligned}
+$$
+
+where $\Delta_{s_1,s_2}$ is called the pairing potential and defines the spin of the Cooper pairs of the solid. The pairing potential has the property $\Delta_{s_1,s_2}(\vb k)=-\Delta_{s_2,s_1}(-\vb k)$. If both electrons on the Cooper pair form a singlet, $\Delta_{s_1,s_2}(\vb k)=\Delta_{s_1,s_2}(-\vb k)$ and the superconductor s-wave. For triplet spin pairings, $\Delta_{s_1,s_2}(\vb k)=-\Delta_{s_1,s_2}(-\vb k)$ and the superconductor is p-wave. 
+
+We may write a tight binding hamiltonian from $\hat{H}_{\text{Mean Field}}$ by writting it as
+$$
+\hat{H}_{\text{Mean Field}} = \frac{1}{2} \sum_{\vb{k},s_1,s_2} \begin{pmatrix} \hat{c}^\dagger_{\vb k,s_1} & \hat{c}_{-\vb k,s_1} \end{pmatrix} \mathbfcal{H}(\vb k) \begin{pmatrix} \hat{c}^\dagger_{\vb k,s_2} \\ \hat{c}_{-\vb k,s_2} \end{pmatrix}
+$$
+where $\mathbfcal{H}(\vb k)$ is the so-called Bogoliugov-de-Gennes hamiltonian and is given by 
+$$
+\mathbfcal{H}(\vb k) = \begin{pmatrix}
+\epsilon_{s_1,s_2}(\vb k)-\mu & \Delta_{s_1,s_2}(\vb k) \\
+\Delta_{s_1,s_2}^\dagger(\vb k) & -\epsilon_{s_1,s_2}(\vb k)+\mu
+\end{pmatrix}
+$$
+where the spin subindex $()_{s_1,s_2}$ means that we take all the possible pairings in a matrix. For spin $1/2$ fermions, $\mathbfcal{H}$ is 4 $\times$ 4 matrix.
+
+The Kitaev chain model models a 1D wire of Cooper pairs with spin polarized fermions and therefore has a p-wave pairing potential. Because the spins are polarized, $\mathbfcal{H}(\vb k)$ becomes a 2 $\times$ 2 matrix given by
+
+$$
+\mathbfcal{H}(\vb k) = \begin{pmatrix}
+-\mu - 2t \cos k & 2i\Delta \sin k \\
+-2i\Delta \sin k & \mu + 2t\cos k 
+\end{pmatrix}
+$$
+
+where the term $2t\cos k \sigma_x$ comes from placing the electrons on a wire with a hopping $t$. Another way to see this is consider the case $\Delta=0$ and noticing that the system describes a normal ideal 1D metal with an electron (hole) hopping $t$ ($-t$), and in order to add superconducitivity to this metal we add the pairing term $i\Delta\sin k \sigma_y$ which is odd in $k$ (p-wave) and periodic. Transforming this hamiltonian to real space by means of a Fourier transform, we arrive at the Kitav chain model which we define using PythTB in the next cell.
+
+```{python}
+from pylab import *
+from pythtb import *
+
+def Kitaev_1D(μ=0,t=1,Δ=1):
+  lat=[[1.0,0.0],[0.0,1.0]]
+  orb=[[0.0,-1.0],[0.,1.0]]
+  KC=tb_model(1,2,lat,orb,per=[0])
+  KC.set_hop(-t,0,0,[1,0]) 
+  KC.set_hop(t,1,1,[1,0])
+  KC.set_hop(-Δ,0,1,[1,0])
+  KC.set_hop( Δ,0,1,[-1,0])
+  KC.set_onsite([-μ,μ])
+  return KC
+
+Kitaev_1D().visualize(0,1)
+```
+::: 
+
+## Band structures and gap closings 
+
+Now we calculate the SSH band structure for different values of $v/w$ over the first Brillouin zone. 
+
+::: {.callout-note appearance="simple" icon=false collapse="true"}
+## SSH band evolution visualization
+
+```{python}
+k = linspace(0,1,101)
+V = linspace(-2,2,101)
+Ek = [ SSH_model(v).solve_all(k) for v in V ]
+Gap = [ min(bands[1])-max(bands[0]) for bands in Ek ]
+
+import plotly.graph_objects as go
+cuadros = []
+for i in range(len(V)):
+    cuadros.append( go.Frame(data=[go.Scatter(x=list(k), y=Ek[i][0],mode="lines"),
+                                   go.Scatter(x=list(k), y=Ek[i][1],line=dict(color='firebrick'),mode="lines")],
+                             layout=go.Layout(title=f"v/w={V[i]:.2f}, Band gap={Gap[i]:.2f}" ) ))
+
+fig = go.Figure(
+    data=[go.Scatter(x=list(k), y=Ek[0][0],  mode="lines",name="Valence band"),
+          go.Scatter(x=list(k), y=Ek[0][1],mode="lines",line=dict(color='firebrick'),name="Conductance band")],
+    layout=go.Layout(
+        title=f"v/w={V[0]:.2f}, Band gap={Gap[0]:.2f}",
+        xaxis_title="k",
+        yaxis_title="E(k)",
+        updatemenus=[dict(type="buttons",
+                          x=1.0,y=.8,
+                          buttons=[dict(label="Play",
+                                        method="animate",
+                                        args=[None,
+                                        dict(frame=dict(duration=30,redraw=True),
+                                        transition=dict(duration=0,easing=None))] )])]
+
+    ),
+    frames = cuadros
+)
+
+fig.show()
+```
+
+:::
+
+::: {.callout-note appearance="simple" icon=false collapse="true"}
+### Kitaev chain band evolution
+
+```{python}
+k = linspace(0,1,101)
+M = linspace(-3,3,101)
+Δ = 0.5
+Ek = [ Kitaev_1D(μ=μ,Δ=Δ).solve_all(k) for μ in M ]
+Gap = [ min(bands[1])-max(bands[0]) for bands in Ek ]
+
+import plotly.graph_objects as go
+cuadros = []
+for i in range(len(M)):
+    cuadros.append( go.Frame(data=[go.Scatter(x=list(k), y=Ek[i][0],mode="lines"),
+                                   go.Scatter(x=list(k), y=Ek[i][1],line=dict(color='firebrick'),mode="lines")],
+                             layout=go.Layout(title=f"μ/t={M[i]:.2f}, Δ={Δ:.2f}, Band gap={Gap[i]:.2f}" ) ))
+
+fig = go.Figure(
+    data=[go.Scatter(x=k, y=Ek[0][0],  mode="lines",name="Valence band"),
+          go.Scatter(x=k, y=Ek[0][1],mode="lines",line=dict(color='firebrick'),name="Conductance band")],
+    layout=go.Layout(
+        title=f"μ/t={M[0]:.2f}, Δ={Δ:.2f}, Band gap={Gap[0]:.2f}",
+        xaxis_title="k",
+        yaxis_title="E(k)",
+        updatemenus=[dict(type="buttons",
+                          x=1.0,y=.8,
+                          buttons=[dict(label="Play",
+                                        method="animate",
+                                        args=[None,
+                                        dict(frame=dict(duration=30,redraw=True),
+                                        transition=dict(duration=0,easing=None))] )])]
+
+    ),
+    frames = cuadros
+)
+
+fig.show()
+```
+
+:::
+
+For the SSH model we can easily observe how the band gap closes when $v/w=\pm 1$, indicating a phase transition dependent on the ratio $v/w$.
+
+```{python}
+fig, ax = plt.subplots(figsize=(7, 6))
+
+k = linspace(0,1,101)
+V = linspace(-2,2,101)
+Ek = [ SSH_model(v).solve_all(k) for v in V ]
+Gap = [ min(bands[1])-max(bands[0]) for bands in Ek ]
+
+ax.plot(V,Gap,c='black')
+ax.set_xlabel('v/w')
+ax.set_ylabel('Band gap')
+ax.set_label('SSH band gap')
+```
+
+The Kitaev chain model presents a similar case. In order to study this system more fully we calculate the band gap for various values of $t$ and $\Delta$. We can observe how a band gap closing occurs for $\mu/t=2$ for any value of $\Delta$.
+
+
+```{python}
+M,D,k = linspace(-4,4,101),linspace(0,1,11),linspace(0,0.5,201)
+Gap = [[ min(Kitaev_1D(μ=μ,Δ=Δ).solve_all(k)[1]) - max(Kitaev_1D(μ=μ,Δ=Δ).solve_all(k)[0]) for μ in M ] for Δ in D]
+```
+```{python}
+fig,ax=plt.subplots(1,1)
+X, Y = np.meshgrid(M, D)
+cp = ax.contourf(X, Y, Gap,levels=np.linspace(0,4,3000),cmap='viridis')
+cbar = colorbar(cp,ticks=linspace(0,4,9))
+cbar.ax.set_ylabel('Band gap', rotation=270, labelpad = 11)
+ax.set_xlabel('$μ/t$')
+ax.set_ylabel('$Δ/t$')
+```
+
+In both cases we observe two distinct phases distinguised by the gap closings of their band structures. 
+
+## Edge states
+
+We have studied the bulk of both of these 1D systems and found two distinct phases. In order to get a more complete understanding of these structures we must now study the edge of these systems.
+
+For this matter we now consider finite chunks of both the SSH model and the Kitaev chain model.
+
+::: {.callout-note appearance="simple" icon=false collapse="true"}
+### SSH finite chain
+```{python}
+def SSH_chain(NL,v=1,w=1):
+  lat=[[1.0]]
+  sites=[[0.0],[0.5]]
+  SSH=tb_model(1,1,lat,sites)
+  SSH.set_hop(w,1,0,[1])
+  SSH.set_hop(v,0,1,[0])
+  SSH.set_onsite([0,0])
+  return SSH.cut_piece(NL,0)
+
+SSH_chain(NL=10).visualize(0)
+```
+:::
+
+::: {.callout-note appearance="simple" icon=false collapse="true"}
+### Kitaev finite chain
+```{python}
+def Kitaev_chain(NL,μ=0,t=1,Δ=1):
+  lat=[[1.0,0.0],[0.0,1.0]]
+  orb=[[0.0,-1.0],[0.,1.0]]
+  KC=tb_model(1,2,lat,orb,per=[0])
+  KC.set_hop(-t,0,0,[1,0]) 
+  KC.set_hop(t,1,1,[1,0])
+  KC.set_hop(-Δ,0,1,[1,0])
+  KC.set_hop( Δ,0,1,[-1,0])
+  KC.set_onsite([-μ,μ])
+  return KC.cut_piece(NL,0)
+
+Kitaev_chain(NL=10).visualize(0,1)
+```
+
+:::
+
+In the next cell, we calculate the eigenstates of the chain. To study the gap closure, we concentrate our attention on the state whose energy is closest to zero.
+
+```{python}
+evals_SSH,evecs_SSH,ed_SSH=[],[],[]
+for v in V:
+  model = SSH_chain(v=v,NL=20)
+  Ek,evec = model.solve_all(eig_vectors=True)
+  evals_SSH.append(Ek)
+  evecs_SSH.append(evec)
+  ed_SSH.append(model.get_num_orbitals()//2)
+evals_SSH=np.array(evals_SSH)
+evecs_SSH=np.array(evecs_SSH)
+
+evals_KC,evecs_KC,ed_KC=[],[],[]
+Δ = 0.5
+for μ in M:
+  model = Kitaev_chain(μ=μ,Δ=Δ,NL=20)
+  Ek,evec = model.solve_all(eig_vectors=True)
+  evals_KC.append(Ek)
+  evecs_KC.append(evec)
+  ed_KC.append(model.get_num_orbitals()//2)
+evals_KC=np.array(evals_KC)
+evecs_KC=np.array(evecs_KC)
+```
+
+We now visualize the evolution of the state with positive energy closest to zero when we vary the ratio $v/w$. We can observe that for $|v/w|<1$ the state is localized near the edges of the chain and for $|v/w|\geq1$ this state is now unlocalized. In other words, for $|v/w|<1$ we observe an edge state and for $|v/w|\geq1$ it becomes a bulk state.
+
+```{python}
+import plotly.graph_objects as go
+cuadros = []
+NL=len(evecs_SSH[0])//2
+for i in range(len(V)):
+    cuadros.append( go.Frame(data=[go.Scatter(x=list(range(2*NL)), y=real(evecs_SSH[i][ed_SSH[i],:]),mode="lines")],
+                             layout=go.Layout(title=f"/w={V[i]:.2f}" ) ))
+
+fig = go.Figure(
+    data=[go.Scatter(x=list(range(2*NL)), y=real(evecs_SSH[0][ed_SSH[0],:]),  mode="lines")],
+    layout=go.Layout(
+        title=f"v/w={V[0]:.2f}",
+        xaxis_title="Site index",
+        yaxis_title="Wave function",
+        updatemenus=[dict(type="buttons",
+                          x=1.0,y=.9,
+                          buttons=[dict(label="Play",
+                                        method="animate",
+                                        args=[None,
+                                        dict(frame=dict(duration=30,redraw=True),
+                                        transition=dict(duration=0,easing=None))] )])]
+
+    ),
+    frames = cuadros
+)
+
+#fig.update_yaxes(range=[-0.11,0.11])
+fig.update_xaxes(range=[0,2*NL])
+
+fig.show()
+
+```
+
+```{python}
+import plotly.graph_objects as go
+cuadros = []
+NL=len(evecs_KC[0])//2
+for i in range(len(M)):
+    cuadros.append( go.Frame(data=[go.Scatter(x=list(range(NL)), y=abs(evecs_KC[i][ed_KC[i],:][::2])**2,mode="lines"),
+    go.Scatter(x=list(range(NL)), y=abs(evecs_KC[i][ed_KC[i],:][1::2])**2,mode="lines")],
+                             layout=go.Layout(title=f"μ/t={M[i]:.2f}, Δ={Δ:.2f}") ))
+
+fig = go.Figure(
+     data=[go.Scatter(x=list(range(NL)), y=abs(evecs_KC[0][ed_KC[0],:][::2])**2, name="Electron distribution", mode="lines"),
+    go.Scatter(x=list(range(NL)), y=abs(evecs_KC[0][ed_KC[0],:][1::2])**2,name="Hole distribution",  mode="lines")],
+    layout=go.Layout(
+        title=f"μ/t={M[0]:.2f}, Δ={Δ:.2f}",
+        xaxis_title="n",
+        yaxis_title=r"Probability distribution",
+        updatemenus=[dict(type="buttons",
+                          x=1.0,y=.9,
+                          buttons=[dict(label="Play",
+                                        method="animate",
+                                        args=[None,
+                                        dict(frame=dict(duration=30,redraw=True),
+                                        transition=dict(duration=0,easing=None))] )])]
+
+    ),
+    frames = cuadros
+)
+
+fig.update_xaxes(range=[0,NL])
+fig.show()
+
+```
+
+## IPR
+
+We now aim to understand the evolution of all the eigenstates of the chain. To achieve this, we use the Inverse Ratio Participation (IPR) which is defined as
+$$
+\begin{equation}
+\text{IPR}=\sum_{n=1}^{N} |\psi_n|^4 / \sum_{n=1}^{N} |\psi_n|^2 \label{eq : IPR}
+\end{equation}
+$$
+
+where $\psi_n$ is the amplitude of the wavefunction in the $n$-th site of the chain, which has $N$ sites. Notice that if we asume $\psi_n$ is normalized, the term in the denominator is equal to 1. 
+
+The IPR is a simple way to quantify how many states a particle is distributed over a system. To see this, suppose that the particle is equally distributed over $M$ sites, i.e., $|\psi_n|^2=\frac{1}{M}$ for $n=1,...,M$ and zero otherwise. In that case, 
+$$
+\begin{equation}
+\text{IPR}=\sum_{n=1}^{N} |\psi_n|^4 = \sum_{n=1}^{M} \frac{1}{M^2} = \frac{1}{M}. \label{eq : IPR-example}
+\end{equation}
+$$
+
+If we asume that the particle is localized in one state, we see that $\text{IPR}=1$. In contrast, if we asume that the particle is distributed across every state in the system, then $\text{IPR}=1/N$, and in the thermodynamic limit, the IPR would tend to zero. A simple exercise of extremation shows that, assuming $\psi_n$ is normalized,
+$$
+\begin{equation}
+\frac{1}{N}\leq \text{IPR}\leq 1
+\end{equation}
+$$
+
+which makes it a good way to measure the localization of a certain state.
+
+In the next cell we calculate the IPR of all the eigenstates of our finite system.
+
+We now graph the evolution of the energy levels as a function of $t_2/t_1$ and color them using the IPR.
+
+```{python}
+IPR=sum(abs(evecs_SSH)**4,2)
+
+fig, ax = plt.subplots(figsize=(7, 6))
+
+for i in range(2*NL):
+  mapp=ax.scatter(V,evals_SSH.T[i],c=IPR.T[i],s=0.5,vmax=IPR.max(),vmin=IPR.min(), cmap="jet_r")
+cbar = colorbar(mapp)
+cbar.ax.set_ylabel('IPR', rotation=270)
+ax.set_xlabel('v/w')
+ax.set_ylabel('E')
+```
+
+```{python}
+IPR=sum(abs(evecs_KC)**4,2)
+
+fig, ax = plt.subplots(figsize=(7, 6))
+
+for i in range(2*NL):
+  mapp=ax.scatter(M,evals_KC.T[i],c=IPR.T[i],s=0.5,vmax=IPR.max(),vmin=IPR.min(), cmap="jet_r")
+cbar = colorbar(mapp)
+cbar.ax.set_ylabel('IPR', rotation=270)
+ax.set_xlabel('v/w')
+ax.set_ylabel('E')
+```
+
+We observe two eigenstates with an IPR close to one and energy close to zero when $|v/w|<1$, indicating localized eigenstates with (almost) zero energy. For the remaining eigenstates, we observe an IPR very close to zero, which implies bulk states that we can associate with the Bloch states of the band structures calculated previously. While strictly speaking, in this system, there is no band structure as we have not imposed periodic boundary conditions, considering a long enough chain allows us to approximate the eigenstates of the bulk with the Bloch eigenfunctions of the band structure. Another relevant observation is the simetry of the energy levels with respect to zero which is a consequence of the sublattice symmetry.
+
+Notice that in the previous example of the IPR, we made no clear specification of the position of the sites in the system to which the particle was distributed. This means that the IPR cannot tell us if the localized eigenstates are edge states. To address this limitation, we turn to the entanglement entropy.
+
+## Entanglement entropy
+
+Consider two systems $A$ and $B$ described by states $|\phi^A\rangle$ and $|\phi^B\rangle$ with their respective Hilbert space $\mathcal{H}_A$ and $\mathcal{H}_B$. Then, the compound system $A+B$ is accurately described by the tensor-product $\mathcal{H}_A\otimes\mathcal{H}_B$ whose basis states are of the form $|\phi^A\rangle\otimes|\phi^B\rangle$. A state $|\psi\rangle$ of the compound system is called pure if it can be written as $|\psi\rangle=|\phi^A\rangle\otimes|\phi^B\rangle$ for some $\varphi_{A/B}\in\mathcal{H}_{A/B}$. In any other case we call $|\psi\rangle$ an entangled state. For example $|\psi\rangle=|\phi^A_1\rangle\otimes|\phi^B_1\rangle+|\phi^A_2\rangle\otimes|\phi^B_2\rangle$ is in general an entangled state.
+
+Consider an entangled state $|\psi^{AB}\rangle$, we can then expand it as
+$$
+\begin{equation}
+|\psi^{AB}\rangle=\sum_{j=1}^d c_j |\phi_j^{A}\rangle\otimes |\phi_j^{B}\rangle. \label{eq : AB}
+\end{equation}
+$$
+
+This last expression is called the $\textit{Schmidt decomposition}$ of $|\psi^{AB}\rangle$ where $d$ is, at most, the dimension of the smaller subsystem. If we now wish to study only one of the subsystems, we can no longer describe it using a wave function because $|\psi^{AB}\rangle$ is not pure. Instead we turn our attention to the density matrix $\rho_{AB}=|\psi^{AB}\rangle\langle\psi^{AB}|$ and calculate its reduced state on A and B by taking the $\textit{parcial trace}$ over the subsystem as
+$$
+\rho_A=\text{Tr}_A(\rho_{AB})\equiv\sum_{j=1}^d |c_j|^2 |\phi_j^{A}\rangle\langle\phi_j^{A}|, 
+$$
+$$
+\rho_B=\text{Tr}_B(\rho_{AB})\equiv\sum_{j=1}^d |c_j|^2 |\phi_j^{B}\rangle\langle\phi_j^{B}|.
+$$
+
+The physical reason why both $\rho_A$ and $\rho_B$ use the same probability distribution $p_j=|c_j|^2$ stems from the fact that when we measure a particle in an entangled state, we colapse it to a state $|\phi^{A}\rangle\otimes |\phi^{B}\rangle$ with a probability $|c_j|^2$. This probability sets the state of A and B at the same time, and since this occurs when we measure any observable associated with subsystem A or B, it means that the probability of measuring such a state is the same when the state is entangled. As a corollary, since both $\rho_A$ and $\rho_B$ have the same probabilities, they also have the same Von Neumann entropy. This defines the entanglement entropy as
+$$
+S(\rho_B)=S(\rho_A)=-\text{Tr}\rho_A\ln\rho_A=-\sum_{i} p_i \ln p_i.
+$$
+
+In their paper @Ryu_2006 proposed that the entanglement entropy could be used to characterize edge states and, as a consequence, topological phases. They also propose a novel way to calculate it, by means of a $C$ Hamiltonian. 
+
+First calculate the eigenstates $\psi_\ell$ with energy $\epsilon_\ell<0$, we then calculate the density matrix of the Fermi sea as,
+$$
+P = \sum_{\epsilon_\ell<0} \psi_\ell \psi_\ell^{\dagger},
+$$
+
+and finaly we calculate the restriction of the P matrix to a subsystem. $P$ is called the correlation matrix. Notice that we have the liberty of defining the subsystems when we "cut" the density matrix:
+$$
+P=\begin{pmatrix} 
+C & \ast \\
+\ast & \ast 
+\end{pmatrix}
+$$
+
+In the next cell we calculate the eigenvalues of the $C$ Hamiltonian for the SSH chain, in this case we define the subsystems as both halfs of the chain when we cut it right through the middle.
+
+```{python}
+def C_Spectre(model):
+  Ek,evec=model.solve_all(eig_vectors=True)
+  nF=model.get_num_orbitals()//2 # 2 level system
+  P=np.sum([evec[l][:,None]*np.conjugate(evec[l]) for l in range(nF)],0)
+  C=P[0:nF,0:nF]
+  ζ=list(sort(np.linalg.eigvals(C)))
+  return ζ
+```
+
+```{python}
+ζ = [ C_Spectre(Kitaev_chain(NL=10,Δ=Δ,μ=μ)) for μ in M]
+ζ = real(np.array(ζ))
+
+fig, ax = plt.subplots(figsize=(7, 6))
+for L in ζ.T:
+  ax.scatter(M,L,s=1,c='black')
+  ax.set_ylim(-0.1,1.1)
+  ax.set_xlabel('$v/w$')
+  ax.set_ylabel('Spectre of $C$')
+  ax.grid(True)
+```
+
+```{python}
+ζ = [ C_Spectre(SSH_chain(NL=10,v=v)) for v in V]
+ζ = real(np.array(ζ))
+
+fig, ax = plt.subplots(figsize=(7, 6))
+for L in ζ.T:
+  ax.scatter(V,L,s=1,c='black')
+  ax.set_ylim(-0.1,1.1)
+  ax.set_xlabel('$v/w$')
+  ax.set_ylabel('Spectre of $C$')
+  ax.grid(True)
+```
+
+From its definition, $P$ has only two eigenvalues, namely 0 and 1, and the same set of eigen wave functions as the original Hamiltonian. These properties allow us to interpret the correlation matrix as a "Hamiltonian" called the $C$-Hamiltonian with periodic boundary conditions. We can observe how the $C-$ hamiltonian of the subsystem keeps both of these eigenvalues and as we aproach $|v/w|\rightarrow\infty$ all of the eigenvalues tend to 0 or 1. However, when we cut the system and obtain the matrix $C$, we allow for the formation of new states of this "hamiltonian" in the regime $|v/w|<1$. So the question arises: how to interpret this new eigenstates?
+
+ It is possible to solve analytically the system in the dimerized limit (for the SSH chain, this corresponds to $v=0$), and in this regime, Ryu and Hatsugai concluded that there existed two edge states with an eigenvalue $\zeta_\ell$ close to $1/2$. This is consistent with our previous calculations. Also, we can observe how these edge states tend to the bulk states $\zeta_\ell=0,1$ in pairs. That is, for every edge state with $\zeta_\ell>1/2$, there exists a partner with an eigenvalue equal to $1/2-\zeta_\ell$. This is a general consequence of chiral symmetry, with these edge states being chiral partners.
+
+If ${\zeta_\ell}$ are the eigenvalues of $C$, we can calculate the entanglement entropy
+$$
+S_A=-\sum_{\ell} \zeta_\ell \ln\zeta_\ell + (1-\zeta_\ell)\ln(1-\zeta_\ell).
+$$
+
+In this example we take advantge of the sublattice symettry of the SSH chain to calculate $S_A$ in an equivalent form as
+$$
+S_A=-2\sum_{\zeta_\ell\geq0.5} (\zeta_\ell \log(\zeta_\ell) + (1-\zeta_\ell)\log(1-\zeta_\ell)).
+$$
+
+```{python}
+def EEntropy(model):
+  Ek,evec=model.solve_all(eig_vectors=True)
+  nF=model.get_num_orbitals()//2 # Number of states on the Fermi sea
+  P=np.sum([evec[l][:,None]*np.conjugate(evec[l]) for l in range(nF)],0)
+  C=P[0:nF,0:nF]
+  ζ=sort(np.linalg.eigvals(C))[nF//2:nF] # Here we use chiral simmetry
+  ζ=np.array([z for z in ζ if(z!=0 and z!=1)]) # We remove the eigenvalues that dont contribute
+  SEE=-sum((1-ζ)*np.log(1-ζ)+ζ*np.log(ζ))
+  return 2*SEE
+```
+
+```{python}
+See = [ EEntropy(SSH_chain(NL=10,v=v)) for v in V]
+See = real(See)
+
+fig, ax = plt.subplots(figsize=(7, 6))
+ax.plot(V,See,c='black')
+ax.set_xlabel('$v/w$')
+ax.axhline(2*np.log(2),c='red')
+ax.set_ylabel('Entanglement entropy $S_A$')
+ax.grid(True)
+```
+
+```{python}
+See = [ EEntropy(Kitaev_chain(NL=10,Δ=Δ,μ=μ)) for μ in M]
+See = real(See)
+
+fig, ax = plt.subplots(figsize=(7, 6))
+ax.plot(M,See,c='black')
+ax.set_xlabel('$v/w$')
+ax.axhline(2*np.log(2),c='red')
+ax.set_ylabel('Entanglement entropy $S_A$')
+ax.grid(True)
+```
+
+According to Ryu and Hatsugai, the entanglement entropy in the thermodynamic limit is greater than or equal to $\log 2$ times the number of edges of the system. In this case we can see that $S_A$ goes under this inferior limit $2\ln 2$  around $v=\pm w$, indicating that both edge states disappear in this limit.
+
+## Zak's phase
+
+In order to say that this is a topological phase transition we must asociate each phase with a $\textit{topological invariant}$. A prime example of a topological invariant is the $\textit{Berry phase}$ also called the $\textit{geometric phase}$ which is a quantity that describes how a global phase accumulates as some state $|\psi\rangle$ is carried around a closed loop in a complex space. For example, if we consider a loop of states $\{|\psi_0\rangle, |\psi_1\rangle , \dots , |\psi_N\rangle\}$ where we set $|\psi_0\rangle=|\psi_N\rangle$. The Berry phase for this discrete loop is defined as
+$$
+\phi=-\arg( \langle\psi_0|\psi_1\rangle \langle\psi_1|\psi_2\rangle \cdots \langle\psi_{N-1}|\psi_0\rangle ).
+$$
+
+It can be easily seen that $\phi$ is a gauge invariant to the transformation $|\psi_n\rangle\rightarrow e^{i \alpha_n} |\psi_n\rangle$ because the ket $|\psi_n\rangle$ will cancel the phase $e^{i \alpha_n}$ carried by the bra $\langle \psi_n |$.  
+
+The Berry phase has a generalization for a continuous loop of states $\{ |\psi_\lambda\rangle ; \:\:\lambda\in[0,1] \}$ :
+$$
+\phi=\oint \langle u_\lambda| i\partial_\lambda u_\lambda\rangle \text{d}\lambda
+$$
+
+A proof of this expression can be found in @Vanderbilt_2018.
+
+Here we will calculate Zak's phase, which is defined as the Berry phase where $\mathcal{C}$ is the Brillouin Zone, which means
+$$
+\gamma=\int_{-\pi}^{\pi} \langle u_k^n| i \partial_k |u_k^n\rangle \text{d} k,
+$$
+
+where $u_k^n$ is the amplitude of the Bloch wavefunction with crystaline momentum $k$ associated with the $n$-th band. 
+
+```{python}
+def Zak(H): # Given the hamiltonian in k space, calculates the Zak phase
+    kpath = np.linspace(-pi,pi,100,endpoint=False)
+    Ek,vk = eig(H(kpath[-1]))
+    uN    = vk.T[Ek<0]
+    Ek,vk = eig(H(kpath[0]))
+    u0    = vk.T[Ek<0]
+    Prod  = np.vdot(uN,u0)
+    un1   = u0
+    for k in kpath[1:]:
+        Ek,vk = eig(H(k))
+        un   = vk.T[Ek<0]
+        Prod  = Prod*np.vdot(un1,un)
+        un1   = un
+    ϕ = -imag( log(Prod) )
+    if(ϕ<-10**(-10)): ϕ=ϕ+2*np.pi # We use the log branch [0,2*pi) with 10 digits of resolution
+    return ϕ
+```
+
+```{python}
+def HamSSH(v,w=1): # We define the SSH hamiltonian in k space
+    def H(k):
+        H = np.array([[            0, v+w*exp(-1J*k)],
+                      [v+w*exp(1J*k),              0]])
+        return H
+    return H
+
+V=np.linspace(-2,2,500)
+Lzak=[Zak(HamSSH(v)) for v in V]
+
+fig, ax = plt.subplots(figsize=(7, 6))
+ax.plot(V,Lzak,c='green')
+ax.set_xlabel('$v/w$')
+ax.set_ylabel('Zak phase')
+ax.grid(True)
+```
+
+```{python}
+def Ham_Kitaev_Chain(μ,Δ,t=1):
+    def H(k):
+        H = np.array([[           -2*t*np.cos(k)-μ, -2j*Δ*sin(k)],
+                      [ 2j*Δ*sin(k),              2*t*np.cos(k)+μ]])
+        return H
+    return H
+
+M=np.linspace(-4,4,500)
+Lzak=[Zak(Ham_Kitaev_Chain(μ,Δ=0.5)) for μ in M]
+
+fig, ax = plt.subplots(figsize=(7, 6))
+ax.plot(M,Lzak,c='green')
+ax.set_xlabel('$μ/t$')
+ax.set_ylabel('Zak phase')
+ax.grid(True)
+```
+
+
+
+We can observe how the Zak phase is 0 in the trivial regime and is $\pi$ in the topological regime. 
+

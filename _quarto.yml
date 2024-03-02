@@ -3,13 +3,12 @@ project:
   output-dir: docs
 
 book:
-  title: "Topological Superconductors"
+  title: "Topological Phases of Matter"
   author: "Emmanuel Calderón"
   date: "9/2/2024"
   chapters:
     - index.qmd
-    - SSH.qmd
-    - Kitaev_Chain.qmd
+    - 1D_Systems.qmd
     - references.qmd
 
 bibliography: references.bib
