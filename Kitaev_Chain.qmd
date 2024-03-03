@@ -1,4 +1,25 @@
-# Kitaev chain
+# Cosas para el futuro
+
+::: {.callout-note appearance="simple" icon=false collapse="true"}
+### Chiral symmetry
+The underlying idea is that there exists a unitary and hermitian operator $\hat{\Gamma}$ such that 
+$$
+\hat{\Gamma}\hat{H}\hat{\Gamma}^\gamma = -\hat{H}.
+$$ 
+
+For the SSH system one possible $\hat{\Gamma}$ is $\hat\Gamma=\hat{P}_A-\hat{P}_B$ with $\hat{P}_{A/B}$ the projector on the sublatice $A$ (B). 
+
+For the Kitaev chain operator, we can define $C=\sigma_x K$ with $\sigma_x$ the first Pauli matrix. $C$ exchanges the particle sector with the hole sector of the hamiltonian $\mathbfcal{H}(\vb k)$ an results in
+$$
+C \mathbfcal{H}(\vb k) C^{-1} = -\mathbfcal{H}(-\vb k),
+$$
+
+which then implies that
+$$
+\hat{H}_{\text{Mean Field}} = \frac{1}{2} \sum_{\vb{k},s_1,s_2} \begin{pmatrix} \hat{c}^\dagger_{\vb k,s_1} & \hat{c}_{-\vb k,s_1} \end{pmatrix} \mathbfcal{H}(\vb k) \begin{pmatrix} \hat{c}^\dagger_{\vb k,s_2} \\ \hat{c}_{-\vb k,s_2} \end{pmatrix}
+$$
+
+:::
 
 In this section we begin to study topological superconductivity and 
 
