@@ -505,7 +505,7 @@ C & \ast \\
 \end{pmatrix}
 $$
 
-In the next cell we calculate the eigenvalues of the $C$ Hamiltonian for the SSH chain, in this case we define the subsystems as both halfs of the chain when we cut it right through the middle.
+In the next cells we calculate the eigenvalues of the $C$ Hamiltonian for the SSH and the Kitaev chain, in this case we define the subsystems as both halfs of the chain when we cut it right through the middle.
 
 ```{python}
 def C_Spectre(model):
@@ -556,7 +556,7 @@ plt.show()
 ```
 :::
 
-From its definition, $P$ has only two eigenvalues, namely 0 and 1, and the same set of eigen wave functions as the original Hamiltonian. These properties allow us to interpret the correlation matrix as a "Hamiltonian" called the $C$-Hamiltonian with periodic boundary conditions. We can observe how the $C-$ hamiltonian of the subsystem keeps both of these eigenvalues and as we aproach $|v/w|\rightarrow\infty$ all of the eigenvalues tend to 0 or 1. However, when we cut the system and obtain the matrix $C$, we allow for the formation of new states of this "hamiltonian" in the regime $|v/w|<1$. So the question arises: how to interpret this new eigenstates?
+From its definition, $P$ has only two eigenvalues, namely 0 and 1, and the same set of eigen wave functions as the original Hamiltonian. These properties allow us to interpret the correlation matrix as a "Hamiltonian" called the $C$-Hamiltonian with periodic boundary conditions. We can observe how the $C-$ hamiltonian of the subsystem keeps both of these eigenvalues and as we aproach $|v/w|\rightarrow\infty$ all of the eigenvalues tend to 0 or 1. However, when we cut the system and obtain the matrix $C$, we allow for the formation of new states of this "hamiltonian" in the regime $|v/w|<1$ and $|\mu/t|<2$. So the question arises: how to interpret this new eigenstates?
 
  It is possible to solve analytically the system in the dimerized limit (for the SSH chain this corresponds to $v=0$), and in this regime, Ryu and Hatsugai concluded that there existed two edge states with an eigenvalue $\zeta_\ell$ close to $1/2$. This is consistent with our previous calculations. Also, we can observe how these edge states tend to the bulk states $\zeta_\ell=0,1$ in pairs. That is, for every edge state with $\zeta_\ell>1/2$, there exists a partner with an eigenvalue equal to $1/2-\zeta_\ell$. This is a general consequence of chiral symmetry, with these edge states being chiral partners.
 
@@ -565,7 +565,7 @@ $$
 S_A=-\sum_{\ell} \zeta_\ell \ln\zeta_\ell + (1-\zeta_\ell)\ln(1-\zeta_\ell).
 $$
 
-In this example we take advantge of the sublattice symettry of the SSH chain to calculate $S_A$ in an equivalent form as
+In this example we take advantge of the chiral symetry of both systems to calculate $S_A$ in an equivalent form as
 $$
 S_A=-2\sum_{\zeta_\ell\geq0.5} (\zeta_\ell \log(\zeta_\ell) + (1-\zeta_\ell)\log(1-\zeta_\ell)).
 $$
@@ -621,7 +621,7 @@ plt.show()
 ```
 :::
 
-According to Ryu and Hatsugai, the entanglement entropy in the thermodynamic limit is greater than or equal to $\log 2$ times the number of edges of the system. In this case we can see that $S_A$ goes under this inferior limit $2\ln 2$  around $v=\pm w$, indicating that both edge states disappear in this limit.
+According to Ryu and Hatsugai, the entanglement entropy in the thermodynamic limit is greater than or equal to $\log 2$ times the number of edges of the system. In this case we can see that $S_A$ goes under this inferior limit $2\ln 2$  around $v=\pm w$ for the SSH model and in $\mu=\pm 2t$ for the Kitaev chain, indicating that both edge states disappear in this limit.
 
 ## Zak's phase
 
