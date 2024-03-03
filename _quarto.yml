@@ -9,6 +9,7 @@ book:
   chapters:
     - index.qmd
     - 1D_Systems.qmd
+    - Hexagonal.qmd
     - references.qmd
 
 bibliography: references.bib

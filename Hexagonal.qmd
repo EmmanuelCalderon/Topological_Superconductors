@@ -1,0 +1,113 @@
+# 2D topological systems
+
+```{python}
+from pythtb import *
+from pylab import *
+
+a1=np.array([3/2,-sqrt(3)/2])
+a2=np.array([3/2,sqrt(3)/2])
+
+lat=np.array([a1,a2])
+orb=[[1/3,1/3],[2/3,2/3]]
+
+def Kitaev_2D(Jx,Jy,Jz):
+
+    K2D=tb_model(2,2,lat,orb)
+    K2D.set_hop(Jx,0,1,[0,0]) 
+    K2D.set_hop(Jy,1,0,[0,1])
+    K2D.set_hop(Jz,1,0,[1,0])
+    return K2D
+
+Kitaev_2D(1,1,1).visualize(1,0)
+```
+
+
+```{python}
+import itertools 
+from mpl_toolkits.mplot3d import axes3d
+from matplotlib import cm
+from matplotlib.colors import ListedColormap
+
+Jx,Jy,Jz=(0.5,0.3,0.2)
+
+fig = plt.figure()
+ax = fig.add_subplot(111, projection='3d')
+
+
+Nk=100
+
+Kx=np.linspace(-1,1,Nk)
+Ky=np.linspace(-1,1,Nk)
+L_k = np.array(list(itertools.product(Kx, Ky)))
+L_Ek = Kitaev_2D(Jx,Jy,Jz).solve_all(L_k)
+Band1=L_Ek[0].reshape((Nk,Nk))
+Band2=L_Ek[1].reshape((Nk,Nk))
+Kx, Ky = np.meshgrid(Kx, Ky)
+
+surf1=ax.plot_surface(Kx, Ky, Band1, rstride=1, cstride=1, cmap=cm.viridis, vmin=-1, vmax=1)   #surface 1
+surf2=ax.plot_surface(Kx, Ky, Band2, rstride=1, cstride=1, cmap=cm.viridis, vmin=-1, vmax=1)  #surface 2
+
+fig.colorbar(surf1,shrink=0.5, aspect=5)
+
+plt.show()
+```
+
+
+```{python}
+def Band_gap(model,Nk=100):
+    Kx=np.linspace(-1/2,1/2,Nk)
+    Ky=np.linspace(-1/2,1/2,Nk)
+    L_k = np.array(list(itertools.product(Kx, Ky)))
+    L_Ek = model.solve_all(L_k)
+    return min(L_Ek[1])-max(L_Ek[0])
+
+M=np.array([[1/2,1,-1/2],
+            [-1/2,1,-1/2],
+            [0,1,1]])
+
+def Kitaev_phase_triag(jpx,jpy,Nk):
+    jx,jy,jz = matmul(M,np.array([jpx,0,jpy]))+np.array([1/2,1/2,0])
+    return Band_gap(Kitaev_2D(jx,jy,jz),Nk=Nk)
+```
+
+```{python}
+Jxlist=np.linspace(-1,1,10)
+Jylist=np.linspace(0,1,10)
+Phase_diag=[ [ Kitaev_phase_triag(Jx,Jy,Nk=10) for Jx in Jxlist] for Jy in Jylist ]
+```
+
+```{python}
+import numpy as np
+import matplotlib.pyplot as plt
+from matplotlib.patches import Polygon
+
+fig,ax=plt.subplots(1,1)
+
+X, Y = np.meshgrid(Jxlist, Jylist)
+Z = Phase_diag
+#Z = Phase_space50
+cp = ax.contourf(X, Y, Z,levels=np.linspace(0,2,1000),cmap='plasma')
+fig.colorbar(cp,cmap='plasma',ticks=linspace(0,2,5)) # Add a colorbar to a plot
+ax.set_title('Diagrama de fases del modelo hexagonal de Kitaev.\n $J_z=1$', fontsize=12) #  Brecha de energía')
+ax.set_ylabel('Brecha de energía')
+ax.yaxis.set_label_position("right")
+ax.set_xlabel('$J_x=1$'+60*' '+ '$J_y=1$', fontsize=12)
+ax.tick_params(axis='y', which='both', left=False, labelleft=False)
+ax.tick_params(axis='x', which='both', bottom=False, labelbottom=False)
+
+y = np.array([[1,0], [1,1], [0,1]])
+p = Polygon(y, facecolor = 'w')
+ax.add_patch(p)
+
+y = np.array([[-1,0], [-1,1], [0,1]])
+p = Polygon(y, facecolor = 'w')
+ax.add_patch(p)
+
+ax.spines['top'].set_visible(False)
+ax.spines['right'].set_visible(False)
+ax.spines['bottom'].set_visible(False)
+ax.spines['left'].set_visible(False)
+
+#plt.subplots_adjust(left=0.1, right=0.1, top=0.1, bottom=0.1)
+plt.show()
+```

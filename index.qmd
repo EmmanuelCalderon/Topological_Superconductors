@@ -1,4 +1,4 @@
 # Preface {.unnumbered}
 
-In this website we present a series of codes designed to study topological superconductors.
+In this website we present a series of codes designed to study topological matter.
 

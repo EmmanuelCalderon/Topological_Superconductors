@@ -106,7 +106,7 @@ A relevant observation of this model is that the sites with an onsite energy $-\
 
 ## Band structures and gap closings 
 
-Now we calculate the SSH band structure for different values of $v/w$ over the first Brillouin zone. 
+Now we calculate the band structure of the SSH model and the Kitaev chain for different values of $v/w$ and $μ/t$ over the first Brillouin zone. 
 
 ::: {.callout-note appearance="simple" icon=false collapse="true"}
 ## SSH band evolution visualization
@@ -282,13 +282,13 @@ Kitaev_chain(NL=10).visualize(0,1)
 
 :::
 
-In the next cell, we calculate the eigenstates of both finite systems with a length of 100 sites.
+In the next cell, we calculate the eigenstates of both finite systems with a length of 50 sites.
 
 ```{python}
 evals_SSH,evecs_SSH,ed_SSH=[],[],[]
 V = linspace(-2,2,301)
 for v in V:
-  model = SSH_chain(v=v,NL=100)
+  model = SSH_chain(v=v,NL=50)
   Ek,evec = model.solve_all(eig_vectors=True)
   evals_SSH.append(Ek)
   evecs_SSH.append(evec)
@@ -300,7 +300,7 @@ evals_KC,evecs_KC,ed_KC=[],[],[]
 Δ = 0.5
 M = linspace(-4,4,301)
 for μ in M:
-  model = Kitaev_chain(μ=μ,Δ=Δ,NL=100)
+  model = Kitaev_chain(μ=μ,Δ=Δ,NL=50)
   Ek,evec = model.solve_all(eig_vectors=True)
   evals_KC.append(Ek)
   evecs_KC.append(evec)
@@ -453,7 +453,7 @@ for i in range(2*NL):
   mapp=ax.scatter(M,evals_KC.T[i],c=IPR.T[i],s=0.5,vmax=IPR.max(),vmin=IPR.min(), cmap="jet_r")
 cbar = colorbar(mapp)
 cbar.ax.set_ylabel('IPR', rotation=270)
-ax.set_xlabel('v/w')
+ax.set_xlabel('μ/t')
 ax.set_ylabel('E')
 
 plt.show()
@@ -521,7 +521,7 @@ def C_Spectre(model):
 ### C-Hamiltonian spectre for SSH chain
 ```{python}
 V = linspace(-2,2,301)
-ζ = [ C_Spectre(SSH_chain(NL=100,v=v)) for v in V]
+ζ = [ C_Spectre(SSH_chain(NL=50,v=v)) for v in V]
 ζ = real(np.array(ζ))
 
 fig, ax = plt.subplots(figsize=(6, 5))
@@ -541,14 +541,14 @@ plt.show()
 ```{python}
 Δ=0.5
 M = linspace(-4,4,301)
-ζ = [ C_Spectre(Kitaev_chain(NL=100,Δ=Δ,μ=μ)) for μ in M]
+ζ = [ C_Spectre(Kitaev_chain(NL=50,Δ=Δ,μ=μ)) for μ in M]
 ζ = real(np.array(ζ))
 
 fig, ax = plt.subplots(figsize=(6, 5))
 for L in ζ.T:
   ax.scatter(M,L,s=1,c='black')
   ax.set_ylim(-0.1,1.1)
-  ax.set_xlabel('$v/w$')
+  ax.set_xlabel('$μ/t$')
   ax.set_ylabel('Spectre of $C$')
   ax.grid(True)
 
@@ -586,7 +586,7 @@ def EEntropy(model):
 ### Entanglement entropy for SSH chain
 ```{python}
 V = linspace(-2,2,301)
-See = [ EEntropy(SSH_chain(NL=100,v=v)) for v in V]
+See = [ EEntropy(SSH_chain(NL=50,v=v)) for v in V]
 See = real(See)
 
 fig, ax = plt.subplots(figsize=(7, 6))
@@ -606,13 +606,13 @@ plt.show()
 ```{python}
 Δ=0.5
 M = linspace(-4,4,301)
-See = [ EEntropy(Kitaev_chain(NL=100,Δ=Δ,μ=μ)) for μ in M]
+See = [ EEntropy(Kitaev_chain(NL=50,Δ=Δ,μ=μ)) for μ in M]
 See = real(See)
 
 fig, ax = plt.subplots(figsize=(7, 6))
 ax.scatter(M,See,c='black',s=1)
 ax.set_xlabel('$μ/t$')
-ax.set_ylim(0.2,1.7)
+ax.set_ylim(0.8,1.5)
 ax.axhline(2*np.log(2),c='red')
 ax.set_ylabel('Entanglement entropy $S_A$')
 ax.grid(True)
