@@ -37,13 +37,6 @@ def Haldane_model(t2,phi=0,M=0,tx=1,ty=1,tz=1):
 
 Haldane_model(1j,phi=0.5).visualize(1,0,color_hoppings=True)
 ```
-```{python}
-Graph_AC_Fin(1j,phi=0.5,M=-1)._nspin
-```
-
-```{python}
-Graph_AC_Fin(1,phi=pi,M=0.3).visualize(0,1)
-```
 
 ```{python}
 from pythtb import *
