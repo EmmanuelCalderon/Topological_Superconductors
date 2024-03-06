@@ -1,5 +1,12 @@
 # 2D topological systems
 
+New objectives: Programs for Z2 invariant and Chern number. Keep on checking IPR and EE.
+
+
+## Haldane model
+
+We begin by constructing the Haldane model for graphene.
+
 ```{python}
 from pythtb import *
 from pylab import *
@@ -10,104 +17,149 @@ a2=np.array([3/2,sqrt(3)/2])
 lat=np.array([a1,a2])
 orb=[[1/3,1/3],[2/3,2/3]]
 
-def Kitaev_2D(Jx,Jy,Jz):
+def Haldane_model(t2,phi=0,M=0,tx=1,ty=1,tz=1):
 
     K2D=tb_model(2,2,lat,orb)
-    K2D.set_hop(Jx,0,1,[0,0]) 
-    K2D.set_hop(Jy,1,0,[0,1])
-    K2D.set_hop(Jz,1,0,[1,0])
+    K2D.set_hop(tx,0,1,[0,0]) 
+    K2D.set_hop(ty,1,0,[0,1])
+    K2D.set_hop(tz,1,0,[1,0])
+
+    K2D.set_hop(t2*exp(1j*phi),1,1,[-1,0])
+    K2D.set_hop(t2*exp(1j*phi),1,1,[0,1])
+    K2D.set_hop(t2*exp(1j*phi),1,1,[1,-1])
+
+    K2D.set_hop(t2*exp(-1j*phi),0,0,[-1,0])
+    K2D.set_hop(t2*exp(-1j*phi),0,0,[0,1])
+    K2D.set_hop(t2*exp(-1j*phi),0,0,[1,-1])
+    K2D.set_onsite([M,-M])
+
     return K2D
 
-Kitaev_2D(1,1,1).visualize(1,0)
+Haldane_model(1j,phi=0.5).visualize(1,0,color_hoppings=True)
+```
+```{python}
+Graph_AC_Fin(1j,phi=0.5,M=-1)._nspin
 ```
 
+```{python}
+Graph_AC_Fin(1,phi=pi,M=0.3).visualize(0,1)
+```
 
 ```{python}
-import itertools 
-from mpl_toolkits.mplot3d import axes3d
-from matplotlib import cm
-from matplotlib.colors import ListedColormap
+from pythtb import *
+from pylab import *
 
-Jx,Jy,Jz=(0.5,0.3,0.2)
+def Graph_AC_Fin(t2,phi,Lx=2,Ly=2,M=0,tx=1,ty=1,tz=1):
+  a1=np.array([3/2,-sqrt(3)/2])
+  a2=np.array([3/2,sqrt(3)/2])
 
-fig = plt.figure()
-ax = fig.add_subplot(111, projection='3d')
+  lat=np.array([a1,a2])
+  orb=[[1/3,1/3],[2/3,2/3]]
 
+  K2D=tb_model(2,2,lat,orb)
+  K2D.set_hop(tx,0,1,[0,0]) 
+  K2D.set_hop(ty,1,0,[0,1])
+  K2D.set_hop(tz,1,0,[1,0])
 
-Nk=100
+  K2D.set_hop(t2*exp(1j*phi),1,1,[-1,0])
+  K2D.set_hop(t2*exp(1j*phi),1,1,[0,1])
+  K2D.set_hop(t2*exp(1j*phi),1,1,[1,-1])
 
-Kx=np.linspace(-1,1,Nk)
-Ky=np.linspace(-1,1,Nk)
-L_k = np.array(list(itertools.product(Kx, Ky)))
-L_Ek = Kitaev_2D(Jx,Jy,Jz).solve_all(L_k)
-Band1=L_Ek[0].reshape((Nk,Nk))
-Band2=L_Ek[1].reshape((Nk,Nk))
-Kx, Ky = np.meshgrid(Kx, Ky)
+  K2D.set_hop(t2*exp(1j*phi),0,0,[1,0])
+  K2D.set_hop(t2*exp(1j*phi),0,0,[0,-1])
+  K2D.set_hop(t2*exp(1j*phi),0,0,[-1,1])
+  K2D.set_onsite([M,-M])
 
-surf1=ax.plot_surface(Kx, Ky, Band1, rstride=1, cstride=1, cmap=cm.viridis, vmin=-1, vmax=1)   #surface 1
-surf2=ax.plot_surface(Kx, Ky, Band2, rstride=1, cstride=1, cmap=cm.viridis, vmin=-1, vmax=1)  #surface 2
+  K2D = K2D.make_supercell([[1,-2],[1,1]])
 
-fig.colorbar(surf1,shrink=0.5, aspect=5)
+  return K2D.cut_piece(Lx,0).cut_piece(Ly,1)
 
+Graph_AC_Fin(1,pi/2,M=0.3).visualize(0,1,color_hoppings=True)
+```
+
+```{python}
+def Graph_Ribbon_AC(t2,phi,L,M=0,tx=1,ty=1,tz=1):
+  a1=np.array([3/2,-sqrt(3)/2])
+  a2=np.array([3/2,sqrt(3)/2])
+
+  lat=np.array([a1,a2])
+  orb=[[1/3,1/3],[2/3,2/3]]
+
+  K2D=tb_model(2,2,lat,orb)
+  K2D.set_hop(tx,0,1,[0,0]) 
+  K2D.set_hop(ty,1,0,[0,1])
+  K2D.set_hop(tz,1,0,[1,0])
+
+  K2D.set_hop(t2*exp(1j*phi),1,1,[-1,0])
+  K2D.set_hop(t2*exp(1j*phi),1,1,[0,1])
+  K2D.set_hop(t2*exp(1j*phi),1,1,[1,-1])
+
+  K2D.set_hop(t2*exp(1j*phi),0,0,[1,0])
+  K2D.set_hop(t2*exp(1j*phi),0,0,[0,-1])
+  K2D.set_hop(t2*exp(1j*phi),0,0,[-1,1])
+  K2D.set_onsite([M,-M])
+
+  K2D = K2D.make_supercell([[1,-2],[1,1]])
+
+  return K2D.cut_piece(L,0)
+
+Graph_Ribbon_AC(1.,phi=pi/2,L=3).visualize(0,1)
+```
+
+```{python}
+from pythtb import *
+from pylab import *
+
+def Graph_Ribbon_ZZ(t2,phi,L=2,M=0,tx=1,ty=1,tz=1):
+  a1=np.array([3/2,-sqrt(3)/2])
+  a2=np.array([3/2,sqrt(3)/2])
+
+  lat=np.array([a1,a2])
+  orb=[[1/3,1/3],[2/3,2/3]]
+
+  K2D=tb_model(2,2,lat,orb)
+  K2D.set_hop(tx,0,1,[0,0]) 
+  K2D.set_hop(ty,1,0,[0,1])
+  K2D.set_hop(tz,1,0,[1,0])
+
+  K2D.set_hop(t2*exp(1j*phi),1,1,[-1,0])
+  K2D.set_hop(t2*exp(1j*phi),1,1,[0,1])
+  K2D.set_hop(t2*exp(1j*phi),1,1,[1,-1])
+
+  K2D.set_hop(t2*exp(1j*phi),0,0,[1,0])
+  K2D.set_hop(t2*exp(1j*phi),0,0,[0,-1])
+  K2D.set_hop(t2*exp(1j*phi),0,0,[-1,1])
+  
+  K2D.set_onsite([M,-M])
+
+  K2D = K2D.make_supercell([[1,1],[-1,1]])
+
+  return K2D.cut_piece(L,0)
+
+Graph_Ribbon_ZZ(1,pi/2,L=2).visualize(0,1,color_hoppings=True)
+```
+
+```{python}
+k = linspace(0,1,101)
+Ek = Graph_Ribbon_ZZ(0.1,phi=pi/2,M=0.4,L=100).solve_all(k)
+plot(k,Ek.T,c='k',alpha=0.3);
+plt.show()
+Ek = Graph_Ribbon_AC(0.1,phi=pi/2,M=1.,L=100).solve_all(k)
+plot(k,Ek.T,c='k',alpha=0.3);
 plt.show()
 ```
 
-
 ```{python}
-def Band_gap(model,Nk=100):
-    Kx=np.linspace(-1/2,1/2,Nk)
-    Ky=np.linspace(-1/2,1/2,Nk)
-    L_k = np.array(list(itertools.product(Kx, Ky)))
-    L_Ek = model.solve_all(L_k)
-    return min(L_Ek[1])-max(L_Ek[0])
-
-M=np.array([[1/2,1,-1/2],
-            [-1/2,1,-1/2],
-            [0,1,1]])
-
-def Kitaev_phase_triag(jpx,jpy,Nk):
-    jx,jy,jz = matmul(M,np.array([jpx,0,jpy]))+np.array([1/2,1/2,0])
-    return Band_gap(Kitaev_2D(jx,jy,jz),Nk=Nk)
+phi_path = linspace(0,2*pi,100)
+t2_path = linspace(0,2,100)
+Ene = [ Graph_AC_Fin(0.1,phi=phi,M=0.2,Lx=10,Ly=5).solve_all() for phi in phi_path]
+Ene = np.array(Ene)
 ```
 
 ```{python}
-Jxlist=np.linspace(-1,1,10)
-Jylist=np.linspace(0,1,10)
-Phase_diag=[ [ Kitaev_phase_triag(Jx,Jy,Nk=10) for Jx in Jxlist] for Jy in Jylist ]
+for L in Ene.T:
+  plot(phi_path,L,c='k',alpha=0.1)
 ```
 
-```{python}
-import numpy as np
-import matplotlib.pyplot as plt
-from matplotlib.patches import Polygon
 
-fig,ax=plt.subplots(1,1)
 
-X, Y = np.meshgrid(Jxlist, Jylist)
-Z = Phase_diag
-#Z = Phase_space50
-cp = ax.contourf(X, Y, Z,levels=np.linspace(0,2,1000),cmap='plasma')
-fig.colorbar(cp,cmap='plasma',ticks=linspace(0,2,5)) # Add a colorbar to a plot
-ax.set_title('Diagrama de fases del modelo hexagonal de Kitaev.\n $J_z=1$', fontsize=12) #  Brecha de energía')
-ax.set_ylabel('Brecha de energía')
-ax.yaxis.set_label_position("right")
-ax.set_xlabel('$J_x=1$'+60*' '+ '$J_y=1$', fontsize=12)
-ax.tick_params(axis='y', which='both', left=False, labelleft=False)
-ax.tick_params(axis='x', which='both', bottom=False, labelbottom=False)
-
-y = np.array([[1,0], [1,1], [0,1]])
-p = Polygon(y, facecolor = 'w')
-ax.add_patch(p)
-
-y = np.array([[-1,0], [-1,1], [0,1]])
-p = Polygon(y, facecolor = 'w')
-ax.add_patch(p)
-
-ax.spines['top'].set_visible(False)
-ax.spines['right'].set_visible(False)
-ax.spines['bottom'].set_visible(False)
-ax.spines['left'].set_visible(False)
-
-#plt.subplots_adjust(left=0.1, right=0.1, top=0.1, bottom=0.1)
-plt.show()
-```

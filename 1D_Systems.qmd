@@ -25,7 +25,7 @@ def SSH_model(v=1,w=1):
   SSH.set_onsite([0,0])
   return SSH
 
-SSH_model().visualize(0,1)
+SSH_model(v=0.5).visualize(0,1)
 ```
 :::
 
@@ -98,7 +98,7 @@ def Kitaev_1D(μ=0,t=1,Δ=1):
   KC.set_onsite([μ,-μ])
   return KC
 
-Kitaev_1D().visualize(0,1)
+Kitaev_1D(Δ=0.5,μ=-0.3).visualize(0,1)
 ```
 
 A relevant observation of this model is that the sites with an onsite energy $-\mu$ ($\mu$) and hoppings $-t$ ($t$) are asociated with electrons (holes).
@@ -251,15 +251,16 @@ For this matter we now consider finite chunks of both the SSH model and the Kita
 ### SSH finite chain
 ```{python}
 def SSH_chain(NL,v=1,w=1):
-  lat=[[1.0]]
-  sites=[[0.0],[0.5]]
-  SSH=tb_model(1,1,lat,sites)
-  SSH.set_hop(w,1,0,[1])
-  SSH.set_hop(v,0,1,[0])
+  lat=[[2,0],[0,2]]
+  sites=[[0,0],[0.5,0.5]]
+  SSH=tb_model(1,2,lat,sites,per=[0])
+  SSH.set_hop(w,1,0,[1,0])
+  SSH.set_hop(v,0,1,[0,0])
   SSH.set_onsite([0,0])
   return SSH.cut_piece(NL,0)
 
-SSH_chain(NL=10).visualize(0)
+(fig,ax)=SSH_chain(NL=10,v=0.5).visualize(0,1)
+#ax.set_ylim(-1,2)
 ```
 :::
 
@@ -277,7 +278,7 @@ def Kitaev_chain(NL,μ=0,t=1,Δ=1):
   KC.set_onsite([μ,-μ])
   return KC.cut_piece(NL,0)
 
-Kitaev_chain(NL=10).visualize(0,1)
+Kitaev_chain(NL=10,Δ=0.5).visualize(0,1)
 ```
 
 :::

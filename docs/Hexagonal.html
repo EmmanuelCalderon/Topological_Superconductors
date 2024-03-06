@@ -171,7 +171,13 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
 <!-- margin-sidebar -->
     <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
-        
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">Table of contents</h2>
+   
+  <ul>
+  <li><a href="#haldane-model" id="toc-haldane-model" class="nav-link active" data-scroll-target="#haldane-model"><span class="header-section-number">2.1</span> Haldane model</a></li>
+  </ul>
+</nav>
     </div>
 <!-- main -->
 <main class="content" id="quarto-document-content">
@@ -195,7 +201,11 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </header>
 
 
-<div id="dbc8d161" class="cell" data-execution_count="1">
+<p>New objectives: Programs for Z2 invariant and Chern number. Keep on checking IPR and EE.</p>
+<section id="haldane-model" class="level2" data-number="2.1">
+<h2 data-number="2.1" class="anchored" data-anchor-id="haldane-model"><span class="header-section-number">2.1</span> Haldane model</h2>
+<p>We begin by constructing the Haldane model for graphene.</p>
+<div id="e3693e69" class="cell" data-execution_count="1">
 <details class="code-fold">
 <summary>Code</summary>
 <div class="sourceCode cell-code" id="cb1"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1"></a><span class="im">from</span> pythtb <span class="im">import</span> <span class="op">*</span></span>
@@ -207,137 +217,204 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb1-7"><a href="#cb1-7"></a>lat<span class="op">=</span>np.array([a1,a2])</span>
 <span id="cb1-8"><a href="#cb1-8"></a>orb<span class="op">=</span>[[<span class="dv">1</span><span class="op">/</span><span class="dv">3</span>,<span class="dv">1</span><span class="op">/</span><span class="dv">3</span>],[<span class="dv">2</span><span class="op">/</span><span class="dv">3</span>,<span class="dv">2</span><span class="op">/</span><span class="dv">3</span>]]</span>
 <span id="cb1-9"><a href="#cb1-9"></a></span>
-<span id="cb1-10"><a href="#cb1-10"></a><span class="kw">def</span> Kitaev_2D(Jx,Jy,Jz):</span>
+<span id="cb1-10"><a href="#cb1-10"></a><span class="kw">def</span> Haldane_model(t2,phi<span class="op">=</span><span class="dv">0</span>,M<span class="op">=</span><span class="dv">0</span>,tx<span class="op">=</span><span class="dv">1</span>,ty<span class="op">=</span><span class="dv">1</span>,tz<span class="op">=</span><span class="dv">1</span>):</span>
 <span id="cb1-11"><a href="#cb1-11"></a></span>
 <span id="cb1-12"><a href="#cb1-12"></a>    K2D<span class="op">=</span>tb_model(<span class="dv">2</span>,<span class="dv">2</span>,lat,orb)</span>
-<span id="cb1-13"><a href="#cb1-13"></a>    K2D.set_hop(Jx,<span class="dv">0</span>,<span class="dv">1</span>,[<span class="dv">0</span>,<span class="dv">0</span>]) </span>
-<span id="cb1-14"><a href="#cb1-14"></a>    K2D.set_hop(Jy,<span class="dv">1</span>,<span class="dv">0</span>,[<span class="dv">0</span>,<span class="dv">1</span>])</span>
-<span id="cb1-15"><a href="#cb1-15"></a>    K2D.set_hop(Jz,<span class="dv">1</span>,<span class="dv">0</span>,[<span class="dv">1</span>,<span class="dv">0</span>])</span>
-<span id="cb1-16"><a href="#cb1-16"></a>    <span class="cf">return</span> K2D</span>
-<span id="cb1-17"><a href="#cb1-17"></a></span>
-<span id="cb1-18"><a href="#cb1-18"></a>Kitaev_2D(<span class="dv">1</span>,<span class="dv">1</span>,<span class="dv">1</span>).visualize(<span class="dv">1</span>,<span class="dv">0</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb1-13"><a href="#cb1-13"></a>    K2D.set_hop(tx,<span class="dv">0</span>,<span class="dv">1</span>,[<span class="dv">0</span>,<span class="dv">0</span>]) </span>
+<span id="cb1-14"><a href="#cb1-14"></a>    K2D.set_hop(ty,<span class="dv">1</span>,<span class="dv">0</span>,[<span class="dv">0</span>,<span class="dv">1</span>])</span>
+<span id="cb1-15"><a href="#cb1-15"></a>    K2D.set_hop(tz,<span class="dv">1</span>,<span class="dv">0</span>,[<span class="dv">1</span>,<span class="dv">0</span>])</span>
+<span id="cb1-16"><a href="#cb1-16"></a></span>
+<span id="cb1-17"><a href="#cb1-17"></a>    K2D.set_hop(t2<span class="op">*</span>exp(<span class="ot">1j</span><span class="op">*</span>phi),<span class="dv">1</span>,<span class="dv">1</span>,[<span class="op">-</span><span class="dv">1</span>,<span class="dv">0</span>])</span>
+<span id="cb1-18"><a href="#cb1-18"></a>    K2D.set_hop(t2<span class="op">*</span>exp(<span class="ot">1j</span><span class="op">*</span>phi),<span class="dv">1</span>,<span class="dv">1</span>,[<span class="dv">0</span>,<span class="dv">1</span>])</span>
+<span id="cb1-19"><a href="#cb1-19"></a>    K2D.set_hop(t2<span class="op">*</span>exp(<span class="ot">1j</span><span class="op">*</span>phi),<span class="dv">1</span>,<span class="dv">1</span>,[<span class="dv">1</span>,<span class="op">-</span><span class="dv">1</span>])</span>
+<span id="cb1-20"><a href="#cb1-20"></a></span>
+<span id="cb1-21"><a href="#cb1-21"></a>    K2D.set_hop(t2<span class="op">*</span>exp(<span class="op">-</span><span class="ot">1j</span><span class="op">*</span>phi),<span class="dv">0</span>,<span class="dv">0</span>,[<span class="op">-</span><span class="dv">1</span>,<span class="dv">0</span>])</span>
+<span id="cb1-22"><a href="#cb1-22"></a>    K2D.set_hop(t2<span class="op">*</span>exp(<span class="op">-</span><span class="ot">1j</span><span class="op">*</span>phi),<span class="dv">0</span>,<span class="dv">0</span>,[<span class="dv">0</span>,<span class="dv">1</span>])</span>
+<span id="cb1-23"><a href="#cb1-23"></a>    K2D.set_hop(t2<span class="op">*</span>exp(<span class="op">-</span><span class="ot">1j</span><span class="op">*</span>phi),<span class="dv">0</span>,<span class="dv">0</span>,[<span class="dv">1</span>,<span class="op">-</span><span class="dv">1</span>])</span>
+<span id="cb1-24"><a href="#cb1-24"></a>    K2D.set_onsite([M,<span class="op">-</span>M])</span>
+<span id="cb1-25"><a href="#cb1-25"></a></span>
+<span id="cb1-26"><a href="#cb1-26"></a>    <span class="cf">return</span> K2D</span>
+<span id="cb1-27"><a href="#cb1-27"></a></span>
+<span id="cb1-28"><a href="#cb1-28"></a>Haldane_model(<span class="ot">1j</span>,phi<span class="op">=</span><span class="fl">0.5</span>).visualize(<span class="dv">1</span>,<span class="dv">0</span>,color_hoppings<span class="op">=</span><span class="va">True</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="Hexagonal_files/figure-html/cell-2-output-1.png" width="576" height="559" class="figure-img"></p>
+<p><img src="Hexagonal_files/figure-html/cell-2-output-1.png" width="566" height="542" class="figure-img"></p>
 </figure>
 </div>
 </div>
 </div>
-<div id="0d7e2d73" class="cell" data-execution_count="2">
+<div id="e45d01dd" class="cell" data-execution_count="2">
 <details class="code-fold">
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1"></a><span class="im">import</span> itertools </span>
-<span id="cb2-2"><a href="#cb2-2"></a><span class="im">from</span> mpl_toolkits.mplot3d <span class="im">import</span> axes3d</span>
-<span id="cb2-3"><a href="#cb2-3"></a><span class="im">from</span> matplotlib <span class="im">import</span> cm</span>
-<span id="cb2-4"><a href="#cb2-4"></a><span class="im">from</span> matplotlib.colors <span class="im">import</span> ListedColormap</span>
-<span id="cb2-5"><a href="#cb2-5"></a></span>
-<span id="cb2-6"><a href="#cb2-6"></a>Jx,Jy,Jz<span class="op">=</span>(<span class="fl">0.5</span>,<span class="fl">0.3</span>,<span class="fl">0.2</span>)</span>
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1"></a><span class="kw">def</span> Graph_AC_Fin(t2,phi,Lx<span class="op">=</span><span class="dv">2</span>,Ly<span class="op">=</span><span class="dv">2</span>,M<span class="op">=</span><span class="dv">0</span>,tx<span class="op">=</span><span class="dv">1</span>,ty<span class="op">=</span><span class="dv">1</span>,tz<span class="op">=</span><span class="dv">1</span>):</span>
+<span id="cb2-2"><a href="#cb2-2"></a>  a1<span class="op">=</span>np.array([<span class="dv">3</span><span class="op">/</span><span class="dv">2</span>,<span class="op">-</span>sqrt(<span class="dv">3</span>)<span class="op">/</span><span class="dv">2</span>])</span>
+<span id="cb2-3"><a href="#cb2-3"></a>  a2<span class="op">=</span>np.array([<span class="dv">3</span><span class="op">/</span><span class="dv">2</span>,sqrt(<span class="dv">3</span>)<span class="op">/</span><span class="dv">2</span>])</span>
+<span id="cb2-4"><a href="#cb2-4"></a></span>
+<span id="cb2-5"><a href="#cb2-5"></a>  lat<span class="op">=</span>np.array([a1,a2])</span>
+<span id="cb2-6"><a href="#cb2-6"></a>  orb<span class="op">=</span>[[<span class="dv">1</span><span class="op">/</span><span class="dv">3</span>,<span class="dv">1</span><span class="op">/</span><span class="dv">3</span>],[<span class="dv">2</span><span class="op">/</span><span class="dv">3</span>,<span class="dv">2</span><span class="op">/</span><span class="dv">3</span>]]</span>
 <span id="cb2-7"><a href="#cb2-7"></a></span>
-<span id="cb2-8"><a href="#cb2-8"></a>fig <span class="op">=</span> plt.figure()</span>
-<span id="cb2-9"><a href="#cb2-9"></a>ax <span class="op">=</span> fig.add_subplot(<span class="dv">111</span>, projection<span class="op">=</span><span class="st">'3d'</span>)</span>
-<span id="cb2-10"><a href="#cb2-10"></a></span>
-<span id="cb2-11"><a href="#cb2-11"></a></span>
-<span id="cb2-12"><a href="#cb2-12"></a>Nk<span class="op">=</span><span class="dv">100</span></span>
-<span id="cb2-13"><a href="#cb2-13"></a></span>
-<span id="cb2-14"><a href="#cb2-14"></a>Kx<span class="op">=</span>np.linspace(<span class="op">-</span><span class="dv">1</span>,<span class="dv">1</span>,Nk)</span>
-<span id="cb2-15"><a href="#cb2-15"></a>Ky<span class="op">=</span>np.linspace(<span class="op">-</span><span class="dv">1</span>,<span class="dv">1</span>,Nk)</span>
-<span id="cb2-16"><a href="#cb2-16"></a>L_k <span class="op">=</span> np.array(<span class="bu">list</span>(itertools.product(Kx, Ky)))</span>
-<span id="cb2-17"><a href="#cb2-17"></a>L_Ek <span class="op">=</span> Kitaev_2D(Jx,Jy,Jz).solve_all(L_k)</span>
-<span id="cb2-18"><a href="#cb2-18"></a>Band1<span class="op">=</span>L_Ek[<span class="dv">0</span>].reshape((Nk,Nk))</span>
-<span id="cb2-19"><a href="#cb2-19"></a>Band2<span class="op">=</span>L_Ek[<span class="dv">1</span>].reshape((Nk,Nk))</span>
-<span id="cb2-20"><a href="#cb2-20"></a>Kx, Ky <span class="op">=</span> np.meshgrid(Kx, Ky)</span>
+<span id="cb2-8"><a href="#cb2-8"></a>  K2D<span class="op">=</span>tb_model(<span class="dv">2</span>,<span class="dv">2</span>,lat,orb)</span>
+<span id="cb2-9"><a href="#cb2-9"></a>  K2D.set_hop(tx,<span class="dv">0</span>,<span class="dv">1</span>,[<span class="dv">0</span>,<span class="dv">0</span>]) </span>
+<span id="cb2-10"><a href="#cb2-10"></a>  K2D.set_hop(ty,<span class="dv">1</span>,<span class="dv">0</span>,[<span class="dv">0</span>,<span class="dv">1</span>])</span>
+<span id="cb2-11"><a href="#cb2-11"></a>  K2D.set_hop(tz,<span class="dv">1</span>,<span class="dv">0</span>,[<span class="dv">1</span>,<span class="dv">0</span>])</span>
+<span id="cb2-12"><a href="#cb2-12"></a></span>
+<span id="cb2-13"><a href="#cb2-13"></a>  K2D.set_hop(t2<span class="op">*</span>exp(<span class="ot">1j</span><span class="op">*</span>phi),<span class="dv">1</span>,<span class="dv">1</span>,[<span class="op">-</span><span class="dv">1</span>,<span class="dv">0</span>])</span>
+<span id="cb2-14"><a href="#cb2-14"></a>  K2D.set_hop(t2<span class="op">*</span>exp(<span class="ot">1j</span><span class="op">*</span>phi),<span class="dv">1</span>,<span class="dv">1</span>,[<span class="dv">0</span>,<span class="dv">1</span>])</span>
+<span id="cb2-15"><a href="#cb2-15"></a>  K2D.set_hop(t2<span class="op">*</span>exp(<span class="ot">1j</span><span class="op">*</span>phi),<span class="dv">1</span>,<span class="dv">1</span>,[<span class="dv">1</span>,<span class="op">-</span><span class="dv">1</span>])</span>
+<span id="cb2-16"><a href="#cb2-16"></a></span>
+<span id="cb2-17"><a href="#cb2-17"></a>  K2D.set_hop(t2<span class="op">*</span>exp(<span class="ot">1j</span><span class="op">*</span>phi),<span class="dv">0</span>,<span class="dv">0</span>,[<span class="dv">1</span>,<span class="dv">0</span>])</span>
+<span id="cb2-18"><a href="#cb2-18"></a>  K2D.set_hop(t2<span class="op">*</span>exp(<span class="ot">1j</span><span class="op">*</span>phi),<span class="dv">0</span>,<span class="dv">0</span>,[<span class="dv">0</span>,<span class="op">-</span><span class="dv">1</span>])</span>
+<span id="cb2-19"><a href="#cb2-19"></a>  K2D.set_hop(t2<span class="op">*</span>exp(<span class="ot">1j</span><span class="op">*</span>phi),<span class="dv">0</span>,<span class="dv">0</span>,[<span class="op">-</span><span class="dv">1</span>,<span class="dv">1</span>])</span>
+<span id="cb2-20"><a href="#cb2-20"></a>  K2D.set_onsite([M,<span class="op">-</span>M])</span>
 <span id="cb2-21"><a href="#cb2-21"></a></span>
-<span id="cb2-22"><a href="#cb2-22"></a>surf1<span class="op">=</span>ax.plot_surface(Kx, Ky, Band1, rstride<span class="op">=</span><span class="dv">1</span>, cstride<span class="op">=</span><span class="dv">1</span>, cmap<span class="op">=</span>cm.viridis, vmin<span class="op">=-</span><span class="dv">1</span>, vmax<span class="op">=</span><span class="dv">1</span>)   <span class="co">#surface 1</span></span>
-<span id="cb2-23"><a href="#cb2-23"></a>surf2<span class="op">=</span>ax.plot_surface(Kx, Ky, Band2, rstride<span class="op">=</span><span class="dv">1</span>, cstride<span class="op">=</span><span class="dv">1</span>, cmap<span class="op">=</span>cm.viridis, vmin<span class="op">=-</span><span class="dv">1</span>, vmax<span class="op">=</span><span class="dv">1</span>)  <span class="co">#surface 2</span></span>
-<span id="cb2-24"><a href="#cb2-24"></a></span>
-<span id="cb2-25"><a href="#cb2-25"></a>fig.colorbar(surf1,shrink<span class="op">=</span><span class="fl">0.5</span>, aspect<span class="op">=</span><span class="dv">5</span>)</span>
-<span id="cb2-26"><a href="#cb2-26"></a></span>
-<span id="cb2-27"><a href="#cb2-27"></a>plt.show()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb2-22"><a href="#cb2-22"></a>  K2D <span class="op">=</span> K2D.make_supercell([[<span class="dv">1</span>,<span class="op">-</span><span class="dv">2</span>],[<span class="dv">1</span>,<span class="dv">1</span>]])</span>
+<span id="cb2-23"><a href="#cb2-23"></a></span>
+<span id="cb2-24"><a href="#cb2-24"></a>  <span class="cf">return</span> K2D.cut_piece(Lx,<span class="dv">0</span>).cut_piece(Ly,<span class="dv">1</span>)</span>
+<span id="cb2-25"><a href="#cb2-25"></a></span>
+<span id="cb2-26"><a href="#cb2-26"></a>Graph_AC_Fin(<span class="dv">1</span>,pi<span class="op">/</span><span class="dv">2</span>).visualize(<span class="dv">0</span>,<span class="dv">1</span>,color_hoppings<span class="op">=</span><span class="va">True</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="Hexagonal_files/figure-html/cell-3-output-1.png" width="493" height="396" class="figure-img"></p>
+<p><img src="Hexagonal_files/figure-html/cell-3-output-1.png" width="566" height="550" class="figure-img"></p>
 </figure>
 </div>
 </div>
 </div>
-<div id="e0ecb99e" class="cell" data-execution_count="3">
+<div id="2bef6125" class="cell" data-execution_count="3">
 <details class="code-fold">
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1"></a><span class="kw">def</span> Band_gap(model,Nk<span class="op">=</span><span class="dv">100</span>):</span>
-<span id="cb3-2"><a href="#cb3-2"></a>    Kx<span class="op">=</span>np.linspace(<span class="op">-</span><span class="dv">1</span><span class="op">/</span><span class="dv">2</span>,<span class="dv">1</span><span class="op">/</span><span class="dv">2</span>,Nk)</span>
-<span id="cb3-3"><a href="#cb3-3"></a>    Ky<span class="op">=</span>np.linspace(<span class="op">-</span><span class="dv">1</span><span class="op">/</span><span class="dv">2</span>,<span class="dv">1</span><span class="op">/</span><span class="dv">2</span>,Nk)</span>
-<span id="cb3-4"><a href="#cb3-4"></a>    L_k <span class="op">=</span> np.array(<span class="bu">list</span>(itertools.product(Kx, Ky)))</span>
-<span id="cb3-5"><a href="#cb3-5"></a>    L_Ek <span class="op">=</span> model.solve_all(L_k)</span>
-<span id="cb3-6"><a href="#cb3-6"></a>    <span class="cf">return</span> <span class="bu">min</span>(L_Ek[<span class="dv">1</span>])<span class="op">-</span><span class="bu">max</span>(L_Ek[<span class="dv">0</span>])</span>
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1"></a><span class="kw">def</span> Graph_Ribbon_AC(t2,phi,L,M<span class="op">=</span><span class="dv">0</span>,tx<span class="op">=</span><span class="dv">1</span>,ty<span class="op">=</span><span class="dv">1</span>,tz<span class="op">=</span><span class="dv">1</span>):</span>
+<span id="cb3-2"><a href="#cb3-2"></a>  a1<span class="op">=</span>np.array([<span class="dv">3</span><span class="op">/</span><span class="dv">2</span>,<span class="op">-</span>sqrt(<span class="dv">3</span>)<span class="op">/</span><span class="dv">2</span>])</span>
+<span id="cb3-3"><a href="#cb3-3"></a>  a2<span class="op">=</span>np.array([<span class="dv">3</span><span class="op">/</span><span class="dv">2</span>,sqrt(<span class="dv">3</span>)<span class="op">/</span><span class="dv">2</span>])</span>
+<span id="cb3-4"><a href="#cb3-4"></a></span>
+<span id="cb3-5"><a href="#cb3-5"></a>  lat<span class="op">=</span>np.array([a1,a2])</span>
+<span id="cb3-6"><a href="#cb3-6"></a>  orb<span class="op">=</span>[[<span class="dv">1</span><span class="op">/</span><span class="dv">3</span>,<span class="dv">1</span><span class="op">/</span><span class="dv">3</span>],[<span class="dv">2</span><span class="op">/</span><span class="dv">3</span>,<span class="dv">2</span><span class="op">/</span><span class="dv">3</span>]]</span>
 <span id="cb3-7"><a href="#cb3-7"></a></span>
-<span id="cb3-8"><a href="#cb3-8"></a>M<span class="op">=</span>np.array([[<span class="dv">1</span><span class="op">/</span><span class="dv">2</span>,<span class="dv">1</span>,<span class="op">-</span><span class="dv">1</span><span class="op">/</span><span class="dv">2</span>],</span>
-<span id="cb3-9"><a href="#cb3-9"></a>            [<span class="op">-</span><span class="dv">1</span><span class="op">/</span><span class="dv">2</span>,<span class="dv">1</span>,<span class="op">-</span><span class="dv">1</span><span class="op">/</span><span class="dv">2</span>],</span>
-<span id="cb3-10"><a href="#cb3-10"></a>            [<span class="dv">0</span>,<span class="dv">1</span>,<span class="dv">1</span>]])</span>
-<span id="cb3-11"><a href="#cb3-11"></a></span>
-<span id="cb3-12"><a href="#cb3-12"></a><span class="kw">def</span> Kitaev_phase_triag(jpx,jpy,Nk):</span>
-<span id="cb3-13"><a href="#cb3-13"></a>    jx,jy,jz <span class="op">=</span> matmul(M,np.array([jpx,<span class="dv">0</span>,jpy]))<span class="op">+</span>np.array([<span class="dv">1</span><span class="op">/</span><span class="dv">2</span>,<span class="dv">1</span><span class="op">/</span><span class="dv">2</span>,<span class="dv">0</span>])</span>
-<span id="cb3-14"><a href="#cb3-14"></a>    <span class="cf">return</span> Band_gap(Kitaev_2D(jx,jy,jz),Nk<span class="op">=</span>Nk)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</details>
-</div>
-<div id="3e36e135" class="cell" data-execution_count="4">
-<details class="code-fold">
-<summary>Code</summary>
-<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1"></a>Jxlist<span class="op">=</span>np.linspace(<span class="op">-</span><span class="dv">1</span>,<span class="dv">1</span>,<span class="dv">10</span>)</span>
-<span id="cb4-2"><a href="#cb4-2"></a>Jylist<span class="op">=</span>np.linspace(<span class="dv">0</span>,<span class="dv">1</span>,<span class="dv">10</span>)</span>
-<span id="cb4-3"><a href="#cb4-3"></a>Phase_diag<span class="op">=</span>[ [ Kitaev_phase_triag(Jx,Jy,Nk<span class="op">=</span><span class="dv">10</span>) <span class="cf">for</span> Jx <span class="kw">in</span> Jxlist] <span class="cf">for</span> Jy <span class="kw">in</span> Jylist ]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</details>
-</div>
-<div id="03894b2e" class="cell" data-execution_count="5">
-<details class="code-fold">
-<summary>Code</summary>
-<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
-<span id="cb5-2"><a href="#cb5-2"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
-<span id="cb5-3"><a href="#cb5-3"></a><span class="im">from</span> matplotlib.patches <span class="im">import</span> Polygon</span>
-<span id="cb5-4"><a href="#cb5-4"></a></span>
-<span id="cb5-5"><a href="#cb5-5"></a>fig,ax<span class="op">=</span>plt.subplots(<span class="dv">1</span>,<span class="dv">1</span>)</span>
-<span id="cb5-6"><a href="#cb5-6"></a></span>
-<span id="cb5-7"><a href="#cb5-7"></a>X, Y <span class="op">=</span> np.meshgrid(Jxlist, Jylist)</span>
-<span id="cb5-8"><a href="#cb5-8"></a>Z <span class="op">=</span> Phase_diag</span>
-<span id="cb5-9"><a href="#cb5-9"></a><span class="co">#Z = Phase_space50</span></span>
-<span id="cb5-10"><a href="#cb5-10"></a>cp <span class="op">=</span> ax.contourf(X, Y, Z,levels<span class="op">=</span>np.linspace(<span class="dv">0</span>,<span class="dv">2</span>,<span class="dv">1000</span>),cmap<span class="op">=</span><span class="st">'plasma'</span>)</span>
-<span id="cb5-11"><a href="#cb5-11"></a>fig.colorbar(cp,cmap<span class="op">=</span><span class="st">'plasma'</span>,ticks<span class="op">=</span>linspace(<span class="dv">0</span>,<span class="dv">2</span>,<span class="dv">5</span>)) <span class="co"># Add a colorbar to a plot</span></span>
-<span id="cb5-12"><a href="#cb5-12"></a>ax.set_title(<span class="st">'Diagrama de fases del modelo hexagonal de Kitaev.</span><span class="ch">\n</span><span class="st"> $J_z=1$'</span>, fontsize<span class="op">=</span><span class="dv">12</span>) <span class="co">#  Brecha de energía')</span></span>
-<span id="cb5-13"><a href="#cb5-13"></a>ax.set_ylabel(<span class="st">'Brecha de energía'</span>)</span>
-<span id="cb5-14"><a href="#cb5-14"></a>ax.yaxis.set_label_position(<span class="st">"right"</span>)</span>
-<span id="cb5-15"><a href="#cb5-15"></a>ax.set_xlabel(<span class="st">'$J_x=1$'</span><span class="op">+</span><span class="dv">60</span><span class="op">*</span><span class="st">' '</span><span class="op">+</span> <span class="st">'$J_y=1$'</span>, fontsize<span class="op">=</span><span class="dv">12</span>)</span>
-<span id="cb5-16"><a href="#cb5-16"></a>ax.tick_params(axis<span class="op">=</span><span class="st">'y'</span>, which<span class="op">=</span><span class="st">'both'</span>, left<span class="op">=</span><span class="va">False</span>, labelleft<span class="op">=</span><span class="va">False</span>)</span>
-<span id="cb5-17"><a href="#cb5-17"></a>ax.tick_params(axis<span class="op">=</span><span class="st">'x'</span>, which<span class="op">=</span><span class="st">'both'</span>, bottom<span class="op">=</span><span class="va">False</span>, labelbottom<span class="op">=</span><span class="va">False</span>)</span>
-<span id="cb5-18"><a href="#cb5-18"></a></span>
-<span id="cb5-19"><a href="#cb5-19"></a>y <span class="op">=</span> np.array([[<span class="dv">1</span>,<span class="dv">0</span>], [<span class="dv">1</span>,<span class="dv">1</span>], [<span class="dv">0</span>,<span class="dv">1</span>]])</span>
-<span id="cb5-20"><a href="#cb5-20"></a>p <span class="op">=</span> Polygon(y, facecolor <span class="op">=</span> <span class="st">'w'</span>)</span>
-<span id="cb5-21"><a href="#cb5-21"></a>ax.add_patch(p)</span>
-<span id="cb5-22"><a href="#cb5-22"></a></span>
-<span id="cb5-23"><a href="#cb5-23"></a>y <span class="op">=</span> np.array([[<span class="op">-</span><span class="dv">1</span>,<span class="dv">0</span>], [<span class="op">-</span><span class="dv">1</span>,<span class="dv">1</span>], [<span class="dv">0</span>,<span class="dv">1</span>]])</span>
-<span id="cb5-24"><a href="#cb5-24"></a>p <span class="op">=</span> Polygon(y, facecolor <span class="op">=</span> <span class="st">'w'</span>)</span>
-<span id="cb5-25"><a href="#cb5-25"></a>ax.add_patch(p)</span>
-<span id="cb5-26"><a href="#cb5-26"></a></span>
-<span id="cb5-27"><a href="#cb5-27"></a>ax.spines[<span class="st">'top'</span>].set_visible(<span class="va">False</span>)</span>
-<span id="cb5-28"><a href="#cb5-28"></a>ax.spines[<span class="st">'right'</span>].set_visible(<span class="va">False</span>)</span>
-<span id="cb5-29"><a href="#cb5-29"></a>ax.spines[<span class="st">'bottom'</span>].set_visible(<span class="va">False</span>)</span>
-<span id="cb5-30"><a href="#cb5-30"></a>ax.spines[<span class="st">'left'</span>].set_visible(<span class="va">False</span>)</span>
-<span id="cb5-31"><a href="#cb5-31"></a></span>
-<span id="cb5-32"><a href="#cb5-32"></a><span class="co">#plt.subplots_adjust(left=0.1, right=0.1, top=0.1, bottom=0.1)</span></span>
-<span id="cb5-33"><a href="#cb5-33"></a>plt.show()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb3-8"><a href="#cb3-8"></a>  K2D<span class="op">=</span>tb_model(<span class="dv">2</span>,<span class="dv">2</span>,lat,orb)</span>
+<span id="cb3-9"><a href="#cb3-9"></a>  K2D.set_hop(tx,<span class="dv">0</span>,<span class="dv">1</span>,[<span class="dv">0</span>,<span class="dv">0</span>]) </span>
+<span id="cb3-10"><a href="#cb3-10"></a>  K2D.set_hop(ty,<span class="dv">1</span>,<span class="dv">0</span>,[<span class="dv">0</span>,<span class="dv">1</span>])</span>
+<span id="cb3-11"><a href="#cb3-11"></a>  K2D.set_hop(tz,<span class="dv">1</span>,<span class="dv">0</span>,[<span class="dv">1</span>,<span class="dv">0</span>])</span>
+<span id="cb3-12"><a href="#cb3-12"></a></span>
+<span id="cb3-13"><a href="#cb3-13"></a>  K2D.set_hop(t2<span class="op">*</span>exp(<span class="ot">1j</span><span class="op">*</span>phi),<span class="dv">1</span>,<span class="dv">1</span>,[<span class="op">-</span><span class="dv">1</span>,<span class="dv">0</span>])</span>
+<span id="cb3-14"><a href="#cb3-14"></a>  K2D.set_hop(t2<span class="op">*</span>exp(<span class="ot">1j</span><span class="op">*</span>phi),<span class="dv">1</span>,<span class="dv">1</span>,[<span class="dv">0</span>,<span class="dv">1</span>])</span>
+<span id="cb3-15"><a href="#cb3-15"></a>  K2D.set_hop(t2<span class="op">*</span>exp(<span class="ot">1j</span><span class="op">*</span>phi),<span class="dv">1</span>,<span class="dv">1</span>,[<span class="dv">1</span>,<span class="op">-</span><span class="dv">1</span>])</span>
+<span id="cb3-16"><a href="#cb3-16"></a></span>
+<span id="cb3-17"><a href="#cb3-17"></a>  K2D.set_hop(t2<span class="op">*</span>exp(<span class="ot">1j</span><span class="op">*</span>phi),<span class="dv">0</span>,<span class="dv">0</span>,[<span class="dv">1</span>,<span class="dv">0</span>])</span>
+<span id="cb3-18"><a href="#cb3-18"></a>  K2D.set_hop(t2<span class="op">*</span>exp(<span class="ot">1j</span><span class="op">*</span>phi),<span class="dv">0</span>,<span class="dv">0</span>,[<span class="dv">0</span>,<span class="op">-</span><span class="dv">1</span>])</span>
+<span id="cb3-19"><a href="#cb3-19"></a>  K2D.set_hop(t2<span class="op">*</span>exp(<span class="ot">1j</span><span class="op">*</span>phi),<span class="dv">0</span>,<span class="dv">0</span>,[<span class="op">-</span><span class="dv">1</span>,<span class="dv">1</span>])</span>
+<span id="cb3-20"><a href="#cb3-20"></a>  K2D.set_onsite([M,<span class="op">-</span>M])</span>
+<span id="cb3-21"><a href="#cb3-21"></a></span>
+<span id="cb3-22"><a href="#cb3-22"></a>  K2D <span class="op">=</span> K2D.make_supercell([[<span class="dv">1</span>,<span class="op">-</span><span class="dv">2</span>],[<span class="dv">1</span>,<span class="dv">1</span>]])</span>
+<span id="cb3-23"><a href="#cb3-23"></a></span>
+<span id="cb3-24"><a href="#cb3-24"></a>  <span class="cf">return</span> K2D.cut_piece(L,<span class="dv">0</span>)</span>
+<span id="cb3-25"><a href="#cb3-25"></a></span>
+<span id="cb3-26"><a href="#cb3-26"></a>Graph_Ribbon_AC(<span class="fl">1.</span>,phi<span class="op">=</span>pi<span class="op">/</span><span class="dv">2</span>,L<span class="op">=</span><span class="dv">3</span>).visualize(<span class="dv">0</span>,<span class="dv">1</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="Hexagonal_files/figure-html/cell-6-output-1.png" width="511" height="450" class="figure-img"></p>
+<p><img src="Hexagonal_files/figure-html/cell-4-output-1.png" width="566" height="550" class="figure-img"></p>
+</figure>
+</div>
+</div>
+</div>
+<div id="8cbb9457" class="cell" data-execution_count="4">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1"></a><span class="im">from</span> pythtb <span class="im">import</span> <span class="op">*</span></span>
+<span id="cb4-2"><a href="#cb4-2"></a><span class="im">from</span> pylab <span class="im">import</span> <span class="op">*</span></span>
+<span id="cb4-3"><a href="#cb4-3"></a></span>
+<span id="cb4-4"><a href="#cb4-4"></a><span class="kw">def</span> Graph_Ribbon_ZZ(t2,phi,L<span class="op">=</span><span class="dv">2</span>,M<span class="op">=</span><span class="dv">0</span>,tx<span class="op">=</span><span class="dv">1</span>,ty<span class="op">=</span><span class="dv">1</span>,tz<span class="op">=</span><span class="dv">1</span>):</span>
+<span id="cb4-5"><a href="#cb4-5"></a>  a1<span class="op">=</span>np.array([<span class="dv">3</span><span class="op">/</span><span class="dv">2</span>,<span class="op">-</span>sqrt(<span class="dv">3</span>)<span class="op">/</span><span class="dv">2</span>])</span>
+<span id="cb4-6"><a href="#cb4-6"></a>  a2<span class="op">=</span>np.array([<span class="dv">3</span><span class="op">/</span><span class="dv">2</span>,sqrt(<span class="dv">3</span>)<span class="op">/</span><span class="dv">2</span>])</span>
+<span id="cb4-7"><a href="#cb4-7"></a></span>
+<span id="cb4-8"><a href="#cb4-8"></a>  lat<span class="op">=</span>np.array([a1,a2])</span>
+<span id="cb4-9"><a href="#cb4-9"></a>  orb<span class="op">=</span>[[<span class="dv">1</span><span class="op">/</span><span class="dv">3</span>,<span class="dv">1</span><span class="op">/</span><span class="dv">3</span>],[<span class="dv">2</span><span class="op">/</span><span class="dv">3</span>,<span class="dv">2</span><span class="op">/</span><span class="dv">3</span>]]</span>
+<span id="cb4-10"><a href="#cb4-10"></a></span>
+<span id="cb4-11"><a href="#cb4-11"></a>  K2D<span class="op">=</span>tb_model(<span class="dv">2</span>,<span class="dv">2</span>,lat,orb)</span>
+<span id="cb4-12"><a href="#cb4-12"></a>  K2D.set_hop(tx,<span class="dv">0</span>,<span class="dv">1</span>,[<span class="dv">0</span>,<span class="dv">0</span>]) </span>
+<span id="cb4-13"><a href="#cb4-13"></a>  K2D.set_hop(ty,<span class="dv">1</span>,<span class="dv">0</span>,[<span class="dv">0</span>,<span class="dv">1</span>])</span>
+<span id="cb4-14"><a href="#cb4-14"></a>  K2D.set_hop(tz,<span class="dv">1</span>,<span class="dv">0</span>,[<span class="dv">1</span>,<span class="dv">0</span>])</span>
+<span id="cb4-15"><a href="#cb4-15"></a></span>
+<span id="cb4-16"><a href="#cb4-16"></a>  K2D.set_hop(t2<span class="op">*</span>exp(<span class="ot">1j</span><span class="op">*</span>phi),<span class="dv">1</span>,<span class="dv">1</span>,[<span class="op">-</span><span class="dv">1</span>,<span class="dv">0</span>])</span>
+<span id="cb4-17"><a href="#cb4-17"></a>  K2D.set_hop(t2<span class="op">*</span>exp(<span class="ot">1j</span><span class="op">*</span>phi),<span class="dv">1</span>,<span class="dv">1</span>,[<span class="dv">0</span>,<span class="dv">1</span>])</span>
+<span id="cb4-18"><a href="#cb4-18"></a>  K2D.set_hop(t2<span class="op">*</span>exp(<span class="ot">1j</span><span class="op">*</span>phi),<span class="dv">1</span>,<span class="dv">1</span>,[<span class="dv">1</span>,<span class="op">-</span><span class="dv">1</span>])</span>
+<span id="cb4-19"><a href="#cb4-19"></a></span>
+<span id="cb4-20"><a href="#cb4-20"></a>  K2D.set_hop(t2<span class="op">*</span>exp(<span class="ot">1j</span><span class="op">*</span>phi),<span class="dv">0</span>,<span class="dv">0</span>,[<span class="dv">1</span>,<span class="dv">0</span>])</span>
+<span id="cb4-21"><a href="#cb4-21"></a>  K2D.set_hop(t2<span class="op">*</span>exp(<span class="ot">1j</span><span class="op">*</span>phi),<span class="dv">0</span>,<span class="dv">0</span>,[<span class="dv">0</span>,<span class="op">-</span><span class="dv">1</span>])</span>
+<span id="cb4-22"><a href="#cb4-22"></a>  K2D.set_hop(t2<span class="op">*</span>exp(<span class="ot">1j</span><span class="op">*</span>phi),<span class="dv">0</span>,<span class="dv">0</span>,[<span class="op">-</span><span class="dv">1</span>,<span class="dv">1</span>])</span>
+<span id="cb4-23"><a href="#cb4-23"></a>  </span>
+<span id="cb4-24"><a href="#cb4-24"></a>  K2D.set_onsite([M,<span class="op">-</span>M])</span>
+<span id="cb4-25"><a href="#cb4-25"></a></span>
+<span id="cb4-26"><a href="#cb4-26"></a>  K2D <span class="op">=</span> K2D.make_supercell([[<span class="dv">1</span>,<span class="dv">1</span>],[<span class="op">-</span><span class="dv">1</span>,<span class="dv">1</span>]])</span>
+<span id="cb4-27"><a href="#cb4-27"></a></span>
+<span id="cb4-28"><a href="#cb4-28"></a>  <span class="cf">return</span> K2D.cut_piece(L,<span class="dv">0</span>)</span>
+<span id="cb4-29"><a href="#cb4-29"></a></span>
+<span id="cb4-30"><a href="#cb4-30"></a>Graph_Ribbon_ZZ(<span class="dv">1</span>,pi<span class="op">/</span><span class="dv">2</span>,L<span class="op">=</span><span class="dv">2</span>).visualize(<span class="dv">0</span>,<span class="dv">1</span>,color_hoppings<span class="op">=</span><span class="va">True</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="Hexagonal_files/figure-html/cell-5-output-1.png" width="566" height="550" class="figure-img"></p>
+</figure>
+</div>
+</div>
+</div>
+<div id="85240f44" class="cell" data-execution_count="5">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1"></a>k <span class="op">=</span> linspace(<span class="dv">0</span>,<span class="dv">1</span>,<span class="dv">101</span>)</span>
+<span id="cb5-2"><a href="#cb5-2"></a>Ek <span class="op">=</span> Graph_Ribbon_ZZ(<span class="fl">0.1</span>,phi<span class="op">=</span>pi<span class="op">/</span><span class="dv">2</span>,M<span class="op">=</span><span class="fl">0.4</span>,L<span class="op">=</span><span class="dv">100</span>).solve_all(k)</span>
+<span id="cb5-3"><a href="#cb5-3"></a>plot(k,Ek.T,c<span class="op">=</span><span class="st">'k'</span>,alpha<span class="op">=</span><span class="fl">0.3</span>)<span class="op">;</span></span>
+<span id="cb5-4"><a href="#cb5-4"></a>plt.show()</span>
+<span id="cb5-5"><a href="#cb5-5"></a>Ek <span class="op">=</span> Graph_Ribbon_AC(<span class="fl">0.1</span>,phi<span class="op">=</span>pi<span class="op">/</span><span class="dv">2</span>,M<span class="op">=</span><span class="fl">1.</span>,L<span class="op">=</span><span class="dv">100</span>).solve_all(k)</span>
+<span id="cb5-6"><a href="#cb5-6"></a>plot(k,Ek.T,c<span class="op">=</span><span class="st">'k'</span>,alpha<span class="op">=</span><span class="fl">0.3</span>)<span class="op">;</span></span>
+<span id="cb5-7"><a href="#cb5-7"></a>plt.show()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="Hexagonal_files/figure-html/cell-6-output-1.png" width="569" height="411" class="figure-img"></p>
+</figure>
+</div>
+</div>
+<div class="cell-output cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="Hexagonal_files/figure-html/cell-6-output-2.png" width="569" height="411" class="figure-img"></p>
+</figure>
+</div>
+</div>
+</div>
+<div id="0d5d2cee" class="cell" data-execution_count="6">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1"></a>phi_path <span class="op">=</span> linspace(<span class="dv">0</span>,<span class="dv">2</span><span class="op">*</span>pi,<span class="dv">100</span>)</span>
+<span id="cb6-2"><a href="#cb6-2"></a>t2_path <span class="op">=</span> linspace(<span class="dv">0</span>,<span class="dv">2</span>,<span class="dv">100</span>)</span>
+<span id="cb6-3"><a href="#cb6-3"></a>Ene <span class="op">=</span> [ Graph_AC_Fin(<span class="fl">0.1</span>,phi<span class="op">=</span>phi,M<span class="op">=</span><span class="fl">0.2</span>,Lx<span class="op">=</span><span class="dv">10</span>,Ly<span class="op">=</span><span class="dv">5</span>).solve_all() <span class="cf">for</span> phi <span class="kw">in</span> phi_path]</span>
+<span id="cb6-4"><a href="#cb6-4"></a>Ene <span class="op">=</span> np.array(Ene)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
+<div id="35b1538f" class="cell" data-execution_count="7">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1"></a><span class="cf">for</span> L <span class="kw">in</span> Ene.T:</span>
+<span id="cb7-2"><a href="#cb7-2"></a>  plot(phi_path,L,c<span class="op">=</span><span class="st">'k'</span>,alpha<span class="op">=</span><span class="fl">0.1</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="Hexagonal_files/figure-html/cell-8-output-1.png" width="569" height="411" class="figure-img"></p>
 </figure>
 </div>
 </div>
 </div>
 
 
+</section>
 
 </main> <!-- /main -->
 <script id="quarto-html-after-body" type="application/javascript">
