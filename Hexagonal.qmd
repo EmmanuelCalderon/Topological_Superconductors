@@ -1,158 +1,458 @@
 # 2D topological systems
 
-New objectives: Programs for Z2 invariant and Chern number. Keep on checking IPR and EE.
-
+We continue the study of topological systems on bidimensional systems. On this section we develop codes to calculate the $Z_2$ invariant and the Chern number.
 
 ## Haldane model
 
-We begin by constructing the Haldane model for graphene.
+We begin by constructing the Haldane model for graphene, which consists on adding a second neighbourgh complex hopping to break time reversal symmetry and consider that both orbitals on the graphene unit cell have a different onsite energy, which is called the Semenof mass.
 
 ```{python}
 from pythtb import *
 from pylab import *
 
-a1=np.array([3/2,-sqrt(3)/2])
-a2=np.array([3/2,sqrt(3)/2])
+def Haldane_model(t2=0.03,phi=0,M=0,tx=1,ty=1,tz=1):
+  a1=np.array([3/2,-sqrt(3)/2])
+  a2=np.array([3/2,sqrt(3)/2])
 
-lat=np.array([a1,a2])
-orb=[[1/3,1/3],[2/3,2/3]]
+  lat=np.array([a1,a2])
+  orb=[[1/3,1/3],[2/3,2/3]]
 
-def Haldane_model(t2,phi=0,M=0,tx=1,ty=1,tz=1):
+  HM=tb_model(2,2,lat,orb)
+  HM.set_hop(tx,0,1,[0,0]) 
+  HM.set_hop(ty,1,0,[0,1])
+  HM.set_hop(tz,1,0,[1,0])
 
-    K2D=tb_model(2,2,lat,orb)
-    K2D.set_hop(tx,0,1,[0,0]) 
-    K2D.set_hop(ty,1,0,[0,1])
-    K2D.set_hop(tz,1,0,[1,0])
+  HM.set_hop(t2*exp(1j*phi),0,0,[1,0])
+  HM.set_hop(t2*exp(1j*phi),1,1,[1,-1])
+  HM.set_hop(t2*exp(1j*phi),1,1,[0,1])
 
-    K2D.set_hop(t2*exp(1j*phi),1,1,[-1,0])
-    K2D.set_hop(t2*exp(1j*phi),1,1,[0,1])
-    K2D.set_hop(t2*exp(1j*phi),1,1,[1,-1])
+  #t2C=t2.conjugate()
+  #HM.set_hop(t2C*exp(-1j*phi),1,1,[1,0])
+  #HM.set_hop(t2C*exp(-1j*phi),0,0,[1,-1])
+  #HM.set_hop(t2C*exp(-1j*phi),0,0,[0,1])
 
-    K2D.set_hop(t2*exp(-1j*phi),0,0,[-1,0])
-    K2D.set_hop(t2*exp(-1j*phi),0,0,[0,1])
-    K2D.set_hop(t2*exp(-1j*phi),0,0,[1,-1])
-    K2D.set_onsite([M,-M])
+  HM.set_hop(t2*exp(1j*phi),1,1,[-1,0])
+  HM.set_hop(t2*exp(1j*phi),0,0,[-1,1])
+  HM.set_hop(t2*exp(1j*phi),0,0,[0,-1])
+  HM.set_onsite([M,-M])
 
-    return K2D
+  return HM
 
-Haldane_model(1j,phi=0.5).visualize(1,0,color_hoppings=True)
-```
+def Graph_Ribbon_AC(t2,phi,L,M=0,tx=1,ty=1,tz=1):
+  
+  HM = Haldane_model(t2,phi=phi,M=M,tx=tx,ty=ty,tz=tz)
+  GR_AC = HM.make_supercell([[1,-2],[1,1]])
 
-```{python}
-from pythtb import *
-from pylab import *
+  return GR_AC.cut_piece(L,0)
 
 def Graph_AC_Fin(t2,phi,Lx=2,Ly=2,M=0,tx=1,ty=1,tz=1):
-  a1=np.array([3/2,-sqrt(3)/2])
-  a2=np.array([3/2,sqrt(3)/2])
 
-  lat=np.array([a1,a2])
-  orb=[[1/3,1/3],[2/3,2/3]]
+  GR_AC = Graph_Ribbon_AC(t2,phi,Lx,M=M,tx=tx,ty=ty,tz=tz)
 
-  K2D=tb_model(2,2,lat,orb)
-  K2D.set_hop(tx,0,1,[0,0]) 
-  K2D.set_hop(ty,1,0,[0,1])
-  K2D.set_hop(tz,1,0,[1,0])
+  return GR_AC.cut_piece(Ly,1)
 
-  K2D.set_hop(t2*exp(1j*phi),1,1,[-1,0])
-  K2D.set_hop(t2*exp(1j*phi),1,1,[0,1])
-  K2D.set_hop(t2*exp(1j*phi),1,1,[1,-1])
+def Graph_Ribbon_ZZ(t2,phi,L=2,M=0,tx=1,ty=1,tz=1):
 
-  K2D.set_hop(t2*exp(1j*phi),0,0,[1,0])
-  K2D.set_hop(t2*exp(1j*phi),0,0,[0,-1])
-  K2D.set_hop(t2*exp(1j*phi),0,0,[-1,1])
-  K2D.set_onsite([M,-M])
+  HM = Haldane_model(t2,phi=phi,M=M,tx=tx,ty=ty,tz=tz)
 
-  K2D = K2D.make_supercell([[1,-2],[1,1]])
+  GR_ZZ = HM.make_supercell([[1,1],[-1,1]])
 
-  return K2D.cut_piece(Lx,0).cut_piece(Ly,1)
+  return GR_ZZ.cut_piece(L,0)
 
-Graph_AC_Fin(1,pi/2,M=0.3).visualize(0,1,color_hoppings=True)
+Haldane_model(1j,0,M=0.3).visualize(1,0,color_hoppings=True)
+#Graph_Ribbon_AC(1.,phi=pi/2,L=3,M=0.3).visualize(0,1)
+#Graph_AC_Fin(1j,0,M=0.3).visualize(0,1,color_hoppings=True)
+#Graph_Ribbon_ZZ(1,pi/2,L=1,M=0.3).visualize(0,1,color_hoppings=True)
 ```
+
+We now graph the band structure of two graphene ribbons with different unit cells when we consider a nonzero Semmenof mass and $\phi=\pi/2$, that is, for an entirely complex second neighbour hopping.
+
+For the zig-zag cut we can observe an exact zero mode for $|M/t_2|<3\sqrt(3)$ and a gap for $|M/t_2|>3\sqrt(3)$. A relevant observation to be made is that the bands are no longer even functions of the crystal momentum, which indicates time reversal asymmetry.
+
+The presence of an edge state with breaking of time reversal symmetry constitutes the anomalous quantum Hall effect and is considered the first Chern insulator.
 
 ```{python}
-def Graph_Ribbon_AC(t2,phi,L,M=0,tx=1,ty=1,tz=1):
-  a1=np.array([3/2,-sqrt(3)/2])
-  a2=np.array([3/2,sqrt(3)/2])
+t2=0.03
+phi=pi/2
+M=0.1
+L=30
+k = linspace(0,1,501)
+tb=Graph_Ribbon_ZZ(t2,phi=phi,M=M,L=L)
+tb.visualize(1,0)
+plt.show()
 
-  lat=np.array([a1,a2])
-  orb=[[1/3,1/3],[2/3,2/3]]
-
-  K2D=tb_model(2,2,lat,orb)
-  K2D.set_hop(tx,0,1,[0,0]) 
-  K2D.set_hop(ty,1,0,[0,1])
-  K2D.set_hop(tz,1,0,[1,0])
-
-  K2D.set_hop(t2*exp(1j*phi),1,1,[-1,0])
-  K2D.set_hop(t2*exp(1j*phi),1,1,[0,1])
-  K2D.set_hop(t2*exp(1j*phi),1,1,[1,-1])
-
-  K2D.set_hop(t2*exp(1j*phi),0,0,[1,0])
-  K2D.set_hop(t2*exp(1j*phi),0,0,[0,-1])
-  K2D.set_hop(t2*exp(1j*phi),0,0,[-1,1])
-  K2D.set_onsite([M,-M])
-
-  K2D = K2D.make_supercell([[1,-2],[1,1]])
-
-  return K2D.cut_piece(L,0)
-
-Graph_Ribbon_AC(1.,phi=pi/2,L=3).visualize(0,1)
+Ek,U = tb.solve_all(k,eig_vectors=True)
+Nband,Nk,Nsites = shape(U)
+kvec = outer(ones(Nband),k)
+IPR = real( sum(U*conj(U)*U*conj(U),axis=2))
+scatter(kvec,Ek,c=IPR,cmap='coolwarm',s=1)
+colorbar()
+plt.show()
 ```
+
+However, for an armchair cut the system is always gapped and the edge states do not break time reversal symmetry. This is because in this configuration there are the same number of orbitals in the unit cell, whereas in the zig-zag unit cell there is an excess of a certain type of orbitals in the edge of the ribbon.
+
+```{python}
+t2=0.03
+phi=pi/2
+M=0.
+L=10
+k = linspace(-0.5,0.5,501)
+tb=Graph_Ribbon_AC(t2,phi=phi,M=M,L=L)
+tb.visualize(1,0)
+plt.show()
+
+Ek,U = tb.solve_all(k,eig_vectors=True)
+Nband,Nk,Nsites = shape(U)
+kvec = outer(ones(Nband),k)
+IPR = real( sum(U*conj(U)*U*conj(U),axis=2))
+scatter(kvec,Ek,c=IPR,cmap='coolwarm',s=1)
+colorbar()
+plt.show()
+```
+
+In order to characterize this model we construct the phase diagram by calculating the Chern number using PythTB.
+
+```{python}
+def Chern_Number(model): # Only works if there is no degeneracy points in the band structure
+  K_array=wf_array(model,[11,11])
+  K_array.solve_on_grid([-0.5,-0.5])
+  Chern = [ K_array.berry_flux([i])/(2*pi) for i in range(model._norb) ]
+  return Chern 
+
+t2=0.1
+Phi_path,M_path = linspace(-pi,pi,101),linspace(-3*sqrt(3)*t2,3*sqrt(3)*t2,101)
+
+Chern_array = np.array( [[ Chern_Number(Haldane_model(t2,phi=phi,M=M))[0] for phi in Phi_path ] for M in M_path] )
+
+fig,ax=plt.subplots(figsize=(6,4))
+X, Y = np.meshgrid(M_path,Phi_path)
+cp = ax.contourf(X, Y, Chern_array,cmap='jet',levels=np.linspace(Chern_array.min(),Chern_array.max(),100))
+cbar = colorbar(cp,ticks=linspace(Chern_array.min(),Chern_array.max(),3)) 
+ax.set_xlabel('$\phi$')
+ax.set_ylabel('$M$')
+cbar.ax.set_ylabel('Chern number', rotation=270, labelpad = 11)
+plt.show()
+```
+
+## Kane-Mele model: Quantum Spin Hall Effect
+
+The Kane-Mele model can be seen as a generalization of the Haldane model adding the spin degree of freedom. In this model we take to copies of the Haldane model, one for spin up and another for spin down. We then add the spin-orbit interaction in the form a complex second neighbour interaction within each copie of the Haldane model (the intrinsic spin-orbit interaction) and a complex second neighbour interaction between both copies which is called the Rashba effect.
+
 
 ```{python}
 from pythtb import *
 from pylab import *
 
-def Graph_Ribbon_ZZ(t2,phi,L=2,M=0,tx=1,ty=1,tz=1):
-  a1=np.array([3/2,-sqrt(3)/2])
-  a2=np.array([3/2,sqrt(3)/2])
+def KaneMele(λI=0.06,M=0.3,λR=0.05,t1=1,t2=0):
+
+  a1=np.array([1,0])
+  a2=np.array([1/2,sqrt(3)/2])
 
   lat=np.array([a1,a2])
-  orb=[[1/3,1/3],[2/3,2/3]]
+  orb=[[1/3,1/3],[2/3,2/3], # Haldane model spin up
+      [1/3,1/3],[2/3,2/3]]  # Haldane model spin down
 
-  K2D=tb_model(2,2,lat,orb)
-  K2D.set_hop(tx,0,1,[0,0]) 
-  K2D.set_hop(ty,1,0,[0,1])
-  K2D.set_hop(tz,1,0,[1,0])
+  KM=tb_model(2,2,lat,orb)
+  KM.set_hop(t1,0,1,[0,0]) 
+  KM.set_hop(t1,1,0,[0,1])
+  KM.set_hop(t1,1,0,[1,0])
+  KM.set_hop(t1,2,3,[0,0]) 
+  KM.set_hop(t1,3,2,[0,1])
+  KM.set_hop(t1,3,2,[1,0])
+#  # Second neighbours spin up
+  KM.set_hop(t2+1j*λI,0,0,[1,0])
+  KM.set_hop(t2+1j*λI,1,1,[1,-1])
+  KM.set_hop(t2+1j*λI,1,1,[0,1])
+  KM.set_hop(t2+1j*λI,1,1,[-1,0])
+  KM.set_hop(t2+1j*λI,0,0,[-1,1])
+  KM.set_hop(t2+1j*λI,0,0,[0,-1])
+  # Second neighbours spin down
+  KM.set_hop(t2-1j*λI,2,2,[1,0])
+  KM.set_hop(t2-1j*λI,3,3,[1,-1])
+  KM.set_hop(t2-1j*λI,3,3,[0,1])
+  KM.set_hop(t2-1j*λI,3,3,[-1,0])
+  KM.set_hop(t2-1j*λI,2,2,[-1,1])
+  KM.set_hop(t2-1j*λI,2,2,[0,-1])
+  # Rashba effect 
+  # Same x and y axis for spin 
+  KM.set_hop(-1j*λR,0,3,[0,0])
+  KM.set_hop(1j*(-0.5+sqrt(3)*0.5j)*λR,0,3,[0,1])
+  KM.set_hop(1j*(-0.5-sqrt(3)*0.5j)*λR,0,3,[1,0])
+  KM.set_hop(-1j*λR,1,2,[0,0])
+  KM.set_hop(1j*(-0.5+sqrt(3)*0.5j)*λR,1,2,[0,1])
+  KM.set_hop(1j*(-0.5-sqrt(3)*0.5j)*λR,1,2,[1,0])
 
-  K2D.set_hop(t2*exp(1j*phi),1,1,[-1,0])
-  K2D.set_hop(t2*exp(1j*phi),1,1,[0,1])
-  K2D.set_hop(t2*exp(1j*phi),1,1,[1,-1])
+  KM.set_onsite([M,-M,M,-M])
 
-  K2D.set_hop(t2*exp(1j*phi),0,0,[1,0])
-  K2D.set_hop(t2*exp(1j*phi),0,0,[0,-1])
-  K2D.set_hop(t2*exp(1j*phi),0,0,[-1,1])
-  
-  K2D.set_onsite([M,-M])
+  return KM
 
-  K2D = K2D.make_supercell([[1,1],[-1,1]])
-
-  return K2D.cut_piece(L,0)
-
-Graph_Ribbon_ZZ(1,pi/2,L=2).visualize(0,1,color_hoppings=True)
-```
-
-```{python}
-k = linspace(0,1,101)
-Ek = Graph_Ribbon_ZZ(0.1,phi=pi/2,M=0.4,L=100).solve_all(k)
-plot(k,Ek.T,c='k',alpha=0.3);
+KaneMele().visualize(1,0)
 plt.show()
-Ek = Graph_Ribbon_AC(0.1,phi=pi/2,M=1.,L=100).solve_all(k)
-plot(k,Ek.T,c='k',alpha=0.3);
+```
+
+If we set the Rashba parameter $λ_R$ equal to zero, we get four bands with a well defined spin component.
+
+```{python}
+kpath = [[0,0],[2/3,1/3],[1/2,1/2],[1/3,2/3],[0,0]] # Gamma, K, M, K', Gamma
+λSO = 0.03
+M   = 0.3
+λR  = 0.0
+
+def Gaps(model):
+  K_array=wf_array(model,[50,50])
+  gaps = K_array.solve_on_grid([0.,0.])
+  return gaps
+
+tb = KaneMele(λI=λSO,M=M,λR=λR)
+k_vec,k_dist,k_node = tb.k_path(kpath,501,report=False)
+Ek,evec = tb.solve_all(k_vec,eig_vectors=True)
+G = Gaps(tb)
+
+sz = diag([1,1,-1,-1])
+Sz = [ [ real(vdot(ev,dot(sz,ev))) for ev in evec[band]] for band in range(len(Ek)) ]
+
+for i in range(len(Ek)):
+  scatter(k_dist,Ek[i],s=1,c=Sz[i],cmap='coolwarm', vmin=-1.1, vmax=1.1) 
+plt.title("Kane-Mele energy bands without the Rashba effect")
+xticks(k_node,["$\Gamma$","K","M","K'","$\Gamma$"])
+grid(True)
+colorbar(label='Expectancy value of $S_z$')
+plt.show()
+```
+
+If we now consider the Rashba effect to be non zero we can observe how the energy bands start having an expectancy value of each spin component to be non zero on different parts of the energy bands.
+
+```{python}
+kpath = [[0,0],[2/3,1/3],[1/2,1/2],[1/3,2/3],[0,0]] # Gamma, K, M, K', Gamma
+
+λSO=0.03
+M=0.3
+λR=0.01
+
+# Band structure
+k_vec,k_dist,k_node = KaneMele(λI=λSO,M=M,λR=λR).k_path(kpath,501,report=False)
+Ek,evec = KaneMele(λI=λSO,M=M,λR=λR).solve_all(k_vec,eig_vectors=True)
+
+# Spin components for every Bloch state
+σx,σy,σz = np.array([[0,1],[1,0]]), np.array([[0,-1j],[1j,0]]), np.array([[1,0],[0,-1]])
+sx, sy, sz = kron(σx,diag([1,1])),kron(σy,diag([1,1])),kron(σz,diag([1,1]))
+Sx = [ [ real(vdot(ev,dot(sx,ev))) for ev in evec[band]] for band in range(len(Ek)) ]
+Sy = [ [ real(vdot(ev,dot(sy,ev))) for ev in evec[band]] for band in range(len(Ek)) ]
+Sz = [ [ real(vdot(ev,dot(sz,ev))) for ev in evec[band]] for band in range(len(Ek)) ]
+
+fig,ax=plt.subplots(1,3,figsize=(11,4))
+for i in range(len(Ek)):
+  sc=ax[0].scatter(k_dist,Ek[i],s=1,c=Sx[i],cmap='coolwarm', vmin=-1.1, vmax=1.1) 
+  sc=ax[1].scatter(k_dist,Ek[i],s=1,c=Sy[i],cmap='coolwarm', vmin=-1.1, vmax=1.1) 
+  sc=ax[2].scatter(k_dist,Ek[i],s=1,c=Sz[i],cmap='coolwarm', vmin=-1.1, vmax=1.1) 
+ax[0].set_xticks(k_node,["$\Gamma$","K","M","K'","$\Gamma$"])
+ax[1].set_xticks(k_node,["$\Gamma$","K","M","K'","$\Gamma$"])
+ax[2].set_xticks(k_node,["$\Gamma$","K","M","K'","$\Gamma$"])
+ax[0].set_title("Spin x")
+ax[1].set_title("Spin y")
+ax[2].set_title("Spin z")
+ax[0].grid(True)
+ax[1].grid(True)
+ax[2].grid(True)
+fig.colorbar(sc)
 plt.show()
 ```
 
 ```{python}
-phi_path = linspace(0,2*pi,100)
-t2_path = linspace(0,2,100)
-Ene = [ Graph_AC_Fin(0.1,phi=phi,M=0.2,Lx=10,Ly=5).solve_all() for phi in phi_path]
-Ene = np.array(Ene)
+import plotly.graph_objects as go
+import pandas as pd
+import itertools as itertools
+
+λSO = 0.03
+M   = 0.3
+λR  = 0.0
+
+Nk=300
+Kx=np.linspace(-1,1,Nk)
+Ky=np.linspace(-1,1,Nk)
+L_k = np.array(list(itertools.product(Kx, Ky)))
+L_Ek = KaneMele(λI=λSO,M=M,λR=λR).solve_all(L_k)
+Bands = [L_Ek[i].reshape((Nk,Nk)) for i in range(len(L_Ek))]
+
+fig = go.Figure(data=[go.Surface(z=Bands[0], x= Kx, y=Ky,colorscale='twilight', cmin=-2, cmax=2)]
+              +[go.Surface(z=Band, x= Kx, y=Ky, showscale=False, colorscale='twilight', cmin=-2, cmax=2) for Band in Bands[1:]])
+fig.update_layout(title='Kane - Melee model band structure',autosize=False,
+                  width=500, height=500,
+                   margin=dict(l=65, r=50, b=65, t=90),
+                   scene = {
+            "xaxis": {"nticks": 4},
+            "yaxis": {"nticks": 4},
+            "zaxis": {"nticks": 4},
+#            'camera_eye': {"x": 0, "y": -1, "z": 0.5},
+            "aspectratio": {"x": 1, "y": 1, "z": 1}
+        })
+fig.show()
 ```
+
+A relevant observation of this model is the presence of edge states for a zig-zag edge even when we consider a nonzero Rashba effect. This constitutes the quantum spin Hall effect and we can observe how time reversal symmetry is unchanged.
 
 ```{python}
-for L in Ene.T:
-  plot(phi_path,L,c='k',alpha=0.1)
+fig,ax=plt.subplots(1,2,figsize=(11,4))
+L=10
+λSO=0.03 
+λR=0.02
+k = linspace(0.,1.,301)
+
+M=0.1
+KM_RibbonZZ=KaneMele(λI=λSO,M=M,λR=λR).cut_piece(L,0)
+Ek,evec = KM_RibbonZZ.solve_all(k,eig_vectors=True)
+sz = diag(L*[1,1,-1,-1])
+Sz = [ [ real(vdot(ev,dot(sz,ev))) for ev in evec[band]] for band in range(len(Ek)) ]
+for i in range(len(Ek)):
+  sc=ax[0].scatter(k,Ek[i],s=1,c=Sz[i],cmap='coolwarm', vmin=-1.1, vmax=1.1) 
+ax[0].set_title("QSH phase")
+ax[0].set_ylim(-1,1)
+ax[0].grid(True)
+
+M=0.4
+KM_RibbonZZ=KaneMele(λI=λSO,M=M,λR=λR).cut_piece(L,0)
+Ek,evec = KM_RibbonZZ.solve_all(k,eig_vectors=True)
+sz = diag(L*[1,1,-1,-1])
+Sz = [ [ real(vdot(ev,dot(sz,ev))) for ev in evec[band]] for band in range(len(Ek)) ]
+for i in range(len(Ek)):
+  sc=ax[1].scatter(k,Ek[i],s=1,c=Sz[i],cmap='coolwarm', vmin=-1.1, vmax=1.1) 
+ax[1].set_title("Insulating phase")
+ax[1].set_ylim(-1,1)
+ax[1].grid(True)
+
+fig.colorbar(sc)
+plt.show()
 ```
 
+In order to characterize correctly this system we turn to the $Z_2$ index which basically counts the number of pairs of zeros of the overlap matrix of the time-reversal operator (the Pfaffian) on the unit cell reciprocal space. We show an example of this calculation for parameters on the QSH phase.
 
+```{python}
+def Pfaffian(model,k_vec):
+  Pf=[]
+  for k in k_vec:
+    Ek,evec = model.solve_one(k,eig_vectors=True)
+    nF = model._norb//2
+    σy=np.array([[0,-1j],[1j,0]])
+    sy = kron(σy,diag(nF*[1]))
+    T = np.array( [[ vdot(ev1,dot(-1j*sy,conj(ev2)) )  for ev1 in evec[Ek<0]] for ev2 in evec[Ek<0]] )
+    Pf.append(sqrt(det(T)))
+  Pf=np.array(Pf)
+  return Pf
 
+def Pffafian_one(model):
+  def Pf(k):
+    Ek,evec = model.solve_one(k,eig_vectors=True)
+    nF = model._norb//2
+    σy=np.array([[0,-1j],[1j,0]])
+    sy = kron(σy,diag(nF*[1]))
+    T = np.array( [[ vdot(ev1,dot(-1j*sy,conj(ev2)) )  for ev1 in evec[Ek<0]] for ev2 in evec[Ek<0]] )
+    return sqrt(det(T))
+  return Pf
+
+kpts = [[0,0],[2/3,1/3],[1/2,1/2],[1/3,2/3],[0,0]]
+λSO=0.03
+M=0.1
+λR=0.01 #0.1476
+
+def Z2_inv(model,k_vec):
+  Z2=0
+  P = Pffafian_one(model)
+  for k in k_vec:
+    if abs(P(k))<10e-15:
+      Z2+=1
+  return Z2
+
+tb=KaneMele(λI=λSO,M=M,λR=λR)
+k_vec,k_dist,k_node = tb.k_path(kpts,nk=501,report=False)
+z2=Z2_inv(tb,k_vec)
+Pf=Pfaffian(tb,k_vec)
+title("$\mathbb{Z}_2$ invariant "+f"= {z2:.0f}")
+plot(k_dist,abs(Pf),c='k')
+xticks(k_node,["$\Gamma$","K","M","K'","$\Gamma$"])
+plt.show()
+```
+
+A relevant observation to be made is that the pfaffian may only be zero on high symmetry points of the lattice (I'll add an argument for this in the future). However this is not obvious at first glance and because of it I calculate the absolute value of the pfaffian over many points of the reciprocal space.
+
+```{python}
+import itertools as itertools
+
+Nk=300
+Kx = np.linspace(0,1,Nk)
+Ky = np.linspace(0,1,Nk)
+L_k = np.array(list(itertools.product(Kx, Ky)))
+L_Pf = Pfaffian(KaneMele(λI=λSO,M=M,λR=λR),L_k).reshape((Nk,Nk))
+
+fig,ax=plt.subplots(figsize=(6,4))
+# Contour plot of abs.value of pfaffian
+z=abs(L_Pf)
+X, Y = np.meshgrid(Kx, Ky)
+cp = ax.contourf(Kx, Ky, z,levels=np.linspace(0,1,300),cmap='gist_stern')
+cbar = colorbar(cp,ticks=linspace(0,1,5))
+# Hexagonal grid
+for p in np.array([ [x,y] for x in range(-1,2) for y in range(-1,2)]):
+  Hex=np.array([[2/3,1/3],[1/3,2/3],[-1/3,1/3],[-2/3,-1/3]])+p
+  ax.plot(Hex.T[0],Hex.T[1],c='gray', linestyle='dashed')
+
+ax.set_xlabel('$k_x$')
+ax.set_ylabel('$k_y$')
+ax.set_aspect('equal', adjustable='box')
+ax.set_xlim(0,1)
+ax.set_ylim(0,1)
+cbar.ax.set_ylabel("|Pf|", rotation=270, labelpad = 11);
+```
+
+For better observation of this values I add a 3D graph of the absolute value of the pfaffian.
+
+```{python}
+import plotly.graph_objects as go
+import pandas as pd
+
+z=abs(L_Pf)
+fig = go.Figure(data=[go.Surface(z=z, x= Kx, y=Ky,colorscale='Blues_r', cmin=0, cmax=1)])
+fig.update_layout(title='|Pf(k)| for Kane Mele model',autosize=False,
+                  width=500, height=500,
+                   margin=dict(l=65, r=50, b=65, t=90),
+                   scene = {
+            "xaxis": {"nticks": 4},
+            "yaxis": {"nticks": 4},
+            "zaxis": {"nticks": 4},
+#            'camera_eye': {"x": 0, "y": -1, "z": 0.5},
+            "aspectratio": {"x": 1, "y": 1, "z": 1}
+        })
+fig.show()
+```
+
+We can observe how the only values where the Pfaffian is zero are the high symmetry points $K$ and $K'$. We the calculate the number of pairs of zeros varying the Semenoff mass and the Rashba parameter.
+
+```{python}
+
+def Z2_inv(model,k_vec):
+  Z2=0
+  P = Pffafian_one(model)
+  for k in k_vec:
+    if abs(P(k))<10e-15:
+      Z2+=1
+  return Z2
+
+λSO = 0.03
+M_path = linspace(-6*λSO,6*λSO,100)
+λR_path = linspace(-6*λSO,6*λSO,100)
+kpath = [[2/3,1/3],[1/2,1/2],[1/3,2/3]]
+k_vec,k_dist,k_node = KaneMele().k_path(kpath,nk=501,report=False)
+
+Z2 = [ [ Z2_inv(KaneMele(λI=λSO,M=M,λR=λR),k_vec) for M in M_path ] for λR in λR_path]
+
+fig,ax=plt.subplots(figsize=(6,4))
+X, Y = np.meshgrid(M_path, λR_path)
+cp = ax.contourf(X, Y, Z2,levels=np.linspace(0,2,300),cmap='Blues')
+cbar = colorbar(cp,ticks=linspace(0,2,3))
+ax.set_xlabel('$M$')
+ax.set_ylabel('$λ_R$')
+cbar.ax.set_ylabel("$\mathbb{Z}_2$ invariant", rotation=270, labelpad = 11)
+
+plt.show()
+```
+
+We can easily observe three phases with different $Z_2$ invariants, being the QSH phase the one characterized by 2 and the insulating phase by 0 and 1.
