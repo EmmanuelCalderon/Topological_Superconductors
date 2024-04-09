@@ -10,6 +10,7 @@ book:
     - index.qmd
     - 1D_Systems.qmd
     - Hexagonal.qmd
+    - Floquet_Insulators.ipynb
     - references.qmd
 
 bibliography: references.bib
